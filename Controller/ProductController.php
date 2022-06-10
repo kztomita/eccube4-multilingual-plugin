@@ -30,7 +30,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/products/list", name="product_list_en", methods={"GET"}, requirements={"_locale": "en|cn"})
+     * @Route("/{_locale}/products/list", name="product_list_locale", methods={"GET"}, requirements={"_locale": "en|cn"})
      * @Template("@MultiLingual/Product/list.twig")
      */
     public function index(Request $request, PaginatorInterface $paginator)
