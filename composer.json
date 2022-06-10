@@ -1,0 +1,12 @@
+{
+    "name": "eccube4-multilingual",
+    "version": "1.0.0",
+    "description": "",
+    "type": "eccube-plugin",
+    "require": {
+        "ec-cube/plugin-installer": "~0.0.6"
+    },
+    "extra": {
+        "code": "MultiLingual"
+    }
+}
