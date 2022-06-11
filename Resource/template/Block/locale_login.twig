@@ -14,42 +14,42 @@ file that was distributed with this source code.
         <div class="ec-headerNav__item">
             <a href="{{ url('mypage') }}">
                 <i class="ec-headerNav__itemIcon fas fa-user fa-fw"></i>
-                <span class="ec-headerNav__itemLink">{{ 'マイページ'|trans }}</span>
+                <span class="ec-headerNav__itemLink">{{ 'front.block.login.mypage'|trans }}</span>
             </a>
         </div>
         {% if BaseInfo.option_favorite_product %}
             <div class="ec-headerNav__item">
                 <a href="{{ url('mypage_favorite') }}">
                     <i class="ec-headerNav__itemIcon fas fa-heart fa-fw"></i>
-                    <span class="ec-headerNav__itemLink">{{ 'お気に入り'|trans }}</span>
+                    <span class="ec-headerNav__itemLink">{{ 'front.block.login.favorite'|trans }}</span>
                 </a>
             </div>
         {% endif %}
         <div class="ec-headerNav__item">
             <a href="{{ url('logout') }}">
                 <i class="ec-headerNav__itemIcon fas fa-lock fa-fw"></i>
-                <span class="ec-headerNav__itemLink">{{ 'ログアウト'|trans }}</span>
+                <span class="ec-headerNav__itemLink">{{ 'front.block.login.logout'|trans }}</span>
             </a>
         </div>
     {% else %}
         <div class="ec-headerNav__item">
             <a href="{{ url('entry') }}">
                 <i class="ec-headerNav__itemIcon fas fa-user fa-fw"></i>
-                <span class="ec-headerNav__itemLink">{{ '新規会員登録'|trans }}</span>
+                <span class="ec-headerNav__itemLink">{{ 'front.block.login.customer_registration'|trans }}</span>
             </a>
         </div>
         {% if BaseInfo.option_favorite_product %}
             <div class="ec-headerNav__item">
                 <a href="{{ url('mypage_favorite') }}">
                     <i class="ec-headerNav__itemIcon fas fa-heart fa-fw"></i>
-                    <span class="ec-headerNav__itemLink">{{ 'お気に入り'|trans }}</span>
+                    <span class="ec-headerNav__itemLink">{{ 'front.block.login.favorite'|trans }}</span>
                 </a>
             </div>
         {% endif %}
         <div class="ec-headerNav__item">
             <a href="{{ url('mypage_login') }}">
                 <i class="ec-headerNav__itemIcon fas fa-lock fa-fw"></i>
-                <span class="ec-headerNav__itemLink">{{ 'ログイン'|trans }}</span>
+                <span class="ec-headerNav__itemLink">{{ 'front.block.login.login'|trans }}</span>
             </a>
         </div>
     {% endif %}
