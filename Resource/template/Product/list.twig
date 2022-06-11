@@ -114,7 +114,7 @@ XXXXX{{ app.request.locale }}
             </form>
             <div class="ec-searchnavRole__topicpath">
                 <ol class="ec-topicpath">
-                    <li class="ec-topicpath__item"><a href="{{ locale_url('product_list_locale') }}">{{ '全て'|trans }}</a>
+                    <li class="ec-topicpath__item"><a href="{{ locale_url('product_list_locale') }}">{{ 'front.product.all_category'|trans }}</a>
                     </li>
                     {% if Category is not null %}
                         {% for Path in Category.path %}
@@ -133,9 +133,9 @@ XXXXX{{ app.request.locale }}
             <div class="ec-searchnavRole__infos">
                 <div class="ec-searchnavRole__counter">
                     {% if pagination.totalItemCount > 0 %}
-                        {{ '<span class="ec-font-bold">%count%件</span><span>の商品が見つかりました</span>'|trans({ '%count%': pagination.totalItemCount })|raw }}
+                        {{ 'front.product.search_result__detail'|trans({ '%count%': pagination.totalItemCount })|raw }}
                     {% else %}
-                        <span>{{ 'お探しの商品は見つかりませんでした'|trans }}</span>
+                        <span>{{ 'front.product.search__product_not_found'|trans }}</span>
                     {% endif %}
                 </div>
                 {% if pagination.totalItemCount > 0 %}
