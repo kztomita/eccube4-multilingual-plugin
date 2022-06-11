@@ -9,7 +9,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class PluginManager extends AbstractPluginManager
 {
-    const LAYOUT_NAME = 'トップページ用レイアウト(Locale)';
+    /**
+     * @var string[]
+     */
+    private $layouts = [
+        'トップページ用レイアウト(Locale)',
+        '下層ページ用レイアウト(Locale)',
+    ];
 
     public function install(array $meta, ContainerInterface $container)
     {
@@ -30,14 +36,16 @@ class PluginManager extends AbstractPluginManager
 
         $deviceTypeRepository = $em->getRepository(DeviceType::class);
 
-        $Layout = new Layout;
+        foreach ($this->layouts as $name) {
+            $Layout = new Layout;
 
-        $DeviceType = $deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
-        $Layout->setDeviceType($DeviceType);
-        $Layout->setName(self::LAYOUT_NAME);
+            $DeviceType = $deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
+            $Layout->setDeviceType($DeviceType);
+            $Layout->setName($name);
 
-        $em->persist($Layout);
-        $em->flush();
+            $em->persist($Layout);
+            $em->flush();
+        }
     }
 
     private function removeRecord(ContainerInterface $container)
@@ -45,10 +53,12 @@ class PluginManager extends AbstractPluginManager
         /** @var EntityManager */
         $em = $container->get('doctrine.orm.entity_manager');
 
-        $Layout = $em->getRepository(Layout::class)->findOneBy(['name' => self::LAYOUT_NAME]);
-        if ($Layout) {
-            $em->remove($Layout);
-            $em->flush();
+        foreach ($this->layouts as $name) {
+            $Layout = $em->getRepository(Layout::class)->findOneBy(['name' => $name]);
+            if ($Layout) {
+                $em->remove($Layout);
+                $em->flush();
+            }
         }
     }
 }
