@@ -38,7 +38,7 @@ class PluginManager extends AbstractPluginManager
 
     public function install(array $meta, ContainerInterface $container)
     {
-        #$this->createRecord($container);
+        $this->createRecord($container);
     }
 
     public function uninstall(array $meta, ContainerInterface $container)
@@ -48,7 +48,6 @@ class PluginManager extends AbstractPluginManager
 
     private function createRecord(ContainerInterface $container)
     {
-error_log("createRecord()");
         /** @var EntityManager */
         $em = $container->get('doctrine.orm.entity_manager');
 
@@ -59,8 +58,8 @@ error_log("createRecord()");
 
         foreach ($this->layouts as $l) {
             $Layout = new Layout;
-            $Layout->setDeviceType($DeviceType);
-            $Layout->setName($l['name']);
+            $Layout->setDeviceType($DeviceType)
+                   ->setName($l['name']);
 
             $em->persist($Layout);
             $em->flush();
@@ -68,23 +67,23 @@ error_log("createRecord()");
             foreach ($l['pages'] as $pg) {
                 $Page = new Page;
                 // TODO MasterPage,
-                $Page->setName($pg['name']);
-                $Page->setUrl($pg['url']);
-                $Page->setFileName($pg['file_name']);
-                $Page->setEditType(Page::EDIT_TYPE_USER);
+                $Page->setName($pg['name'])
+                     ->setUrl($pg['url'])
+                     ->setFileName($pg['file_name'])
+                     ->setEditType(Page::EDIT_TYPE_USER);
                 $em->persist($Page);
                 $em->flush();
 
+                $PageLayout = new PageLayout;
+                $PageLayout->setPageId($Page->getId())
+                           ->setLayoutId($Layout->getId())
+                           ->setPage($Page)
+                           ->setLayout($Layout);
                 print("pageid:".$Page->getId()."\n");
                 print("layoutid:".$Layout->getId()."\n");
-                $PageLayout = new PageLayout;
-                $PageLayout->setPageId($Page->getId());
-                $PageLayout->setLayoutId($Layout->getId());
                 $PageLayout->setSortNo($sort++);
-                #$em->persist($PageLayout);
-print "persist()\n";
-                #$em->flush();
-print "flush()\n";
+                $em->persist($PageLayout);
+                $em->flush();
             }
         }
     }
@@ -94,12 +93,12 @@ print "flush()\n";
         /** @var EntityManager */
         $em = $container->get('doctrine.orm.entity_manager');
 
+        $layoutRepository = $em->getRepository(Layout::class);
         $pageRepository = $em->getRepository(Page::class);
         $pageLayoutRepository = $em->getRepository(PageLayout::class);
 
+        // Page,PageLayoutを削除
         foreach ($this->layouts as $l) {
-            $Layout = $em->getRepository(Layout::class)->findOneBy(['name' => $l['name']]);
-
             foreach ($l['pages'] as $pg) {
                 $Page = $pageRepository->findOneBy(['url' => $pg['url']]);
                 if ($Page) {
@@ -112,16 +111,30 @@ print "flush()\n";
                     $em->remove($Page);
                     $em->flush();
                 }
+            }
+        }
 
-                if ($Page) {
-                }
+        // Layoutを削除
+        foreach ($this->layouts as $l) {
+            $Layout = $layoutRepository->findOneBy(['name' => $l['name']]);
+            if (!$Layout) {
+                continue;
             }
 
-            if ($Layout) {
-                // TODO 配下にページがないときだけ削除
-                $em->remove($Layout);
-                $em->flush();
+            // PageLayoutにlayout_id = $Layout->getId()のレコードがないこと
+            $count = $em->createQueryBuilder()
+                        ->select('count(pl.page_id)')
+                        ->from('Eccube\Entity\PageLayout', 'pl')
+                        ->where('pl.layout_id = ?1')
+                        ->setParameter(1, $Layout->getId())
+                        ->getQuery()
+                        ->getSingleScalarResult();
+            if ($count) {
+                continue;
             }
+
+            $em->remove($Layout);
+            $em->flush();
         }
     }
 }
