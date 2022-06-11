@@ -2,6 +2,7 @@
 
 namespace Plugin\MultiLingual;
 
+use Eccube\Entity\Block;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Page;
 use Eccube\Entity\PageLayout;
@@ -33,6 +34,69 @@ class PluginManager extends AbstractPluginManager
                     'file_name' => '',
                 ]
             ],
+        ],
+    ];
+
+    private $blocks = [
+        [
+            'name'      => 'カート - Locale',
+            'file_name' => 'locale_cart',
+        ],
+        [
+            'name'      => 'カテゴリ - Locale',
+            'file_name' => 'locale_category',
+        ],
+        [
+            'name'      => 'カテゴリナビ(PC) - Locale',
+            'file_name' => 'locale_category_nav_pc',
+        ],
+        [
+            'name'      => 'カテゴリナビ(SP) - Locale',
+            'file_name' => 'locale_category_nav_sp',
+        ],
+        [
+            'name'      => '新入荷商品特集 - Locale',
+            'file_name' => 'locale_eyecatch',
+        ],
+        [
+            'name'      => 'フッター - Locale',
+            'file_name' => 'locale_footer',
+        ],
+        [
+            'name'      => 'ヘッダー(商品検索・ログインナビ・カート) - Locale',
+            'file_name' => 'locale_header',
+        ],
+        [
+            'name'      => 'ログインナビ(共通) - Locale',
+            'file_name' => 'locale_login',
+        ],
+        [
+            'name'      => 'ログインナビ(SP) - Locale',
+            'file_name' => 'locale_login_sp',
+        ],
+        [
+            'name'      => 'ロゴ - Locale',
+            'file_name' => 'locale_logo',
+        ],
+        [
+            'name'      => '新着商品 - Locale',
+            'file_name' => 'locale_new_item',
+        ],
+        [
+            'name'      => '新着情報 - Locale',
+            'file_name' => 'locale_news',
+        ],
+        [
+            'name'      => '商品検索 - Locale',
+            'file_name' => 'locale_search_product',
+        ],
+        [
+            'name'      => 'トピック - Locale',
+            'file_name' => 'locale_topic',
+        ],
+        [
+            'name'      => 'カレンダー - Locale',
+            'file_name' => 'locale_calendar',
         ],
     ];
 
@@ -79,12 +143,20 @@ class PluginManager extends AbstractPluginManager
                            ->setLayoutId($Layout->getId())
                            ->setPage($Page)
                            ->setLayout($Layout);
-                print("pageid:".$Page->getId()."\n");
-                print("layoutid:".$Layout->getId()."\n");
                 $PageLayout->setSortNo($sort++);
                 $em->persist($PageLayout);
                 $em->flush();
             }
+        }
+
+        foreach ($this->blocks as $b) {
+            $Block = new Block;
+            $Block->setDeviceType($DeviceType)
+                  ->setName($b['name'])
+                  ->setFileName($b['file_name'])
+                  ->setDeletable(1);
+            $em->persist($Block);
+            $em->flush();
         }
     }
 
@@ -96,6 +168,7 @@ class PluginManager extends AbstractPluginManager
         $layoutRepository = $em->getRepository(Layout::class);
         $pageRepository = $em->getRepository(Page::class);
         $pageLayoutRepository = $em->getRepository(PageLayout::class);
+        $blockRepository = $em->getRepository(Block::class);
 
         // Page,PageLayoutを削除
         foreach ($this->layouts as $l) {
@@ -134,6 +207,17 @@ class PluginManager extends AbstractPluginManager
             }
 
             $em->remove($Layout);
+            $em->flush();
+        }
+
+        // Blockを削除
+        foreach ($this->blocks as $b) {
+            $Block = $blockRepository->findOneBy(['file_name' => $b['file_name']]);
+            if (!$Block) {
+                continue;
+            }
+
+            $em->remove($Block);
             $em->flush();
         }
     }
