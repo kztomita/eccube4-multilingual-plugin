@@ -1,0 +1,3 @@
+services:
+    Plugin\MultiLingual\Twig\TwigExtension:
+        tags: ['twig.extension']
