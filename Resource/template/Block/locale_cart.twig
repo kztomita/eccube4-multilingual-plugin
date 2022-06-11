@@ -45,20 +45,20 @@ file that was distributed with this source code.
                                 {{ CartItem.price|price }}
                                 <div class="ec-cartNaviIsset__cartContentTax">{{ '税込'|trans }}</div>
                             </div>
-                            <div class="ec-cartNaviIsset__cartContentNumber">{{ '数量'|trans }} {{ CartItem.quantity|number_format }}</div>
+                            <div class="ec-cartNaviIsset__cartContentNumber">{{ 'common.quantity'|trans }} {{ CartItem.quantity|number_format }}</div>
                         </div>
                     </div>
                 {% endfor %}
             {% endfor %}
             <div class="ec-cartNaviIsset__action">
                 <a class="ec-blockBtn--action" href="{{ url('cart') }}">{{ 'カートへ進む'|trans }}</a>
-                <a class="ec-blockBtn ec-cartNavi--cancel">{{ 'キャンセル'|trans }}</a>
+                <a class="ec-blockBtn ec-cartNavi--cancel">{{ 'common.cancel'|trans }}</a>
             </div>
         </div>
     {% else %}
         <div class="ec-cartNaviNull">
             <div class="ec-cartNaviNull__message">
-                <p>{{ '現在カート内に商品はございません。'|trans }}</p>
+                <p>{{ 'front.block.cart.no_item'|trans }}</p>
             </div>
         </div>
     {% endif %}
