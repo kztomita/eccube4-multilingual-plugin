@@ -2,6 +2,11 @@
 
 namespace Plugin\MultiLingual;
 
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Eccube\Entity\Block;
 use Eccube\Entity\BlockPosition;
 use Eccube\Entity\Layout;
@@ -15,7 +20,7 @@ use Symfony\Component\Filesystem\Filesystem;
 class PluginManager extends AbstractPluginManager
 {
     /**
-     * @var string[]
+     * @var array
      */
     private $layouts = [
         [
@@ -47,6 +52,9 @@ class PluginManager extends AbstractPluginManager
         ],
     ];
 
+    /**
+     * @var array
+     */
     private $blocks = [
         [
             'name'      => 'カート - Locale',
@@ -136,13 +144,24 @@ class PluginManager extends AbstractPluginManager
         $this->removeRecord($container);
     }
 
+    /**
+     * @param ContainerInterface $container
+     * @return void
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
     private function createRecord(ContainerInterface $container)
     {
         /** @var EntityManager */
         $em = $container->get('doctrine.orm.entity_manager');
 
         $deviceTypeRepository = $em->getRepository(DeviceType::class);
+
+        /** @var DeviceType $DeviceType */
         $DeviceType = $deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
+        if (!$DeviceType) {
+            throw new \RuntimeException('DeviceType::DEVICE_TYPE_PC not found.');
+        }
 
         $layoutRepository = $em->getRepository(Layout::class);
 
@@ -192,7 +211,9 @@ class PluginManager extends AbstractPluginManager
 
         // BlockPositionの設定
         foreach ($this->layouts as $l) {
+            /** @var Layout $src */
             $src = $layoutRepository->findOneBy(['name' => $l['src_name']]);
+            /** @var Layout $dst */
             $dst = $layoutRepository->findOneBy(['name' => $l['name']]);
             if (!$src || !$dst) {
                 continue;
@@ -201,6 +222,14 @@ class PluginManager extends AbstractPluginManager
         }
     }
 
+    /**
+     * @param ContainerInterface $container
+     * @param Layout $src
+     * @param Layout $dst
+     * @return void
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
     private function copyLayout(ContainerInterface $container, Layout $src, Layout $dst)
     {
         /** @var EntityManager */
@@ -220,6 +249,7 @@ class PluginManager extends AbstractPluginManager
             if (!$LocaleBlock) {
                 continue;
             }
+            /** @var Block $LocaleBlock */
 
             $bp = new BlockPosition;
             $bp->setSection($p->getSection())
@@ -233,6 +263,10 @@ class PluginManager extends AbstractPluginManager
         }
     }
 
+    /**
+     * @param ContainerInterface $container
+     * @return void
+     */
     private function copyTemplate(ContainerInterface $container)
     {
         $fs = new Filesystem;
@@ -248,6 +282,14 @@ class PluginManager extends AbstractPluginManager
         }
    }
 
+    /**
+     * @param ContainerInterface $container
+     * @return void
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
     private function removeRecord(ContainerInterface $container)
     {
         /** @var EntityManager */
