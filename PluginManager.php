@@ -35,11 +35,10 @@ class PluginManager extends AbstractPluginManager
         $em = $container->get('doctrine.orm.entity_manager');
 
         $deviceTypeRepository = $em->getRepository(DeviceType::class);
+        $DeviceType = $deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
 
         foreach ($this->layouts as $name) {
             $Layout = new Layout;
-
-            $DeviceType = $deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
             $Layout->setDeviceType($DeviceType);
             $Layout->setName($name);
 
