@@ -45,62 +45,77 @@ class PluginManager extends AbstractPluginManager
         [
             'name'      => 'カート - Locale',
             'file_name' => 'locale_cart',
+            'use_controller' => 0,
         ],
         [
             'name'      => 'カテゴリ - Locale',
             'file_name' => 'locale_category',
+            'use_controller' => 0,
         ],
         [
             'name'      => 'カテゴリナビ(PC) - Locale',
             'file_name' => 'locale_category_nav_pc',
+            'use_controller' => 0,
         ],
         [
             'name'      => 'カテゴリナビ(SP) - Locale',
             'file_name' => 'locale_category_nav_sp',
+            'use_controller' => 0,
         ],
         [
             'name'      => '新入荷商品特集 - Locale',
             'file_name' => 'locale_eyecatch',
+            'use_controller' => 0,
         ],
         [
             'name'      => 'フッター - Locale',
             'file_name' => 'locale_footer',
+            'use_controller' => 0,
         ],
         [
             'name'      => 'ヘッダー(商品検索・ログインナビ・カート) - Locale',
             'file_name' => 'locale_header',
+            'use_controller' => 0,
         ],
         [
             'name'      => 'ログインナビ(共通) - Locale',
             'file_name' => 'locale_login',
+            'use_controller' => 0,
         ],
         [
             'name'      => 'ログインナビ(SP) - Locale',
             'file_name' => 'locale_login_sp',
+            'use_controller' => 0,
         ],
         [
             'name'      => 'ロゴ - Locale',
             'file_name' => 'locale_logo',
+            'use_controller' => 0,
         ],
         [
             'name'      => '新着商品 - Locale',
             'file_name' => 'locale_new_item',
+            'use_controller' => 0,
         ],
         [
             'name'      => '新着情報 - Locale',
             'file_name' => 'locale_news',
+            'use_controller' => 0,
         ],
         [
             'name'      => '商品検索 - Locale',
             'file_name' => 'locale_search_product',
+            'use_controller' => 1,
         ],
         [
             'name'      => 'トピック - Locale',
             'file_name' => 'locale_topic',
+            'use_controller' => 0,
         ],
         [
             'name'      => 'カレンダー - Locale',
             'file_name' => 'locale_calendar',
+            'use_controller' => 1,
         ],
     ];
 
@@ -163,6 +178,7 @@ class PluginManager extends AbstractPluginManager
             $Block->setDeviceType($DeviceType)
                   ->setName($b['name'])
                   ->setFileName($b['file_name'])
+                  ->setUseController($b['use_controller'])
                   ->setDeletable(1);
             $em->persist($Block);
             $em->flush();
