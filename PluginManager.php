@@ -9,6 +9,7 @@ use Eccube\Entity\PageLayout;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Plugin\AbstractPluginManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 class PluginManager extends AbstractPluginManager
 {
@@ -103,6 +104,7 @@ class PluginManager extends AbstractPluginManager
     public function install(array $meta, ContainerInterface $container)
     {
         $this->createRecord($container);
+        $this->copyTemplate($container);
     }
 
     public function uninstall(array $meta, ContainerInterface $container)
@@ -120,6 +122,7 @@ class PluginManager extends AbstractPluginManager
 
         $sort = 100;
 
+        // Layout,Page,PageLayoutを追加
         foreach ($this->layouts as $l) {
             $Layout = new Layout;
             $Layout->setDeviceType($DeviceType)
@@ -149,6 +152,7 @@ class PluginManager extends AbstractPluginManager
             }
         }
 
+        // Blockの追加
         foreach ($this->blocks as $b) {
             $Block = new Block;
             $Block->setDeviceType($DeviceType)
@@ -159,6 +163,21 @@ class PluginManager extends AbstractPluginManager
             $em->flush();
         }
     }
+
+    private function copyTemplate(ContainerInterface $container)
+    {
+        $fs = new Filesystem;
+
+        $templateDir = $container->getParameter('eccube_theme_front_dir');
+
+        foreach ($this->blocks as $b) {
+            $src = __DIR__ . '/Resource/template/Block/' . $b['file_name'] . '.twig';
+            $dst = $templateDir . '/Block/' . $b['file_name'] . '.twig';
+            if (!$fs->exists($dst)) {
+                $fs->copy($src, $dst);
+            }
+        }
+   }
 
     private function removeRecord(ContainerInterface $container)
     {
