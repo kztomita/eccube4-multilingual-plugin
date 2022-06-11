@@ -27,7 +27,7 @@ class ProductController extends AbstractController
     private $controller;
 
     public function __construct(
-        \Eccube\Controller\ProductController $c,
+        \Eccube\Controller\ProductController $c
     )
     {
         $this->controller = $c;
