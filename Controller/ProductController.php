@@ -19,22 +19,28 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ProductController extends AbstractController
 {
+    use LocaleTrait;
+
     /**
      * @var \Eccube\Controller\ProductController
      */
     private $controller;
 
-    public function __construct(\Eccube\Controller\ProductController $c)
+    public function __construct(
+        \Eccube\Controller\ProductController $c,
+    )
     {
         $this->controller = $c;
     }
 
     /**
-     * @Route("/{_locale}/products/list", name="product_list_locale", methods={"GET"}, requirements={"_locale": "en|cn"})
+     * @Route("/{_locale}/products/list", name="product_list_locale", methods={"GET"})
      * @Template("@MultiLingual/Product/list.twig")
      */
     public function index(Request $request, PaginatorInterface $paginator)
     {
+        $this->testLocale($request);
+
         return $this->controller->index($request, $paginator);
     }
 

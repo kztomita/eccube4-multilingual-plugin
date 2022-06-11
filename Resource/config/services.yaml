@@ -1,0 +1,4 @@
+
+parameters:
+    multi_lingual_locales: ['en', 'cn']
+
