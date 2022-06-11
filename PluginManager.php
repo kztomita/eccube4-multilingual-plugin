@@ -3,6 +3,7 @@
 namespace Plugin\MultiLingual;
 
 use Eccube\Entity\Block;
+use Eccube\Entity\BlockPosition;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Page;
 use Eccube\Entity\PageLayout;
@@ -20,6 +21,7 @@ class PluginManager extends AbstractPluginManager
         [
             'name' => 'トップページ用レイアウト(Locale)',
             'pages' => [],
+            'src_name' => 'トップページ用レイアウト',
         ],
         [
             'name' => '下層ページ用レイアウト(Locale)',
@@ -35,6 +37,7 @@ class PluginManager extends AbstractPluginManager
                     'file_name' => '',
                 ]
             ],
+            'src_name' => '下層ページ用レイアウト',
         ],
     ];
 
@@ -120,6 +123,8 @@ class PluginManager extends AbstractPluginManager
         $deviceTypeRepository = $em->getRepository(DeviceType::class);
         $DeviceType = $deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
 
+        $layoutRepository = $em->getRepository(Layout::class);
+
         $sort = 100;
 
         // Layout,Page,PageLayoutを追加
@@ -162,6 +167,48 @@ class PluginManager extends AbstractPluginManager
             $em->persist($Block);
             $em->flush();
         }
+
+        // BlockPositionの設定
+        foreach ($this->layouts as $l) {
+            $src = $layoutRepository->findOneBy(['name' => $l['src_name']]);
+            $dst = $layoutRepository->findOneBy(['name' => $l['name']]);
+            if (!$src || !$dst) {
+                continue;
+            }
+            $this->copyLayout($container, $src, $dst);
+        }
+    }
+
+    private function copyLayout(ContainerInterface $container, Layout $src, Layout $dst)
+    {
+        /** @var EntityManager */
+        $em = $container->get('doctrine.orm.entity_manager');
+
+        $bpRepository = $em->getRepository(BlockPosition::class);
+        $blockRepository = $em->getRepository(Block::class);
+
+        $positions = $bpRepository->findBy(['layout_id' => $src->getId()]);
+        foreach ($positions as $p) {
+            // 同名のBlockと同じ位置に挿入する
+            $Block = $blockRepository->find($p->getBlockId());
+            if (!$Block) {
+                continue;
+            }
+            $LocaleBlock = $blockRepository->findOneBy(['name' => $Block->getName() . ' - Locale']);
+            if (!$LocaleBlock) {
+                continue;
+            }
+
+            $bp = new BlockPosition;
+            $bp->setSection($p->getSection())
+               ->setBlockId($LocaleBlock->getId())
+               ->setBlock($LocaleBlock)
+               ->setLayoutId($dst->getId())
+               ->setLayout($dst)
+               ->setBlockRow($p->getBlockRow());
+            $em->persist($bp);
+            $em->flush();
+        }
     }
 
     private function copyTemplate(ContainerInterface $container)
@@ -188,6 +235,7 @@ class PluginManager extends AbstractPluginManager
         $pageRepository = $em->getRepository(Page::class);
         $pageLayoutRepository = $em->getRepository(PageLayout::class);
         $blockRepository = $em->getRepository(Block::class);
+        $bpRepository = $em->getRepository(BlockPosition::class);
 
         // Page,PageLayoutを削除
         foreach ($this->layouts as $l) {
@@ -203,6 +251,20 @@ class PluginManager extends AbstractPluginManager
                     $em->remove($Page);
                     $em->flush();
                 }
+            }
+        }
+
+        // 削除対象Layout配下のBlockPositionを削除
+        foreach ($this->layouts as $l) {
+            $Layout = $layoutRepository->findOneBy(['name' => $l['name']]);
+            if (!$Layout) {
+                continue;
+            }
+
+            $positions = $bpRepository->findBy(['layout_id' => $Layout->getId()]);
+            foreach ($positions as $p) {
+                $em->remove($p);
+                $em->flush();
             }
         }
 
