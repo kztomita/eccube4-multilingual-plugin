@@ -153,7 +153,7 @@ XXXXX{{ app.request.locale }}
                 <ul class="ec-shelfGrid">
                     {% for Product in pagination %}
                         <li class="ec-shelfGrid__item">
-                            <a href="{{ url('product_detail', {'id': Product.id}) }}">
+                            <a href="{{ locale_url('product_detail_locale', {'id': Product.id}) }}">
                                 <p class="ec-shelfGrid__item-image">
                                     <img src="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}" alt="{{ Product.name }}" loading="lazy">
                                 </p>

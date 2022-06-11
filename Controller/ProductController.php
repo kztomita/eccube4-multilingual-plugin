@@ -41,19 +41,21 @@ class ProductController extends AbstractController
     {
         $this->testLocale($request);
 
+        $this->controller->setContainer($this->container);
+
         return $this->controller->index($request, $paginator);
     }
 
     /**
-     * @Route("/{_locale}/products/detail/{id}", name="product_detail_locale", methods={"GET"}, requirements={"id" = "\d+", "_locale": "en|cn",})
-     * @Template("Product/detail.twig")
+     * @Route("/{_locale}/products/detail/{id}", name="product_detail_locale", methods={"GET"}, requirements={"id" = "\d+"})
+     * @Template("@MultiLingual/Product/detail.twig")
      */
     public function detail(Request $request, Product $Product)
     {
-        // ref. to https://symfony.com/doc/current/controller/forwarding.html
-        return $this->forward('Eccube\Controller\ProductController::detail', [
-            'request'  => $request,
-            'Product' => $Product,
-        ]);
+        $this->testLocale($request);
+
+        $this->controller->setContainer($this->container);
+
+        return $this->controller->detail($request, $Product);
     }
 }
