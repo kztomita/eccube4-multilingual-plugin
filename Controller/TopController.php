@@ -29,7 +29,7 @@ class TopController extends AbstractController
      */
     public function index(Request $request)
     {
-#        $this->testLocale($request);
+        $this->testLocale($request);
 
         $this->controller->setContainer($this->container);
 
