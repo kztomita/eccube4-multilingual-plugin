@@ -19,20 +19,26 @@ class PluginManager extends AbstractPluginManager
      */
     private $layouts = [
         [
-            'name' => 'トップページ用レイアウト(Locale)',
-            'pages' => [],
+            'name' => 'トップページ用レイアウト - Locale',
+            'pages' => [
+                [
+                    'name'  => 'TOPページ - Locale',
+                    'url'   => 'homepage_locale',
+                    'file_name' => '',
+                ],
+            ],
             'src_name' => 'トップページ用レイアウト',
         ],
         [
-            'name' => '下層ページ用レイアウト(Locale)',
+            'name' => '下層ページ用レイアウト - Locale',
             'pages' => [
                 [
-                    'name'  => '商品一覧ページ(Locale)',
+                    'name'  => '商品一覧ページ - Locale',
                     'url'   => 'product_list_locale',
                     'file_name' => '',
                 ],
                 [
-                    'name'  => '商品詳細ページ(Locale)',
+                    'name'  => '商品詳細ページ - Locale',
                     'url'   => 'product_detail_locale',
                     'file_name' => '',
                 ]
