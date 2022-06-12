@@ -1,0 +1,20 @@
+
+Resource/template/default/
+	Controllerから参照されるテンプレート。
+	@Template("MultiLingual/Resource/template/default/Product/list.twig")
+	のようにannotationして参照する。
+
+	ページ管理からテンプレートを編集した場合は、
+	app/template/default/MultiLingual/にファイルが作成され
+	そちらが参照されるようになる。
+	例)
+	app/template/default/MultiLingual/Resource/template/default/Product/list.twig
+
+Resource/template/default/Block
+	プラグインが作成するLocaleページ用Blockのテンプレート。
+
+	ブロックのテンプレートは、プラグインディレクトリ(app/Plugin/MultiLingual/)
+	配下のファイルを直接参照できないようなので、プラグイン有効化時に
+	Blockを作成する際、app/template/default/Block/にコピーする。
+
+	ファイル名は既存のものと競合しないようlocale_のプレフィクスをつける。
