@@ -16,6 +16,7 @@ use Eccube\Entity\Master\DeviceType;
 use Eccube\Plugin\AbstractPluginManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 class PluginManager extends AbstractPluginManager
 {
@@ -29,7 +30,8 @@ class PluginManager extends AbstractPluginManager
                 [
                     'name'  => 'TOPページ - Locale',
                     'url'   => 'homepage_locale',
-                    'file_name' => '',
+                    'file_name' => 'index',
+                    'edit_type' => Page::EDIT_TYPE_DEFAULT,
                 ],
             ],
             'src_name' => 'トップページ用レイアウト',
@@ -40,12 +42,14 @@ class PluginManager extends AbstractPluginManager
                 [
                     'name'  => '商品一覧ページ - Locale',
                     'url'   => 'product_list_locale',
-                    'file_name' => '',
+                    'file_name' => 'Product/list',
+                    'edit_type' => Page::EDIT_TYPE_DEFAULT,
                 ],
                 [
                     'name'  => '商品詳細ページ - Locale',
                     'url'   => 'product_detail_locale',
-                    'file_name' => '',
+                    'file_name' => 'Product/detail',
+                    'edit_type' => Page::EDIT_TYPE_DEFAULT,
                 ]
             ],
             'src_name' => '下層ページ用レイアウト',
@@ -133,18 +137,32 @@ class PluginManager extends AbstractPluginManager
         ],
     ];
 
-    public function install(array $meta, ContainerInterface $container)
+    public function enable(array $meta, ContainerInterface $container)
     {
         $this->createRecord($container);
-        $this->copyTemplate($container);
-    }
-
-    public function uninstall(array $meta, ContainerInterface $container)
-    {
-        $this->removeRecord($container);
+        $this->copyBlockTemplate($container);
     }
 
     /**
+     * Locale用に作成したPage,Layout,Blockを削除する。
+     *
+     * app/templateにコピーしたBlockのテンプレートは残しておく。
+     * また、ページ管理からテンプレートを編集していた場合、
+     * app/template/default/MultiLingual/Resource/template/default
+     * にファイルが作成されている作成されたテンプレートファイルも残しておく。
+     */
+    public function disable(array $meta, ContainerInterface $container)
+    {
+        $this->removeRecord($container);
+        // app/templateにコピーしたテンプレートは残しておく
+    }
+
+    /**
+     * 必要なレコードを作成する。
+     * - Locale用Page,Layout,Blockの作成。
+     * - 新規作成したPageをLayoutに登録する。
+     * - 新規作成したLayoutにBlockを登録する。
+     *
      * @param ContainerInterface $container
      * @return void
      * @throws ORMException
@@ -181,8 +199,8 @@ class PluginManager extends AbstractPluginManager
                 // TODO MasterPage,
                 $Page->setName($pg['name'])
                      ->setUrl($pg['url'])
-                     ->setFileName($pg['file_name'])
-                     ->setEditType(Page::EDIT_TYPE_USER);
+                     ->setFileName('MultiLingual/Resource/template/default/' . $pg['file_name'])
+                     ->setEditType($pg['edit_type']);
                 $em->persist($Page);
                 $em->flush();
 
@@ -264,20 +282,27 @@ class PluginManager extends AbstractPluginManager
     }
 
     /**
+     * テンプレートファイルをapp/templateにコピーする。
+     * コピー先にファイルがある場合は上書きしない。
+     *
      * @param ContainerInterface $container
      * @return void
      */
-    private function copyTemplate(ContainerInterface $container)
+    private function copyBlockTemplate(ContainerInterface $container)
     {
         $fs = new Filesystem;
 
         $templateDir = $container->getParameter('eccube_theme_front_dir');
 
-        foreach ($this->blocks as $b) {
-            $src = __DIR__ . '/Resource/template/Block/' . $b['file_name'] . '.twig';
-            $dst = $templateDir . '/Block/' . $b['file_name'] . '.twig';
+        $finder = new Finder;
+        $finder->files()
+            ->in(__DIR__ . '/Resource/template/default/Block/')
+            ->name('*.twig');
+        foreach ($finder as $file) {
+            print $file->getRealPath()."\n";
+            $dst = $templateDir . '/Block/' . $file->getFilename();
             if (!$fs->exists($dst)) {
-                $fs->copy($src, $dst);
+                $fs->copy($file->getRealPath(), $dst);
             }
         }
    }
