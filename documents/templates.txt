@@ -18,3 +18,8 @@ Resource/template/default/Block
 	Blockを作成する際、app/template/default/Block/にコピーする。
 
 	ファイル名は既存のものと競合しないようlocale_のプレフィクスをつける。
+
+[参考]
+テンプレートの読み出し順
+https://doc4.ec-cube.net/design_template
+
