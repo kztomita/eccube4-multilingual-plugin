@@ -299,7 +299,6 @@ class PluginManager extends AbstractPluginManager
             ->in(__DIR__ . '/Resource/template/default/Block/')
             ->name('*.twig');
         foreach ($finder as $file) {
-            print $file->getRealPath()."\n";
             $dst = $templateDir . '/Block/' . $file->getFilename();
             if (!$fs->exists($dst)) {
                 $fs->copy($file->getRealPath(), $dst);

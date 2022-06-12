@@ -25,7 +25,7 @@ class TopController extends AbstractController
 
     /**
      * @Route("/{_locale}/home", name="homepage_locale", methods={"GET"})
-     * @Template("@MultiLingual/index.twig")
+     * @Template("MultiLingual/Resource/template/default/index.twig")
      */
     public function index(Request $request)
     {

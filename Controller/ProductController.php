@@ -35,7 +35,8 @@ class ProductController extends AbstractController
 
     /**
      * @Route("/{_locale}/products/list", name="product_list_locale", methods={"GET"})
-     * @Template("@MultiLingual/Product/list.twig")
+     * @Template("MultiLingual/Resource/template/default/Product/list.twig")
+     *
      */
     public function index(Request $request, PaginatorInterface $paginator)
     {
@@ -48,7 +49,7 @@ class ProductController extends AbstractController
 
     /**
      * @Route("/{_locale}/products/detail/{id}", name="product_detail_locale", methods={"GET"}, requirements={"id" = "\d+"})
-     * @Template("@MultiLingual/Product/detail.twig")
+     * @Template("MultiLingual/Resource/template/default/Product/detail.twig")
      */
     public function detail(Request $request, Product $Product)
     {
