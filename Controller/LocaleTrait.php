@@ -2,7 +2,6 @@
 
 namespace Plugin\MultiLingual\Controller;
 
-use Eccube\Common\EccubeConfig;
 use Symfony\Component\HttpFoundation\Request;
 
 trait LocaleTrait
@@ -17,7 +16,7 @@ trait LocaleTrait
     {
         $locales = $this->eccubeConfig['multi_lingual_locales'];
 
-        if (array_search($request->getLocale(), $locales) === false) {
+        if (!in_array($request->getLocale(), $locales)) {
             throw $this->createNotFoundException('Unsupported locale.');
         }
    }
