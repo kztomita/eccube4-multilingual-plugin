@@ -168,7 +168,9 @@ class PluginManager extends AbstractPluginManager
      */
     private function getEntityManager(ContainerInterface $container): EntityManager
     {
-        return $container->get('doctrine.orm.entity_manager');
+        /** @var EntityManager $em */
+        $em = $container->get('doctrine.orm.entity_manager');
+        return $em;
     }
 
     /**
