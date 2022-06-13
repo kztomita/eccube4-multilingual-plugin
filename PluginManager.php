@@ -163,6 +163,15 @@ class PluginManager extends AbstractPluginManager
     }
 
     /**
+     * @param ContainerInterface $container
+     * @return EntityManager
+     */
+    private function getEntityManager(ContainerInterface $container): EntityManager
+    {
+        return $container->get('doctrine.orm.entity_manager');
+    }
+
+    /**
      * 必要なレコードを作成する。
      * - Locale用Page,Layout,Blockの作成。
      * - 新規作成したPageをLayoutに登録する。
@@ -175,8 +184,7 @@ class PluginManager extends AbstractPluginManager
      */
     private function createRecord(ContainerInterface $container)
     {
-        /** @var EntityManager */
-        $em = $container->get('doctrine.orm.entity_manager');
+        $em = $this->getEntityManager($container);
 
         $deviceTypeRepository = $em->getRepository(DeviceType::class);
 
@@ -255,8 +263,7 @@ class PluginManager extends AbstractPluginManager
      */
     private function copyLayout(ContainerInterface $container, Layout $src, Layout $dst)
     {
-        /** @var EntityManager */
-        $em = $container->get('doctrine.orm.entity_manager');
+        $em = $this->getEntityManager($container);
 
         $bpRepository = $em->getRepository(BlockPosition::class);
         $blockRepository = $em->getRepository(Block::class);
@@ -321,8 +328,7 @@ class PluginManager extends AbstractPluginManager
      */
     private function createLocaleCategory(ContainerInterface  $container)
     {
-        /** @var EntityManager */
-        $em = $container->get('doctrine.orm.entity_manager');
+        $em = $this->getEntityManager($container);
 
         /** @var EccubeConfig $eccubeConfig */
         $eccubeConfig = $container->get(EccubeConfig::class);
@@ -354,8 +360,7 @@ class PluginManager extends AbstractPluginManager
      */
     private function removeRecord(ContainerInterface $container)
     {
-        /** @var EntityManager */
-        $em = $container->get('doctrine.orm.entity_manager');
+        $em = $this->getEntityManager($container);
 
         $layoutRepository = $em->getRepository(Layout::class);
         $pageRepository = $em->getRepository(Page::class);
@@ -436,8 +441,7 @@ class PluginManager extends AbstractPluginManager
      */
     private function truncateLocaleCategory(ContainerInterface  $container)
     {
-        /** @var EntityManager */
-        $em = $container->get('doctrine.orm.entity_manager');
+        $em = $this->getEntityManager($container);
 
         $connection = $em->getConnection();
         $platform = $connection->getDatabasePlatform();
