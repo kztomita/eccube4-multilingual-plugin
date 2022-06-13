@@ -7,13 +7,16 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Block;
 use Eccube\Entity\BlockPosition;
+use Eccube\Entity\Category;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Page;
 use Eccube\Entity\PageLayout;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Plugin\AbstractPluginManager;
+use Plugin\MultiLingual\Entity\LocaleCategory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -141,6 +144,7 @@ class PluginManager extends AbstractPluginManager
     {
         $this->createRecord($container);
         $this->copyBlockTemplate($container);
+        $this->createLocaleCategory($container);
     }
 
     /**
@@ -155,6 +159,7 @@ class PluginManager extends AbstractPluginManager
     {
         $this->removeRecord($container);
         // app/templateにコピーしたテンプレートは残しておく
+        $this->truncateLocaleCategory($container);
     }
 
     /**
@@ -304,7 +309,40 @@ class PluginManager extends AbstractPluginManager
                 $fs->copy($file->getRealPath(), $dst);
             }
         }
-   }
+    }
+
+    /**
+     * plg_locale_categoryの設定
+     *
+     * @param ContainerInterface $container
+     * @return void
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    private function createLocaleCategory(ContainerInterface  $container)
+    {
+        /** @var EntityManager */
+        $em = $container->get('doctrine.orm.entity_manager');
+
+        /** @var EccubeConfig $eccubeConfig */
+        $eccubeConfig = $container->get(EccubeConfig::class);
+        $locales = $eccubeConfig['multi_lingual_locales'];
+
+        $categoryRepository = $em->getRepository(Category::class);
+        /** @var Category[] $categories */
+        $categories = $categoryRepository->findAll();
+
+        foreach ($categories as $category) {
+            foreach ($locales as $locale) {
+                $lc = new LocaleCategory();
+                $lc->setCategory($category);
+                $lc->setName($category->getName());
+                $lc->setLocale($locale);
+                $em->persist($lc);
+                $em->flush();
+            }
+        }
+    }
 
     /**
      * @param ContainerInterface $container
@@ -389,5 +427,20 @@ class PluginManager extends AbstractPluginManager
             $em->remove($Block);
             $em->flush();
         }
+    }
+
+    /**
+     * @param ContainerInterface $container
+     * @return void
+     * @throws \Doctrine\DBAL\Exception
+     */
+    private function truncateLocaleCategory(ContainerInterface  $container)
+    {
+        /** @var EntityManager */
+        $em = $container->get('doctrine.orm.entity_manager');
+
+        $connection = $em->getConnection();
+        $platform = $connection->getDatabasePlatform();
+        $connection->executeStatement($platform->getTruncateTableSQL('plg_locale_category'));
     }
 }
