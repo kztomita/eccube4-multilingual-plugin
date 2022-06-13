@@ -199,13 +199,13 @@ XXXXX{{ app.request.locale }}
                                 </form>
                                 <div class="ec-productRole__btn">
                                     <button type="submit" class="ec-blockBtn--action add-cart" data-cartid="{{ Product.id }}" form="productForm{{ Product.id }}">
-                                        {{ 'カートに入れる'|trans }}
+                                        {{ 'front.product.add_cart'|trans }}
                                     </button>
                                 </div>
                             {% else %}
                                 <div class="ec-productRole__btn">
                                     <button type="button" class="ec-blockBtn--action" disabled="disabled">
-                                        {{ 'ただいま品切れ中です。'|trans }}
+                                        {{ 'front.product.out_of_stock'|trans }}
                                     </button>
                                 </div>
                             {% endif %}
@@ -217,11 +217,11 @@ XXXXX{{ app.request.locale }}
                 <div class="ec-modal-overlay">
                     <div class="ec-modal-wrap">
                         <span class="ec-modal-close"><span class="ec-icon"><img src="{{ asset('assets/icon/cross-dark.svg') }}" alt=""/></span></span>
-                        <div id="ec-modal-header" class="text-center">{{ 'カートに追加しました。'|trans }}</div>
+                        <div id="ec-modal-header" class="text-center">{{ 'front.product.add_cart_complete'|trans }}</div>
                         <div class="ec-modal-box">
                             <div class="ec-role">
-                                <span class="ec-inlineBtn--cancel">{{ 'お買い物を続ける'|trans }}</span>
-                                <a href="{{ url('cart') }}" class="ec-inlineBtn--action">{{ 'カートへ進む'|trans }}</a>
+                                <span class="ec-inlineBtn--cancel">{{ 'front.product.continue'|trans }}</span>
+                                <a href="{{ url('cart') }}" class="ec-inlineBtn--action">{{ 'front.block.cart.go_to_cart'|trans }}</a>
                             </div>
                         </div>
                     </div>
