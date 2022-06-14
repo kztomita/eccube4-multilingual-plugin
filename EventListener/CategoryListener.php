@@ -49,9 +49,32 @@ class CategoryListener implements EventSubscriberInterface
 
     public function onAdminProductCategoryIndexComplete(EventArgs $event): void
     {
-        $editForm = $event->getArgument('editForm');
-        if ($editForm) {
+        if ($event->hasArgument('editForm')) {
             $this->onUpdateCategory($event);
+        } else {
+            $this->onCreateCategory($event);
+        }
+    }
+
+    private function onCreateCategory(EventArgs $event): void
+    {
+        error_log("create");
+
+        /** @var FormInterface $form */
+        $form = $event->getArgument('form');
+
+        /** @var Category $TargetCategory */
+        $TargetCategory = $event->getArgument('TargetCategory');
+
+        $locales = $this->eccubeConfig['multi_lingual_locales'];
+        foreach ($locales as $locale) {
+            $LocaleCategory = new LocaleCategory;
+            $LocaleCategory->setCategoryId($TargetCategory->getId());
+            $LocaleCategory->setCategory($TargetCategory);
+            $LocaleCategory->setLocale($locale);
+            $LocaleCategory->setName($form->get('name_' . $locale)->getData());
+            $this->entityManager->persist($LocaleCategory);
+            $this->entityManager->flush();
         }
     }
 
