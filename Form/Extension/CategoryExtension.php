@@ -3,10 +3,13 @@
 namespace Plugin\MultiLingual\Form\Extension;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Category;
 use Eccube\Form\Type\Admin\CategoryType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -36,16 +39,36 @@ class CategoryExtension extends AbstractTypeExtension
     {
         $locales = $this->eccubeConfig['multi_lingual_locales'];
         foreach ($locales as $locale) {
-            $builder->add('name_' . $locale, TextType::class, [
-                'constraints' => [
-                    new Assert\NotBlank(),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
-                ],
-                'mapped' => false,
-            ]);
+            $builder
+                ->add('name_' . $locale, TextType::class, [
+                    'constraints' => [
+                        new Assert\NotBlank(),
+                        new Assert\Length([
+                            'max' => $this->eccubeConfig['eccube_stext_len'],
+                        ]),
+                    ],
+                    'mapped' => false,
+                ]);
         }
+
+        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+            // フォームにCategoryモデルがsetData()される際に
+            // LocaleCategoryのデータも読み取って初期値として登録
+            $form = $event->getForm();
+
+            /** @var Category $Category */
+            $Category = $form->getData();
+            $LocaleCategoeis = $Category->getLocales();
+
+            foreach ($LocaleCategoeis as $LocaleCategory) {
+                $locale = $LocaleCategory->getLocale();
+                $field = 'name_' . $locale;
+                if (!$form[$field]) {
+                    continue;
+                }
+                $form[$field]->setData($LocaleCategory->getName());
+            }
+        });
     }
 
     public function getExtendedType()
