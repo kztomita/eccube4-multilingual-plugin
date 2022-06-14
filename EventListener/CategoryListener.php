@@ -9,7 +9,6 @@ use Eccube\Event\EventArgs;
 use Plugin\MultiLingual\Entity\LocaleCategory;
 use Plugin\MultiLingual\Repository\LocaleCategoryRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
