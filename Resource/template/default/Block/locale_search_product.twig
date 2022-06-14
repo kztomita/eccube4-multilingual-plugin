@@ -19,7 +19,7 @@ file that was distributed with this source code.
         </div>
         <div class="ec-headerSearch__keyword">
             <div class="ec-input">
-                {{ form_widget(form.name, {'id': null, 'attr': {'class': 'search-name', 'placeholder' : 'キーワードを入力' }} ) }}
+                {{ form_widget(form.name, {'id': null, 'attr': {'class': 'search-name', 'placeholder' : 'common.search_keyword'|trans }} ) }}
                 <button class="ec-headerSearch__keywordBtn" type="submit">
                     <div class="ec-icon">
                         <img src="{{ asset('assets/icon/search-dark.svg') }}" alt="">
