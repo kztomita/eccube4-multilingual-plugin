@@ -3,11 +3,13 @@
 namespace Plugin\MultiLingual\EventListener;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Category;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Plugin\MultiLingual\Entity\LocaleCategory;
 use Plugin\MultiLingual\Repository\LocaleCategoryRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -59,7 +61,7 @@ class CategoryListener implements EventSubscriberInterface
         /** @var FormInterface $editForm */
         $editForm = $event->getArgument('editForm');
 
-        /** @var \Eccube\Entity\Category $TargetCategory */
+        /** @var Category $TargetCategory */
         $TargetCategory = $event->getArgument('TargetCategory');
 
         $locales = $this->eccubeConfig['multi_lingual_locales'];
