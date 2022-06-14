@@ -24,6 +24,13 @@ class LocaleCategory extends AbstractEntity
     private $id;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="category_id", type="integer", options={"unsigned":true})
+     */
+    private $category_id;
+
+    /**
      * @var \Eccube\Entity\Category
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Category", inversedBy="Locales")
@@ -53,6 +60,30 @@ class LocaleCategory extends AbstractEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set categoryId.
+     *
+     * @param int $categoryId
+     *
+     * @return LocaleCategory
+     */
+    public function setCategoryId($categoryId)
+    {
+        $this->category_id = $categoryId;
+
+        return $this;
+    }
+
+    /**
+     * Get categoryId.
+     *
+     * @return int
+     */
+    public function getCategoryId()
+    {
+        return $this->category_id;
     }
 
     /**
