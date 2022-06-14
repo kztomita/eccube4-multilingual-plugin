@@ -42,6 +42,12 @@ class CategoryListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
+        // Category新規作成、更新時のイベント処理を登録。
+        //
+        // LocaleCategoryの削除については、Categoryのcascade={"remove"}指定により、
+        // Category削除時に自動で削除される。
+        // CategoryTrait参照。
+
         return [
             EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_COMPLETE => 'onAdminProductCategoryIndexComplete',
         ];

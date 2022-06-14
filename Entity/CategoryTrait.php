@@ -12,7 +12,7 @@ use Plugin\MultiLingual\Entity\LocaleCategory;
 trait CategoryTrait
 {
     /**
-     * @ORM\OneToMany(targetEntity="Plugin\MultiLingual\Entity\LocaleCategory", mappedBy="Category")
+     * @ORM\OneToMany(targetEntity="Plugin\MultiLingual\Entity\LocaleCategory", mappedBy="Category", cascade={"persist","remove"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
      */
