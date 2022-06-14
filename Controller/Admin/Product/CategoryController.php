@@ -24,6 +24,7 @@ class CategoryController extends AbstractController
 
     /**
      * デフォルトのカテゴリ管理のコントローラのテンプレートを差し替える。
+     * Route annotationはroute名も含めて、CategoryControllerと全く同じ。
      *
      * @Route("/%eccube_admin_route%/product/category", name="admin_product_category", methods={"GET", "POST"})
      * @Route("/%eccube_admin_route%/product/category/{parent_id}", requirements={"parent_id" = "\d+"}, name="admin_product_category_show", methods={"GET", "POST"})

@@ -11,7 +11,8 @@ file that was distributed with this source code.
 <div class="ec-headerNaviRole">
     <div class="ec-headerNaviRole__left">
         <div class="ec-headerNaviRole__search">
-            {{ render(path('block_search_product')) }}
+            {# ここはincludeではなくController経由でのhtml取得になる #}
+            {{ render(path('block_search_product_locale', {'_locale': app.request.locale})) }}
         </div>
         <div class="ec-headerRole__navSP">
             {{ include('Block/locale_nav_sp.twig') }}
