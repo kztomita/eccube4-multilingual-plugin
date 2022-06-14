@@ -120,7 +120,7 @@ XXXXX{{ app.request.locale }}
                         {% for Path in Category.path %}
                             <li class="ec-topicpath__divider">|</li>
                             <li class="ec-topicpath__item{% if loop.last %}--active{% endif %}"><a
-                                        href="{{ locale_url('product_list_locale') }}?category_id={{ Path.id }}">{{ Path.name }}</a>
+                                        href="{{ locale_url('product_list_locale') }}?category_id={{ Path.id }}">{{ locale_category_name(Path) }}</a>
                             </li>
                         {% endfor %}
                     {% endif %}
