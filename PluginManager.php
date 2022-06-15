@@ -14,9 +14,11 @@ use Eccube\Entity\Category;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Page;
 use Eccube\Entity\PageLayout;
+use Eccube\Entity\Product;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Plugin\AbstractPluginManager;
 use Plugin\MultiLingual\Entity\LocaleCategory;
+use Plugin\MultiLingual\Entity\LocaleProduct;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -145,6 +147,7 @@ class PluginManager extends AbstractPluginManager
         $this->createRecord($container);
         $this->copyBlockTemplate($container);
         $this->createLocaleCategory($container);
+        $this->createLocaleProduct($container);
     }
 
     /**
@@ -159,7 +162,8 @@ class PluginManager extends AbstractPluginManager
     {
         $this->removeRecord($container);
         // app/templateにコピーしたテンプレートは残しておく
-        $this->truncateLocaleCategory($container);
+        $this->truncateTable($container, 'plg_locale_category');
+        $this->truncateTable($container, 'plg_locale_product');
     }
 
     /**
@@ -171,6 +175,21 @@ class PluginManager extends AbstractPluginManager
         /** @var EntityManager $em */
         $em = $container->get('doctrine.orm.entity_manager');
         return $em;
+    }
+
+    /**
+     * @param ContainerInterface $container
+     * @param string $table
+     * @return void
+     * @throws \Doctrine\DBAL\Exception
+     */
+    private function truncateTable(ContainerInterface  $container, string $table)
+    {
+        $em = $this->getEntityManager($container);
+
+        $connection = $em->getConnection();
+        $platform = $connection->getDatabasePlatform();
+        $connection->executeStatement($platform->getTruncateTableSQL($table));
     }
 
     /**
@@ -355,6 +374,37 @@ class PluginManager extends AbstractPluginManager
     /**
      * @param ContainerInterface $container
      * @return void
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    private function createLocaleProduct(ContainerInterface  $container)
+    {
+        $em = $this->getEntityManager($container);
+
+        /** @var EccubeConfig $eccubeConfig */
+        $eccubeConfig = $container->get(EccubeConfig::class);
+        $locales = $eccubeConfig['multi_lingual_locales'];
+
+        $productRepository = $em->getRepository(Product::class);
+        /** @var Product[] $products */
+        $products = $productRepository->findAll();
+
+        foreach ($products as $product) {
+            foreach ($locales as $locale) {
+                $lp = new LocaleProduct();
+                $lp->setProduct($product);
+                $lp->setName($product->getName());
+                $lp->setDescriptionDetail($product->getDescriptionDetail());
+                $lp->setDescriptionList($product->getDescriptionList());
+                $lp->setLocale($locale);
+                $em->persist($lp);
+                $em->flush();
+            }
+        }
+    }
+    /**
+     * @param ContainerInterface $container
+     * @return void
      * @throws NoResultException
      * @throws NonUniqueResultException
      * @throws ORMException
@@ -434,19 +484,5 @@ class PluginManager extends AbstractPluginManager
             $em->remove($Block);
             $em->flush();
         }
-    }
-
-    /**
-     * @param ContainerInterface $container
-     * @return void
-     * @throws \Doctrine\DBAL\Exception
-     */
-    private function truncateLocaleCategory(ContainerInterface  $container)
-    {
-        $em = $this->getEntityManager($container);
-
-        $connection = $em->getConnection();
-        $platform = $connection->getDatabasePlatform();
-        $connection->executeStatement($platform->getTruncateTableSQL('plg_locale_category'));
     }
 }
