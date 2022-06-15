@@ -64,8 +64,6 @@ class CategoryListener implements EventSubscriberInterface
 
     private function onCreateCategory(EventArgs $event): void
     {
-        error_log("create");
-
         /** @var FormInterface $form */
         $form = $event->getArgument('form');
 
