@@ -58,23 +58,34 @@ class ProductListener implements EventSubscriberInterface
         /** @var Product $Product */
         $Product = $event->getArgument('Product');
 
+        // Productの新規作成と編集は区別されずここにくる。
+
         $locales = $this->eccubeConfig['multi_lingual_locales'];
         foreach ($locales as $locale) {
+            /** @var LocaleProduct $LocaleProduct */
             $LocaleProduct = $this->localeProductRepository->findOneBy([
                 'product_id' => $Product->getId(),
                 'locale' => $locale,
             ]);
-            if ($LocaleProduct) {
-                continue;
+            if (!$LocaleProduct) {
+                // 新規作成時
+                $LocaleProduct = new LocaleProduct;
             }
-            // Product新規作成時はLocaleProductも作成
-            $lp = new LocaleProduct;
-            $lp->setName($Product->getName());
-            $lp->setProductId($Product->getId());
-            $lp->setProduct($Product);
-            // DescriptionList,DescriptionDetailはnullにしておく
-            $lp->setLocale($locale);
-            $this->entityManager->persist($lp);
+
+            $productName = $form->get('name_' . $locale)->getData();
+            $descriptionDetail = $form->get('description_detail_' . $locale)->getData();
+            $descriptionList = $form->get('description_list_' . $locale)->getData();
+            $freeArea = $form->get('free_area_' . $locale)->getData();
+
+            $LocaleProduct->setName($productName);
+            $LocaleProduct->setProductId($Product->getId());
+            $LocaleProduct->setProduct($Product);
+            $LocaleProduct->setDescriptionDetail($descriptionDetail);
+            $LocaleProduct->setDescriptionList($descriptionList);
+            $LocaleProduct->setFreeArea($freeArea);
+            $LocaleProduct->setLocale($locale);
+
+            $this->entityManager->persist($LocaleProduct);
             $this->entityManager->flush();
         }
     }
