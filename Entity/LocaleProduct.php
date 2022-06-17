@@ -62,6 +62,13 @@ class LocaleProduct extends AbstractEntity
     private $description_detail;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="free_area", type="text", nullable=true)
+     */
+    private $free_area;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="locale", type="string", length=10)
@@ -194,6 +201,30 @@ class LocaleProduct extends AbstractEntity
     public function getDescriptionDetail()
     {
         return $this->description_detail;
+    }
+
+    /**
+     * Set freeArea.
+     *
+     * @param string|null $freeArea
+     *
+     * @return LocaleProduct
+     */
+    public function setFreeArea($freeArea = null)
+    {
+        $this->free_area = $freeArea;
+
+        return $this;
+    }
+
+    /**
+     * Get freeArea.
+     *
+     * @return string|null
+     */
+    public function getFreeArea()
+    {
+        return $this->free_area;
     }
 
     /**
