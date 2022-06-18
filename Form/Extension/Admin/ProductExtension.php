@@ -1,6 +1,6 @@
 <?php
 
-namespace Plugin\MultiLingual\Form\Extension;
+namespace Plugin\MultiLingual\Form\Extension\Admin;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Product;
@@ -75,7 +75,7 @@ class ProductExtension extends AbstractTypeExtension
 
             /** @var Product $Product */
             $Product = $form->getData();
-            $LocaleProducts = $Product->getLocales();
+            $LocaleProducts = $Product->getLocales() ?? [];
 
             foreach ($LocaleProducts as $LocaleProduct) {
                 $locale = $LocaleProduct->getLocale();

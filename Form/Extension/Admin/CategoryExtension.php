@@ -1,7 +1,8 @@
 <?php
 
-namespace Plugin\MultiLingual\Form\Extension;
+namespace Plugin\MultiLingual\Form\Extension\Admin;
 
+use Doctrine\Common\Collections\Collection;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Category;
 use Eccube\Form\Type\Admin\CategoryType;
@@ -68,7 +69,7 @@ class CategoryExtension extends AbstractTypeExtension
 
             /** @var Category $Category */
             $Category = $form->getData();
-            $LocaleCategoeis = $Category->getLocales();
+            $LocaleCategoeis = $Category->getLocales() ?? [];
 
             foreach ($LocaleCategoeis as $LocaleCategory) {
                 $locale = $LocaleCategory->getLocale();
