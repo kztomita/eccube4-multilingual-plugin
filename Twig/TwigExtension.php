@@ -6,6 +6,7 @@ use Eccube\Entity\Category;
 use Plugin\MultiLingual\Entity\LocaleCategory;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -34,7 +35,7 @@ class TwigExtension extends AbstractExtension
     {
         return [
             new TwigFunction('locale_url', [$this, 'getLocaleUrl']),
-            new TwigFunction('locale_category_name', [$this, 'getLocaleCategoryName']),
+            new TwigFunction('locale_category_field', [$this, 'getLocaleCategoryField']),
         ];
     }
 
@@ -75,20 +76,23 @@ class TwigExtension extends AbstractExtension
         return $this->generator->generate($name, $parameters, $schemeRelative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
-
     /**
-     * 指定Localeでのカテゴリ名を返す。
+     * $Categoryの指定LocaleのLocaleCategoryを取得し、その指定フィールドの値を返す。
      * $localeを指定しなかった場合は、現在のリクエストのLocaleを使用する。
+     * 該当するLocaleCategoryがない場合は、$Categoryの同名フィールドの値を返す。
      *
      * @param Category $Category
+     * @param string $field
      * @param string|null $locale
      * @return string
      */
-    public function getLocaleCategoryName(Category $Category, ?string $locale = null): string
+    public function getLocaleCategoryField(Category $Category, string $field, ?string $locale = null): string
     {
         if ($locale === null) {
             $locale = $this->getCurrentRequestLocale();
         }
+
+        $method = 'get' . Container::camelize($field);
 
         $localeCategoryRepository = $this->em->getRepository(LocaleCategory::class);
 
@@ -98,10 +102,10 @@ class TwigExtension extends AbstractExtension
             'locale' => $locale,
         ]);
         if (!$LocaleCategory) {
-            return $Category->getName();
+            return $Category->$method();
         }
 
-        return $LocaleCategory->getName();
+        return $LocaleCategory->$method();
     }
 }
 

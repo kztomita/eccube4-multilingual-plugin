@@ -326,7 +326,7 @@ file that was distributed with this source code.
                                 <ul>
                                     <li>
                                         {% for Category in ProductCategory.Category.path %}
-                                            <a href="{{ locale_url('product_list_locale') }}?category_id={{ Category.id }}">{{ locale_category_name(Category) }}</a> {%- if loop.last == false %}
+                                            <a href="{{ locale_url('product_list_locale') }}?category_id={{ Category.id }}">{{ locale_category_field(Category, 'name') }}</a> {%- if loop.last == false %}
                                             <span>＞</span>{% endif -%}
                                         {% endfor %}
                                     </li>
