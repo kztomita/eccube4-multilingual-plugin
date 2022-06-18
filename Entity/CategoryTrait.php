@@ -2,6 +2,7 @@
 
 namespace Plugin\MultiLingual\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Annotation\EntityExtension;
 
@@ -11,6 +12,8 @@ use Eccube\Annotation\EntityExtension;
 trait CategoryTrait
 {
     /**
+     * @var Collection
+     *
      * @ORM\OneToMany(targetEntity="Plugin\MultiLingual\Entity\LocaleCategory", mappedBy="Category", cascade={"persist","remove"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
@@ -18,9 +21,9 @@ trait CategoryTrait
     private $Locales;
 
     /**
-     * @return LocaleCategory[]
+     * @return Collection
      */
-    public function getLocales(): array
+    public function getLocales(): Collection
     {
         return $this->Locales;
     }

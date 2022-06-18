@@ -2,6 +2,7 @@
 
 namespace Plugin\MultiLingual\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Annotation\EntityExtension;
 use Plugin\MultiLingual\Entity\LocaleProduct;
@@ -12,6 +13,8 @@ use Plugin\MultiLingual\Entity\LocaleProduct;
 trait ProductTrait
 {
     /**
+     * @var Collection
+     *
      * @ORM\OneToMany(targetEntity="Plugin\MultiLingual\Entity\LocaleProduct", mappedBy="Product", cascade={"persist","remove"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
@@ -19,9 +22,9 @@ trait ProductTrait
     private $Locales;
 
     /**
-     * @return LocaleProduct[]
+     * @return Collection
      */
-    public function getLocales(): array
+    public function getLocales(): Collection
     {
         return $this->Locales;
     }
