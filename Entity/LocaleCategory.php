@@ -103,7 +103,7 @@ class LocaleCategory extends AbstractEntity
      *
      * @return LocaleCategory
      */
-    public function setCategory(Category $category = null)
+    public function setCategory(Category $category)
     {
         $this->Category = $category;
 

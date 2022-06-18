@@ -124,7 +124,7 @@ class LocaleProduct extends AbstractEntity
      *
      * @return LocaleProduct
      */
-    public function setProduct(Product $product = null)
+    public function setProduct(Product $product)
     {
         $this->Product = $product;
 
