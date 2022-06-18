@@ -14,7 +14,7 @@ file that was distributed with this source code.
             {# ここはincludeではなくController経由でのhtml取得になる。
 	       読み込まれるテンプレートはlocale_search_product.twig。
 	    #}
-            {{ render(path('block_search_product_locale', {'_locale': app.request.locale})) }}
+            {{ render(locale_path('block_search_product_locale')) }}
         </div>
         <div class="ec-headerRole__navSP">
             {{ include('Block/locale_nav_sp.twig') }}

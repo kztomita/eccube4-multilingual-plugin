@@ -36,6 +36,7 @@ class TwigExtension extends AbstractExtension
     {
         return [
             new TwigFunction('locale_url', [$this, 'getLocaleUrl']),
+            new TwigFunction('locale_path', [$this, 'getLocalePath']),
             new TwigFunction('locale_field', [$this, 'getLocaleField']),
         ];
     }
@@ -61,12 +62,12 @@ class TwigExtension extends AbstractExtension
      * Ref. to Symfony\Bridge\Twig\Extension\RoutingExtension
      *
      * @param string $name
-     * @param array  $parameters
+     * @param mixed  $parameters
      * @param bool   $schemeRelative
      *
      * @return string
      */
-    public function getLocaleUrl(string $name, array $parameters = [], bool $schemeRelative = false): string
+    public function getLocaleUrl(string $name, $parameters = [], bool $schemeRelative = false): string
     {
         $locale = $this->getCurrentRequestLocale();
 
@@ -75,6 +76,30 @@ class TwigExtension extends AbstractExtension
         }
 
         return $this->generator->generate($name, $parameters, $schemeRelative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL);
+    }
+
+    /**
+     * 現在のlocaleのpathを生成する。
+     * {{ locale_path('product_list_locale') }}
+     * は
+     * {{ path('product_list_locale', {'_locale': app.request.locale}) }}
+     * とするのと同じ。
+     *
+     * @param string $name
+     * @param mixed  $parameters
+     * @param bool   $relative
+     *
+     * @return string
+     */
+    public function getLocalePath(string $name, $parameters = [], bool $relative = false): string
+    {
+        $locale = $this->getCurrentRequestLocale();
+
+        if (!isset($parameters['_locale'])) {
+            $parameters['_locale'] = $locale;
+        }
+
+        return $this->generator->generate($name, $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
     }
 
     /**
