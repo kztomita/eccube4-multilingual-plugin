@@ -21,7 +21,7 @@ trait ProductTrait
     /**
      * @return LocaleProduct[]
      */
-    public function getLocales()
+    public function getLocales(): array
     {
         return $this->Locales;
     }
@@ -32,7 +32,7 @@ trait ProductTrait
      *
      * @return string
      */
-    public function getLocaleClass()
+    public function getLocaleClass(): string
     {
         return LocaleProduct::class;
     }

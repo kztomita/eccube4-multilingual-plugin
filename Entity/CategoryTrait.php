@@ -20,7 +20,7 @@ trait CategoryTrait
     /**
      * @return LocaleCategory[]
      */
-    public function getLocales()
+    public function getLocales(): array
     {
         return $this->Locales;
     }
@@ -31,7 +31,7 @@ trait CategoryTrait
      *
      * @return string
      */
-    public function getLocaleClass()
+    public function getLocaleClass(): string
     {
         return LocaleCategory::class;
     }
