@@ -266,7 +266,7 @@ file that was distributed with this source code.
                 <div class="ec-productRole__profile">
                     {# 商品名 #}
                     <div class="ec-productRole__title">
-                        <h2 class="ec-headingTitle">{{ Product.name }}</h2>
+                        <h2 class="ec-headingTitle">{{ locale_field(Product, 'name') }}</h2>
                     </div>
                     {# タグ #}
                     <ul class="ec-productRole__tags">
@@ -326,7 +326,7 @@ file that was distributed with this source code.
                                 <ul>
                                     <li>
                                         {% for Category in ProductCategory.Category.path %}
-                                            <a href="{{ locale_url('product_list_locale') }}?category_id={{ Category.id }}">{{ locale_category_field(Category, 'name') }}</a> {%- if loop.last == false %}
+                                            <a href="{{ locale_url('product_list_locale') }}?category_id={{ Category.id }}">{{ locale_field(Category, 'name') }}</a> {%- if loop.last == false %}
                                             <span>＞</span>{% endif -%}
                                         {% endfor %}
                                     </li>
@@ -398,14 +398,14 @@ file that was distributed with this source code.
                             </div>
                         </form>
                     {% endif %}
-                    <div class="ec-productRole__description">{{ Product.description_detail|raw|nl2br }}
+                    <div class="ec-productRole__description">{{ locale_field(Product, 'description_detail')|raw|nl2br }}
                     </div>
                 </div>
             </div>
         </div>
         {% if Product.freearea %}
              <div class="ec-productRole__description">
-                 {{ include(template_from_string(Product.freearea)) }}
+                 {{ include(template_from_string(locale_field(Product, 'freearea'))) }}
             </div>
         {% endif %}
     </div>

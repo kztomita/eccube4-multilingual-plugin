@@ -83,7 +83,17 @@ class LocaleProduct extends AbstractEntity
         return $this->id;
     }
 
-   /**
+    /**
+     * 親EntityのIDを格納するカラムの名前。
+     *
+     * @return string
+     */
+    public static function getParentColumn()
+    {
+        return 'product_id';
+    }
+
+    /**
      * Set productId.
      *
      * @param int $productId
@@ -232,7 +242,7 @@ class LocaleProduct extends AbstractEntity
      *
      * @param string $locale
      *
-     * @return LocaleCategory
+     * @return LocaleProduct
      */
     public function setLocale($locale)
     {
@@ -250,5 +260,4 @@ class LocaleProduct extends AbstractEntity
     {
         return $this->locale;
     }
-
 }

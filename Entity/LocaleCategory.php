@@ -63,6 +63,16 @@ class LocaleCategory extends AbstractEntity
     }
 
     /**
+     * 親EntityのIDを格納するカラムの名前。
+     *
+     * @return string
+     */
+    public static function getParentColumn()
+    {
+        return 'category_id';
+    }
+
+    /**
      * Set categoryId.
      *
      * @param int $categoryId

@@ -120,7 +120,7 @@ XXXXX{{ app.request.locale }}
                         {% for Path in Category.path %}
                             <li class="ec-topicpath__divider">|</li>
                             <li class="ec-topicpath__item{% if loop.last %}--active{% endif %}"><a
-                                        href="{{ locale_url('product_list_locale') }}?category_id={{ Path.id }}">{{ locale_category_field(Path, 'name') }}</a>
+                                        href="{{ locale_url('product_list_locale') }}?category_id={{ Path.id }}">{{ locale_field(Path, 'name') }}</a>
                             </li>
                         {% endfor %}
                     {% endif %}
@@ -157,9 +157,9 @@ XXXXX{{ app.request.locale }}
                                 <p class="ec-shelfGrid__item-image">
                                     <img src="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}" alt="{{ Product.name }}" loading="lazy">
                                 </p>
-                                <p>{{ Product.name }}</p>
+                                <p>{{ locale_field(Product, 'name') }}</p>
                                 {% if Product.description_list %}
-                                    <p>{{ Product.description_list|raw|nl2br }}</p>
+                                    <p>{{ locale_field(Product, 'description_list')|raw|nl2br }}</p>
                                 {% endif %}
                                 <p class="price02-default">
                                     {% if Product.hasProductClass %}

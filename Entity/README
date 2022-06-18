@@ -1,0 +1,18 @@
+Locale情報を子に持つ親クラスの拡張(XXXXTrait)は以下の要求を満たすこと
+
+- getLocales()メソッドを持つ
+- getLocaleClass()メソッドを持つ
+
+これらは本来interfaceで定義して、それを実装するようにしたいが、
+Entityの拡張はtraitで行う必要があり、traitに対してinterfaceの実装はできない。
+このため、このドキュメントで要求を明確にしておく。
+
+
+各Locale用の情報を格納するLocaleXXXXクラスは以下の要求を満たすこと
+
+- localeカラムを持つ
+- 親EntityのIDを格納するカラムを持つ('product_id', 'category_id', etc)
+- getParentColumn()メソッドを持つ
+- 情報を格納するフィールド名は親Entityに合わせる
+	twig拡張関数で、該当Localeが見つからなかった時に親Entityから
+	情報を取得するのに使う。

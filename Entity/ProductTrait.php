@@ -25,4 +25,15 @@ trait ProductTrait
     {
         return $this->Locales;
     }
+
+    /**
+     * Localeクラスのクラス名を返す。
+     * getLocales()を実装する場合は、本メソッドも実装すること。
+     *
+     * @return string
+     */
+    public function getLocaleClass()
+    {
+        return LocaleProduct::class;
+    }
 }

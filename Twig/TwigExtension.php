@@ -2,6 +2,7 @@
 
 namespace Plugin\MultiLingual\Twig;
 
+use Eccube\Entity\AbstractEntity;
 use Eccube\Entity\Category;
 use Plugin\MultiLingual\Entity\LocaleCategory;
 use Twig\Extension\AbstractExtension;
@@ -35,7 +36,7 @@ class TwigExtension extends AbstractExtension
     {
         return [
             new TwigFunction('locale_url', [$this, 'getLocaleUrl']),
-            new TwigFunction('locale_category_field', [$this, 'getLocaleCategoryField']),
+            new TwigFunction('locale_field', [$this, 'getLocaleField']),
         ];
     }
 
@@ -77,35 +78,41 @@ class TwigExtension extends AbstractExtension
     }
 
     /**
-     * $Categoryの指定LocaleのLocaleCategoryを取得し、その指定フィールドの値を返す。
+     * $Entityの指定LocaleのLocaleオブジェクトを取得し、指定フィールドの値を返す。
      * $localeを指定しなかった場合は、現在のリクエストのLocaleを使用する。
-     * 該当するLocaleCategoryがない場合は、$Categoryの同名フィールドの値を返す。
+     * 該当するLocaleオブジェクトがない場合は、$Entityの同名フィールドの値を返す。
      *
-     * @param Category $Category
+     * @param AbstractEntity $Entity
      * @param string $field
      * @param string|null $locale
      * @return string
      */
-    public function getLocaleCategoryField(Category $Category, string $field, ?string $locale = null): string
+    public function getLocaleField(AbstractEntity $Entity, string $field, ?string $locale = null): string
     {
+        if (!method_exists($Entity, 'getLocales')) {
+            throw new \InvalidArgumentException('$Entity has no getLocales() method.');
+        }
+
         if ($locale === null) {
             $locale = $this->getCurrentRequestLocale();
         }
 
         $method = 'get' . Container::camelize($field);
 
-        $localeCategoryRepository = $this->em->getRepository(LocaleCategory::class);
+        $localeClass = $Entity->getLocaleClass();
+        $localeRepository = $this->em->getRepository($localeClass);
 
-        /** @var LocaleCategory $LocaleCategory */
-        $LocaleCategory = $localeCategoryRepository->findOneBy([
-            'category_id' => $Category->getId(),
+        $criteria = [
             'locale' => $locale,
-        ]);
-        if (!$LocaleCategory) {
-            return $Category->$method();
+        ];
+        $criteria[$localeClass::getParentColumn()] = $Entity->getId();
+
+        $LocaleEntity = $localeRepository->findOneBy($criteria);
+        if (!$LocaleEntity) {
+            return $Entity->$method();
         }
 
-        return $LocaleCategory->$method();
+        return $LocaleEntity->$method();
     }
 }
 
