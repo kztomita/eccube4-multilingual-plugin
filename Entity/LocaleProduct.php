@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpMultipleClassDeclarationsInspection */
 
 namespace Plugin\MultiLingual\Entity;
 
@@ -31,7 +31,7 @@ class LocaleProduct extends AbstractEntity
     private $product_id;
 
     /**
-     * @var \Eccube\Entity\Product
+     * @var Product
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="Locales")
      * @ORM\JoinColumns({
@@ -78,7 +78,7 @@ class LocaleProduct extends AbstractEntity
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -88,7 +88,7 @@ class LocaleProduct extends AbstractEntity
      *
      * @return string
      */
-    public static function getParentColumn()
+    public static function getParentColumn(): string
     {
         return 'product_id';
     }
@@ -100,7 +100,7 @@ class LocaleProduct extends AbstractEntity
      *
      * @return LocaleProduct
      */
-    public function setProductId($productId)
+    public function setProductId(int $productId): LocaleProduct
     {
         $this->product_id = $productId;
 
@@ -112,7 +112,7 @@ class LocaleProduct extends AbstractEntity
      *
      * @return int
      */
-    public function getProductId()
+    public function getProductId(): int
     {
         return $this->product_id;
     }
@@ -120,11 +120,11 @@ class LocaleProduct extends AbstractEntity
     /**
      * Set product.
      *
-     * @param \Eccube\Entity\Product $product
+     * @param Product $product
      *
      * @return LocaleProduct
      */
-    public function setProduct(Product $product)
+    public function setProduct(Product $product): LocaleProduct
     {
         $this->Product = $product;
 
@@ -134,9 +134,9 @@ class LocaleProduct extends AbstractEntity
     /**
      * Get product.
      *
-     * @return \Eccube\Entity\Product
+     * @return Product
      */
-    public function getProduct()
+    public function getProduct(): Product
     {
         return $this->Product;
     }
@@ -148,7 +148,7 @@ class LocaleProduct extends AbstractEntity
      *
      * @return LocaleProduct
      */
-    public function setName($name)
+    public function setName(string $name): LocaleProduct
     {
         $this->name = $name;
 
@@ -160,7 +160,7 @@ class LocaleProduct extends AbstractEntity
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -172,7 +172,7 @@ class LocaleProduct extends AbstractEntity
      *
      * @return LocaleProduct
      */
-    public function setDescriptionList($text)
+    public function setDescriptionList(?string $text): LocaleProduct
     {
         $this->description_list = $text;
 
@@ -184,7 +184,7 @@ class LocaleProduct extends AbstractEntity
      *
      * @return string|null
      */
-    public function getDescriptionList()
+    public function getDescriptionList(): ?string
     {
         return $this->description_list;
     }
@@ -196,7 +196,7 @@ class LocaleProduct extends AbstractEntity
      *
      * @return LocaleProduct
      */
-    public function setDescriptionDetail($text)
+    public function setDescriptionDetail(?string $text): LocaleProduct
     {
         $this->description_detail = $text;
 
@@ -208,7 +208,7 @@ class LocaleProduct extends AbstractEntity
      *
      * @return string|null
      */
-    public function getDescriptionDetail()
+    public function getDescriptionDetail(): ?string
     {
         return $this->description_detail;
     }
@@ -220,7 +220,7 @@ class LocaleProduct extends AbstractEntity
      *
      * @return LocaleProduct
      */
-    public function setFreeArea($freeArea = null)
+    public function setFreeArea(?string $freeArea = null): LocaleProduct
     {
         $this->free_area = $freeArea;
 
@@ -232,7 +232,7 @@ class LocaleProduct extends AbstractEntity
      *
      * @return string|null
      */
-    public function getFreeArea()
+    public function getFreeArea(): ?string
     {
         return $this->free_area;
     }
@@ -244,7 +244,7 @@ class LocaleProduct extends AbstractEntity
      *
      * @return LocaleProduct
      */
-    public function setLocale($locale)
+    public function setLocale(string $locale): LocaleProduct
     {
         $this->locale = $locale;
 
@@ -256,7 +256,7 @@ class LocaleProduct extends AbstractEntity
      *
      * @return string
      */
-    public function getLocale()
+    public function getLocale(): string
     {
         return $this->locale;
     }

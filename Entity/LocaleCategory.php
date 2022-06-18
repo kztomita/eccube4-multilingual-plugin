@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpMultipleClassDeclarationsInspection */
 
 namespace Plugin\MultiLingual\Entity;
 
@@ -31,7 +31,7 @@ class LocaleCategory extends AbstractEntity
     private $category_id;
 
     /**
-     * @var \Eccube\Entity\Category
+     * @var Category
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Category", inversedBy="Locales")
      * @ORM\JoinColumns({
@@ -57,7 +57,7 @@ class LocaleCategory extends AbstractEntity
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -67,7 +67,7 @@ class LocaleCategory extends AbstractEntity
      *
      * @return string
      */
-    public static function getParentColumn()
+    public static function getParentColumn(): string
     {
         return 'category_id';
     }
@@ -79,7 +79,7 @@ class LocaleCategory extends AbstractEntity
      *
      * @return LocaleCategory
      */
-    public function setCategoryId($categoryId)
+    public function setCategoryId(int $categoryId): LocaleCategory
     {
         $this->category_id = $categoryId;
 
@@ -91,7 +91,7 @@ class LocaleCategory extends AbstractEntity
      *
      * @return int
      */
-    public function getCategoryId()
+    public function getCategoryId(): int
     {
         return $this->category_id;
     }
@@ -99,11 +99,11 @@ class LocaleCategory extends AbstractEntity
     /**
      * Set category.
      *
-     * @param \Eccube\Entity\Category $category
+     * @param Category $category
      *
      * @return LocaleCategory
      */
-    public function setCategory(Category $category)
+    public function setCategory(Category $category): LocaleCategory
     {
         $this->Category = $category;
 
@@ -113,9 +113,9 @@ class LocaleCategory extends AbstractEntity
     /**
      * Get category.
      *
-     * @return \Eccube\Entity\Category
+     * @return Category
      */
-    public function getCategory()
+    public function getCategory(): Category
     {
         return $this->Category;
     }
@@ -127,7 +127,7 @@ class LocaleCategory extends AbstractEntity
      *
      * @return LocaleCategory
      */
-    public function setName($name)
+    public function setName(string $name): LocaleCategory
     {
         $this->name = $name;
 
@@ -139,7 +139,7 @@ class LocaleCategory extends AbstractEntity
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -151,7 +151,7 @@ class LocaleCategory extends AbstractEntity
      *
      * @return LocaleCategory
      */
-    public function setLocale($locale)
+    public function setLocale(string $locale): LocaleCategory
     {
         $this->locale = $locale;
 
@@ -163,7 +163,7 @@ class LocaleCategory extends AbstractEntity
      *
      * @return string
      */
-    public function getLocale()
+    public function getLocale(): string
     {
         return $this->locale;
     }
