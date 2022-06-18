@@ -120,7 +120,7 @@ class LocaleProduct extends AbstractEntity
     /**
      * Set product.
      *
-     * @param \Eccube\Entity\Product|null $product
+     * @param \Eccube\Entity\Product $product
      *
      * @return LocaleProduct
      */
@@ -134,7 +134,7 @@ class LocaleProduct extends AbstractEntity
     /**
      * Get product.
      *
-     * @return \Eccube\Entity\Product|null
+     * @return \Eccube\Entity\Product
      */
     public function getProduct()
     {

@@ -99,7 +99,7 @@ class LocaleCategory extends AbstractEntity
     /**
      * Set category.
      *
-     * @param \Eccube\Entity\Category|null $category
+     * @param \Eccube\Entity\Category $category
      *
      * @return LocaleCategory
      */
@@ -113,7 +113,7 @@ class LocaleCategory extends AbstractEntity
     /**
      * Get category.
      *
-     * @return \Eccube\Entity\Category|null
+     * @return \Eccube\Entity\Category
      */
     public function getCategory()
     {
