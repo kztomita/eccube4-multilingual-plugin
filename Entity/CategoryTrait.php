@@ -12,7 +12,7 @@ use Eccube\Annotation\EntityExtension;
 trait CategoryTrait
 {
     /**
-     * @var Collection
+     * @var ?Collection
      *
      * @ORM\OneToMany(targetEntity="Plugin\MultiLingual\Entity\LocaleCategory", mappedBy="Category", cascade={"persist","remove"})
      * @ORM\OrderBy({"id" = "ASC"})
@@ -21,9 +21,9 @@ trait CategoryTrait
     private $Locales;
 
     /**
-     * @return Collection
+     * @return ?Collection
      */
-    public function getLocales(): Collection
+    public function getLocales(): ?Collection
     {
         return $this->Locales;
     }
