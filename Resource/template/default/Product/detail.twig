@@ -198,7 +198,7 @@ file that was distributed with this source code.
                         $('.ec-headerRole__cart').html(html);
                     });
                 }).fail(function(data) {
-                    alert('{{ 'カートへの追加に失敗しました。'|trans }}');
+                    alert('{{ 'front.product.add_cart_error'|trans }}');
                 }).always(function(data) {
                     // Buttonを有効にする
                     $('.add-cart').prop('disabled', false);
@@ -218,7 +218,7 @@ file that was distributed with this source code.
     {
         "@context": "https://schema.org/",
         "@type": "Product",
-        "name": "{{ Product.name }}",
+        "name": "{{ locale_field(Product, 'name') }}",
         "image": [
             {% for img in Product.ProductImage %}
                 "{{ app.request.schemeAndHttpHost }}{{ asset(img, 'save_image') }}"{% if not loop.last %},{% endif %}
@@ -250,9 +250,9 @@ file that was distributed with this source code.
 
                     <div class="item_visual">
                         {% for ProductImage in Product.ProductImage %}
-                            <div class="slide-item"><img src="{{ asset(ProductImage, 'save_image') }}" alt="{{ loop.first ? Product.name : '' }}"></div>
+                            <div class="slide-item"><img src="{{ asset(ProductImage, 'save_image') }}" alt="{{ loop.first ? locale_field(Product, 'name') : '' }}"></div>
                         {% else %}
-                            <div class="slide-item"><img src="{{ asset(''|no_image_product, 'save_image') }}" alt="{{ loop.first ? Product.name : '' }}" /></div>
+                            <div class="slide-item"><img src="{{ asset(''|no_image_product, 'save_image') }}" alt="{{ loop.first ? locale_field(Product, 'name') : '' }}" /></div>
                         {% endfor %}
                     </div>
                     <div class="item_nav">

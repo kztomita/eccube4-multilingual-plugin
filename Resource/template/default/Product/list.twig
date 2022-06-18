@@ -79,7 +79,7 @@ file that was distributed with this source code.
                         $('.ec-headerRole__cart').html(html);
                     });
                 }).fail(function(data) {
-                    alert('{{ 'カートへの追加に失敗しました。'|trans }}');
+                    alert('{{ 'front.product.add_cart_error'|trans }}');
                 }).always(function(data) {
                     // Buttonを有効にする
                     $('.add-cart').prop('disabled', false);
@@ -126,7 +126,7 @@ XXXXX{{ app.request.locale }}
                     {% endif %}
                     {% if search_form.vars.value and search_form.vars.value.name %}
                         <li class="ec-topicpath__divider">|</li>
-                        <li class="ec-topicpath__item">{{ '「%name%」の検索結果'|trans({ '%name%': search_form.vars.value.name }) }}</li>
+                        <li class="ec-topicpath__item">{{ 'front.product.search_result__keyword'|trans({ '%name%': search_form.vars.value.name }) }}</li>
                     {% endif %}
                 </ol>
             </div>
@@ -155,7 +155,7 @@ XXXXX{{ app.request.locale }}
                         <li class="ec-shelfGrid__item">
                             <a href="{{ locale_url('product_detail_locale', {'id': Product.id}) }}">
                                 <p class="ec-shelfGrid__item-image">
-                                    <img src="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}" alt="{{ Product.name }}" loading="lazy">
+                                    <img src="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}" alt="{{ locale_field(Product, 'name') }}" loading="lazy">
                                 </p>
                                 <p>{{ locale_field(Product, 'name') }}</p>
                                 {% if Product.description_list %}
