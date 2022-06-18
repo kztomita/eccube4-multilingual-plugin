@@ -11,7 +11,7 @@ file that was distributed with this source code.
 {% form_theme form 'Form/form_div_layout.twig' %}
 
 <div class="ec-headerSearch">
-    <form method="get" class="searchform" action="{{ path('product_list') }}">
+    <form method="get" class="searchform" action="{{ locale_path('product_list_locale') }}">
         <div class="ec-headerSearch__category">
             <div class="ec-select ec-select_search">
                 {{ form_widget(form.category_id, {'id': null, 'attr': {'class': 'category_id'}}) }}
