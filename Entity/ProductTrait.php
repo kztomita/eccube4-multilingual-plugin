@@ -13,7 +13,7 @@ use Plugin\MultiLingual\Entity\LocaleProduct;
 trait ProductTrait
 {
     /**
-     * @var ?Collection
+     * @var Collection
      *
      * @ORM\OneToMany(targetEntity="Plugin\MultiLingual\Entity\LocaleProduct", mappedBy="Product", cascade={"persist","remove"})
      * @ORM\OrderBy({"id" = "ASC"})
@@ -22,9 +22,9 @@ trait ProductTrait
     private $Locales;
 
     /**
-     * @return ?Collection
+     * @return Collection
      */
-    public function getLocales(): ?Collection
+    public function getLocales(): Collection
     {
         return $this->Locales;
     }

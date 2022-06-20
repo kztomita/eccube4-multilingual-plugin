@@ -69,7 +69,7 @@ class CategoryExtension extends AbstractTypeExtension
 
             /** @var Category $Category */
             $Category = $form->getData();
-            $LocaleCategoeis = $Category->getLocales() ?? [];
+            $LocaleCategoeis = $Category->getLocales();
 
             foreach ($LocaleCategoeis as $LocaleCategory) {
                 $locale = $LocaleCategory->getLocale();

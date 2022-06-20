@@ -75,7 +75,7 @@ class ProductExtension extends AbstractTypeExtension
 
             /** @var Product $Product */
             $Product = $form->getData();
-            $LocaleProducts = $Product->getLocales() ?? [];
+            $LocaleProducts = $Product->getLocales();
 
             foreach ($LocaleProducts as $LocaleProduct) {
                 $locale = $LocaleProduct->getLocale();
