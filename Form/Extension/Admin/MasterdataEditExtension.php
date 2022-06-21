@@ -6,13 +6,10 @@ use Doctrine\Common\Collections\Collection;
 use Eccube\Common\EccubeConfig;
 use Eccube\Form\Type\Admin\MasterdataEditType;
 use Symfony\Component\Form\AbstractTypeExtension;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
