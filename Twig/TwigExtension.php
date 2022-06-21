@@ -124,7 +124,7 @@ class TwigExtension extends AbstractExtension
 
         $method = 'get' . Container::camelize($field);
 
-        $localeClass = $Entity->getLocaleClass();
+        $localeClass = $Entity::getLocaleClass();
         $localeRepository = $this->em->getRepository($localeClass);
 
         $criteria = [

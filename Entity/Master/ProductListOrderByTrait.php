@@ -1,21 +1,21 @@
 <?php
 
-namespace Plugin\MultiLingual\Entity;
+namespace Plugin\MultiLingual\Entity\Master;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Annotation\EntityExtension;
-use Plugin\MultiLingual\Entity\LocaleProduct;
+use Doctrine\Common\Collections\Collection;
+use Plugin\MultiLingual\Entity\Master\LocaleProductListOrderBy;
 
 /**
- * @EntityExtension("Eccube\Entity\Product")
+ * @EntityExtension("Eccube\Entity\Master\ProductListOrderBy")
  */
-trait ProductTrait
+trait ProductListOrderByTrait
 {
     /**
      * @var Collection
      *
-     * @ORM\OneToMany(targetEntity="Plugin\MultiLingual\Entity\LocaleProduct", mappedBy="Product", cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="Plugin\MultiLingual\Entity\Master\LocaleProductListOrderBy", mappedBy="Parent", cascade={"persist","remove"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
      */
@@ -37,6 +37,6 @@ trait ProductTrait
      */
     public static function getLocaleClass(): string
     {
-        return LocaleProduct::class;
+        return LocaleProductListOrderBy::class;
     }
 }

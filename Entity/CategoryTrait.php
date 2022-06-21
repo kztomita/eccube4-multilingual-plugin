@@ -34,7 +34,7 @@ trait CategoryTrait
      *
      * @return string
      */
-    public function getLocaleClass(): string
+    public static function getLocaleClass(): string
     {
         return LocaleCategory::class;
     }

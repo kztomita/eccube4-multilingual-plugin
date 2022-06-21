@@ -16,3 +16,13 @@ Entityの拡張はtraitで行う必要があり、traitに対してinterfaceの�
 - 情報を格納するフィールド名は親Entityに合わせる
 	twig拡張関数で、該当Localeが見つからなかった時に親Entityから
 	情報を取得するのに使う。
+TODO
+getLocale(),getParentColumn()は必ず存在するので
+AbstractMasterEntityのような基底クラスを作る？
+
+
+Masterテーブル(mtb_)のLocaleクラスは上記LocaleXXXXクラスの要求の他に
+以下の要求も満たすこと
+
+- カラムはid,parent_id,name,localeに固定
+  親EntityのIDを格納するカラムはparent_id

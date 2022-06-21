@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpMultipleClassDeclarationsInspection */
 
 namespace Plugin\MultiLingual;
 
@@ -12,6 +12,8 @@ use Eccube\Entity\Block;
 use Eccube\Entity\BlockPosition;
 use Eccube\Entity\Category;
 use Eccube\Entity\Layout;
+use Eccube\Entity\Master\AbstractMasterEntity;
+use Eccube\Entity\Master\ProductListOrderBy;
 use Eccube\Entity\Page;
 use Eccube\Entity\PageLayout;
 use Eccube\Entity\Product;
@@ -19,6 +21,7 @@ use Eccube\Entity\Master\DeviceType;
 use Eccube\Plugin\AbstractPluginManager;
 use Plugin\MultiLingual\Entity\LocaleCategory;
 use Plugin\MultiLingual\Entity\LocaleProduct;
+use Plugin\MultiLingual\Entity\Master\LocaleProductListOrderBy;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -144,10 +147,11 @@ class PluginManager extends AbstractPluginManager
 
     public function enable(array $meta, ContainerInterface $container)
     {
-        $this->createRecord($container);
+        $this->createPageRecord($container);
         $this->copyBlockTemplate($container);
         $this->createLocaleCategory($container);
         $this->createLocaleProduct($container);
+        $this->createMasterLocaleRecord($container, ProductListOrderBy::class, LocaleProductListOrderBy::class);
     }
 
     /**
@@ -160,10 +164,11 @@ class PluginManager extends AbstractPluginManager
      */
     public function disable(array $meta, ContainerInterface $container)
     {
-        $this->removeRecord($container);
+        $this->removePageRecord($container);
         // app/templateにコピーしたテンプレートは残しておく
         $this->truncateTable($container, 'plg_locale_category');
         $this->truncateTable($container, 'plg_locale_product');
+        $this->truncateTable($container, 'plg_locale_product_list_order_by');
     }
 
     /**
@@ -193,7 +198,7 @@ class PluginManager extends AbstractPluginManager
     }
 
     /**
-     * 必要なレコードを作成する。
+     * ページ関連のレコードを作成する。
      * - Locale用Page,Layout,Blockの作成。
      * - 新規作成したPageをLayoutに登録する。
      * - 新規作成したLayoutにBlockを登録する。
@@ -203,7 +208,7 @@ class PluginManager extends AbstractPluginManager
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    private function createRecord(ContainerInterface $container)
+    private function createPageRecord(ContainerInterface $container)
     {
         $em = $this->getEntityManager($container);
 
@@ -372,6 +377,8 @@ class PluginManager extends AbstractPluginManager
     }
 
     /**
+     * plg_locale_productの設定
+     *
      * @param ContainerInterface $container
      * @return void
      * @throws ORMException
@@ -402,6 +409,51 @@ class PluginManager extends AbstractPluginManager
             }
         }
     }
+
+    /**
+     * 指定MasterテーブルのLocaleデータを設定する。
+     *
+     * Locale Entityのクラス名は$masterClassのgetLocaleClass()で取得できそうだが、
+     * Pluginのenableがまだなので、Traitで拡張するgetLocaleClass()はまだ使えない。
+     * このため$localeClass引数で指定する
+     *
+     * @param ContainerInterface $container
+     * @param string $masterClass   MasterテーブルのEntityクラス名(AbstractMasterentityを継承している)
+     * @param string $localeClass   設定対象のLocale Entityのクラス名
+     * @return void
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    private function createMasterLocaleRecord(
+        ContainerInterface $container,
+        string $masterClass,
+        string $localeClass
+    )
+    {
+        $em = $this->getEntityManager($container);
+
+        /** @var EccubeConfig $eccubeConfig */
+        $eccubeConfig = $container->get(EccubeConfig::class);
+        $locales = $eccubeConfig['multi_lingual_locales'];
+
+        $repository = $em->getRepository($masterClass);
+
+        /** @var AbstractMasterentity[] $entities */
+        $entities = $repository->findAll();
+
+        foreach ($entities as $entity) {
+            foreach ($locales as $locale) {
+                $LocaleEntity = new $localeClass;
+                $LocaleEntity->setParent($entity);
+                // TODO 翻訳データがあれば登録
+                $LocaleEntity->setName($entity->getName());
+                $LocaleEntity->setLocale($locale);
+                $em->persist($LocaleEntity);
+                $em->flush();
+            }
+        }
+    }
+
     /**
      * @param ContainerInterface $container
      * @return void
@@ -410,7 +462,7 @@ class PluginManager extends AbstractPluginManager
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    private function removeRecord(ContainerInterface $container)
+    private function removePageRecord(ContainerInterface $container)
     {
         $em = $this->getEntityManager($container);
 
