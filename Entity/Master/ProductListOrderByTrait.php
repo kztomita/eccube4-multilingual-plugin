@@ -2,9 +2,11 @@
 
 namespace Plugin\MultiLingual\Entity\Master;
 
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Annotation\EntityExtension;
 use Doctrine\Common\Collections\Collection;
+use Plugin\MultiLingual\Common\Locale;
 use Plugin\MultiLingual\Entity\Master\LocaleProductListOrderBy;
 
 /**
@@ -38,5 +40,18 @@ trait ProductListOrderByTrait
     public static function getLocaleClass(): string
     {
         return LocaleProductListOrderBy::class;
+    }
+
+    public function getLocaleName(): string
+    {
+        $criteria = Criteria::create();
+        $criteria->where(Criteria::expr()->eq('locale', Locale::getCurrentRequestLocale()));
+
+        $locales = $this->getLocales()->matching($criteria);
+        if ($locales->count() == 0) {
+            return $this->getName();
+        } else {
+            return $locales[0]->getName();
+        }
     }
 }

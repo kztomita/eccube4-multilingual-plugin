@@ -4,6 +4,7 @@ namespace Plugin\MultiLingual\Twig;
 
 use Eccube\Entity\AbstractEntity;
 use Eccube\Entity\Category;
+use Plugin\MultiLingual\Common\Locale;
 use Plugin\MultiLingual\Entity\LocaleCategory;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -41,17 +42,6 @@ class TwigExtension extends AbstractExtension
         ];
     }
 
-    private function getCurrentRequestLocale(): string
-    {
-        if(isset($GLOBALS['request']) && $GLOBALS['request']) {
-            $locale = $GLOBALS['request']->getLocale();
-        } else {
-            $locale = env('ECCUBE_LOCALE', 'ja_JP');
-        }
-
-        return $locale;
-    }
-
     /**
      * 現在のlocaleのURLを生成する。
      * {{ locale_url('product_list_locale') }}
@@ -69,7 +59,7 @@ class TwigExtension extends AbstractExtension
      */
     public function getLocaleUrl(string $name, $parameters = [], bool $schemeRelative = false): string
     {
-        $locale = $this->getCurrentRequestLocale();
+        $locale = Locale::getCurrentRequestLocale();
 
         if (!isset($parameters['_locale'])) {
             $parameters['_locale'] = $locale;
@@ -93,7 +83,7 @@ class TwigExtension extends AbstractExtension
      */
     public function getLocalePath(string $name, $parameters = [], bool $relative = false): string
     {
-        $locale = $this->getCurrentRequestLocale();
+        $locale = Locale::getCurrentRequestLocale();
 
         if (!isset($parameters['_locale'])) {
             $parameters['_locale'] = $locale;
@@ -119,7 +109,7 @@ class TwigExtension extends AbstractExtension
         }
 
         if ($locale === null) {
-            $locale = $this->getCurrentRequestLocale();
+            $locale = Locale::getCurrentRequestLocale();
         }
 
         $method = 'get' . Container::camelize($field);
