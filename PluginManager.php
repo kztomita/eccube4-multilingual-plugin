@@ -7,6 +7,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Block;
 use Eccube\Entity\BlockPosition;
@@ -166,6 +167,8 @@ class PluginManager extends AbstractPluginManager
     {
         $this->removePageRecord($container);
         // app/templateにコピーしたテンプレートは残しておく
+        // TODO データはクリアせずに残す。
+        // TODO enable時はレコードがあれば再利用する。
         $this->truncateTable($container, 'plg_locale_category');
         $this->truncateTable($container, 'plg_locale_product');
         $this->truncateTable($container, 'plg_locale_product_list_order_by');
@@ -194,7 +197,13 @@ class PluginManager extends AbstractPluginManager
 
         $connection = $em->getConnection();
         $platform = $connection->getDatabasePlatform();
-        $connection->executeStatement($platform->getTruncateTableSQL($table));
+        if (strpos(Constant::VERSION, '4.0.') === 0) {
+            // EC-CUBE4.0(Symfony3)
+            $connection->executeUpdate($platform->getTruncateTableSQL($table));
+        } else {
+            // EC-CUBE4.1(Symofny4)
+            $connection->executeStatement($platform->getTruncateTableSQL($table));
+        }
     }
 
     /**
