@@ -148,6 +148,7 @@ class PluginManager extends AbstractPluginManager
 
     public function enable(array $meta, ContainerInterface $container)
     {
+        $this->createTemplateSymbolicLink();
         $this->createPageRecord($container);
         $this->copyBlockTemplate($container);
         $this->createLocaleCategory($container);
@@ -172,6 +173,10 @@ class PluginManager extends AbstractPluginManager
         $this->truncateTable($container, 'plg_locale_category');
         $this->truncateTable($container, 'plg_locale_product');
         $this->truncateTable($container, 'plg_locale_product_list_order_by');
+
+        // シンボリックリンク削除
+        $fs = new Filesystem;
+        $fs->remove(__DIR__ . '/Resource/template/default');
     }
 
     /**
@@ -204,6 +209,25 @@ class PluginManager extends AbstractPluginManager
             // EC-CUBE4.1(Symofny4)
             $connection->executeStatement($platform->getTruncateTableSQL($table));
         }
+    }
+
+    /**
+     * 該当バージョンのテンプレートディレクトリへのシンボリックリンク作成
+     *
+     * @return void
+     */
+    private function createTemplateSymbolicLink()
+    {
+        $version = '4.1';
+        if (preg_match('/^(\d\.\d+)/', Constant::VERSION, $matches)) {
+            $version = $matches[1];
+        }
+        $fs = new Filesystem;
+        $fs->symlink(
+            __DIR__ . '/Resource/template/default' . $version,
+            __DIR__ . '/Resource/template/default',
+            true
+        );
     }
 
     /**
