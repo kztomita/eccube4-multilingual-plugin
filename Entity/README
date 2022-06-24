@@ -10,15 +10,13 @@ Entityの拡張はtraitで行う必要があり、traitに対してinterfaceの�
 
 各Locale用の情報を格納するLocaleXXXXクラスは以下の要求を満たすこと
 
-- localeカラムを持つ
+- AbstractLocaleEntityを継承する
+  - localeカラムを持つ
 - 親EntityのIDを格納するカラムを持つ('product_id', 'category_id', etc)
 - getParentColumn()メソッドを持つ
 - 情報を格納するフィールド名は親Entityに合わせる
 	twig拡張関数で、該当Localeが見つからなかった時に親Entityから
 	情報を取得するのに使う。
-TODO
-getLocale(),getParentColumn()は必ず存在するので
-AbstractMasterEntityのような基底クラスを作る？
 
 
 Masterテーブル(mtb_)のLocaleクラスは上記LocaleXXXXクラスの要求の他に
