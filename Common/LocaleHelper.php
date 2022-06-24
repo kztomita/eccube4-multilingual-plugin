@@ -16,7 +16,7 @@ class LocaleHelper
     }
 
     /**
-     * Entityがxxxを持っているかどうかを返す。
+     * EntityがLocaleに関するサブEntityを持っているかどうかを返す。
      *
      * @param object|string $object  Entityのオブジェクトかクラス名
      * @return bool
