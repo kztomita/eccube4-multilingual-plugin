@@ -18,46 +18,46 @@ file that was distributed with this source code.
             <span>{{ 'カートを見る'|trans }}</span>
         </a>
         {% if is_granted('ROLE_USER') %}
-            <a class="ec-headerLink__item" href="{{ url('mypage') }}">
+            <a class="ec-headerLink__item" href="{{ locale_url('mypage_locale') }}">
                 <div class="ec-headerLink__icon">
                     <i class="fas fa-user fa-fw"></i>
                 </div>
-                <span>{{ 'マイページ'|trans }}</span>
+                <span>{{ 'front.block.login.mypage'|trans }}</span>
             </a>
             {% if BaseInfo.option_favorite_product %}
-                <a class="ec-headerLink__item" href="{{ url('mypage_favorite') }}">
+                <a class="ec-headerLink__item" href="{{ locale_url('mypage_favorite_locale') }}">
                     <div class="ec-headerLink__icon">
                         <i class="fas fa-heart fa-fw"></i>
                     </div>
-                    <span>{{ 'お気に入り'|trans }}</span>
+                    <span>{{ 'front.block.login.favorite'|trans }}</span>
                 </a>
             {% endif %}
             <a class="ec-headerLink__item" href="{{ url('logout') }}">
                 <div class="ec-headerLink__icon">
                     <i class="fas fa-lock fa-fw"></i>
                 </div>
-                <span>{{ 'ログアウト'|trans }}</span>
+                <span>{{ 'front.block.login.logout'|trans }}</span>
             </a>
         {% else %}
             <a class="ec-headerLink__item" href="{{ url('entry') }}">
                 <div class="ec-headerLink__icon">
                     <i class="fas fa-user fa-fw"></i>
                 </div>
-                <span>{{ '新規会員登録'|trans }}</span>
+                <span>{{ 'front.block.login.customer_registration'|trans }}</span>
             </a>
             {% if BaseInfo.option_favorite_product %}
-                <a class="ec-headerLink__item" href="{{ url('mypage_favorite') }}">
+                <a class="ec-headerLink__item" href="{{ locale_url('mypage_favorite_locale') }}">
                     <div class="ec-headerLink__icon">
                         <i class="fas fa-heart fa-fw"></i>
                     </div>
-                    <span>{{ 'お気に入り'|trans }}</span>
+                    <span>{{ 'front.block.login.favorite'|trans }}</span>
                 </a>
             {% endif %}
-            <a class="ec-headerLink__item" href="{{ url('mypage_login') }}">
+            <a class="ec-headerLink__item" href="{{ locale_url('mypage_login_locale') }}">
                 <div class="ec-headerLink__icon">
                     <i class="fas fa-lock fa-fw"></i>
                 </div>
-                <span>{{ 'ログイン'|trans }}</span>
+                <span>{{ 'front.block.login.login'|trans }}</span>
             </a>
         {% endif %}
         <a class="ec-headerLink__item" href="{{ url('homepage') }}">
