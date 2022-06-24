@@ -29,123 +29,6 @@ use Symfony\Component\Finder\Finder;
 
 class PluginManager extends AbstractPluginManager
 {
-    /**
-     * @var array
-     */
-    private $layouts = [
-        [
-            'name' => 'トップページ用レイアウト - Locale',
-            'pages' => [
-                [
-                    'name'  => 'TOPページ - Locale',
-                    'url'   => 'homepage_locale',
-                    'file_name' => 'index',
-                    'edit_type' => Page::EDIT_TYPE_DEFAULT,
-                ],
-            ],
-            'src_name' => 'トップページ用レイアウト',
-        ],
-        [
-            'name' => '下層ページ用レイアウト - Locale',
-            'pages' => [
-                [
-                    'name'  => '商品一覧ページ - Locale',
-                    'url'   => 'product_list_locale',
-                    'file_name' => 'Product/list',
-                    'edit_type' => Page::EDIT_TYPE_DEFAULT,
-                ],
-                [
-                    'name'  => '商品詳細ページ - Locale',
-                    'url'   => 'product_detail_locale',
-                    'file_name' => 'Product/detail',
-                    'edit_type' => Page::EDIT_TYPE_DEFAULT,
-                ]
-            ],
-            'src_name' => '下層ページ用レイアウト',
-        ],
-    ];
-
-    /**
-     * @var array
-     */
-    private $blocks = [
-        [
-            'name'      => 'カート - Locale',
-            'file_name' => 'cart_locale',
-            'use_controller' => 0,
-        ],
-        [
-            'name'      => 'カテゴリ - Locale',
-            'file_name' => 'category_locale',
-            'use_controller' => 0,
-        ],
-        [
-            'name'      => 'カテゴリナビ(PC) - Locale',
-            'file_name' => 'category_nav_pc_locale',
-            'use_controller' => 0,
-        ],
-        [
-            'name'      => 'カテゴリナビ(SP) - Locale',
-            'file_name' => 'category_nav_sp_locale',
-            'use_controller' => 0,
-        ],
-        [
-            'name'      => '新入荷商品特集 - Locale',
-            'file_name' => 'eyecatch_locale',
-            'use_controller' => 0,
-        ],
-        [
-            'name'      => 'フッター - Locale',
-            'file_name' => 'footer_locale',
-            'use_controller' => 0,
-        ],
-        [
-            'name'      => 'ヘッダー(商品検索・ログインナビ・カート) - Locale',
-            'file_name' => 'header_locale',
-            'use_controller' => 0,
-        ],
-        [
-            'name'      => 'ログインナビ(共通) - Locale',
-            'file_name' => 'login_locale',
-            'use_controller' => 0,
-        ],
-        [
-            'name'      => 'ログインナビ(SP) - Locale',
-            'file_name' => 'login_sp_locale',
-            'use_controller' => 0,
-        ],
-        [
-            'name'      => 'ロゴ - Locale',
-            'file_name' => 'logo_locale',
-            'use_controller' => 0,
-        ],
-        [
-            'name'      => '新着商品 - Locale',
-            'file_name' => 'new_item_locale',
-            'use_controller' => 0,
-        ],
-        [
-            'name'      => '新着情報 - Locale',
-            'file_name' => 'news_locale',
-            'use_controller' => 0,
-        ],
-        [
-            'name'      => '商品検索 - Locale',
-            'file_name' => 'search_product_locale',
-            'use_controller' => 1,
-        ],
-        [
-            'name'      => 'トピック - Locale',
-            'file_name' => 'topic_locale',
-            'use_controller' => 0,
-        ],
-        [
-            'name'      => 'カレンダー - Locale',
-            'file_name' => 'calendar_locale',
-            'use_controller' => 1,
-        ],
-    ];
-
     public function enable(array $meta, ContainerInterface $container)
     {
         $this->createTemplateSymbolicLink();
@@ -188,6 +71,17 @@ class PluginManager extends AbstractPluginManager
         /** @var EntityManager $em */
         $em = $container->get('doctrine.orm.entity_manager');
         return $em;
+    }
+
+    /**
+     * Resource/setup/以下にある設定ファイルを読み込む。
+     *
+     * @param string $file
+     * @return mixed
+     */
+    private function loadSetupFile(string $file)
+    {
+        return include(__DIR__ . '/Resource/setup/' . $file);
     }
 
     /**
@@ -258,10 +152,11 @@ class PluginManager extends AbstractPluginManager
         $sort = 100;
 
         // Layout,Page,PageLayoutを追加
-        foreach ($this->layouts as $l) {
+        $layouts = $this->loadSetupFile('layouts.php');
+        foreach ($layouts as $l) {
             $Layout = new Layout;
             $Layout->setDeviceType($DeviceType)
-                   ->setName($l['name']);
+                ->setName($l['name']);
 
             $em->persist($Layout);
             $em->flush();
@@ -270,17 +165,17 @@ class PluginManager extends AbstractPluginManager
                 $Page = new Page;
                 // TODO MasterPage,
                 $Page->setName($pg['name'])
-                     ->setUrl($pg['url'])
-                     ->setFileName('MultiLingual/Resource/template/default/' . $pg['file_name'])
-                     ->setEditType($pg['edit_type']);
+                    ->setUrl($pg['url'])
+                    ->setFileName('MultiLingual/Resource/template/default/' . $pg['file_name'])
+                    ->setEditType($pg['edit_type']);
                 $em->persist($Page);
                 $em->flush();
 
                 $PageLayout = new PageLayout;
                 $PageLayout->setPageId($Page->getId())
-                           ->setLayoutId($Layout->getId())
-                           ->setPage($Page)
-                           ->setLayout($Layout);
+                    ->setLayoutId($Layout->getId())
+                    ->setPage($Page)
+                    ->setLayout($Layout);
                 $PageLayout->setSortNo($sort++);
                 $em->persist($PageLayout);
                 $em->flush();
@@ -288,19 +183,20 @@ class PluginManager extends AbstractPluginManager
         }
 
         // Blockの追加
-        foreach ($this->blocks as $b) {
+        $blocks = $this->loadSetupFile('blocks.php');
+        foreach ($blocks as $b) {
             $Block = new Block;
             $Block->setDeviceType($DeviceType)
-                  ->setName($b['name'])
-                  ->setFileName($b['file_name'])
-                  ->setUseController($b['use_controller'])
-                  ->setDeletable(1);
+                ->setName($b['name'])
+                ->setFileName($b['file_name'])
+                ->setUseController($b['use_controller'])
+                ->setDeletable(1);
             $em->persist($Block);
             $em->flush();
         }
 
         // BlockPositionの設定
-        foreach ($this->layouts as $l) {
+        foreach ($layouts as $l) {
             /** @var Layout $src */
             $src = $layoutRepository->findOneBy(['name' => $l['src_name']]);
             /** @var Layout $dst */
@@ -342,11 +238,11 @@ class PluginManager extends AbstractPluginManager
 
             $bp = new BlockPosition;
             $bp->setSection($p->getSection())
-               ->setBlockId($LocaleBlock->getId())
-               ->setBlock($LocaleBlock)
-               ->setLayoutId($dst->getId())
-               ->setLayout($dst)
-               ->setBlockRow($p->getBlockRow());
+                ->setBlockId($LocaleBlock->getId())
+                ->setBlock($LocaleBlock)
+                ->setLayoutId($dst->getId())
+                ->setLayout($dst)
+                ->setBlockRow($p->getBlockRow());
             $em->persist($bp);
             $em->flush();
         }
@@ -506,7 +402,8 @@ class PluginManager extends AbstractPluginManager
         $bpRepository = $em->getRepository(BlockPosition::class);
 
         // Page,PageLayoutを削除
-        foreach ($this->layouts as $l) {
+        $layouts = $this->loadSetupFile('layouts.php');
+        foreach ($layouts as $l) {
             foreach ($l['pages'] as $pg) {
                 $Page = $pageRepository->findOneBy(['url' => $pg['url']]);
                 if ($Page) {
@@ -523,7 +420,7 @@ class PluginManager extends AbstractPluginManager
         }
 
         // 削除対象Layout配下のBlockPositionを削除
-        foreach ($this->layouts as $l) {
+        foreach ($layouts as $l) {
             $Layout = $layoutRepository->findOneBy(['name' => $l['name']]);
             if (!$Layout) {
                 continue;
@@ -537,7 +434,7 @@ class PluginManager extends AbstractPluginManager
         }
 
         // Layoutを削除
-        foreach ($this->layouts as $l) {
+        foreach ($layouts as $l) {
             $Layout = $layoutRepository->findOneBy(['name' => $l['name']]);
             if (!$Layout) {
                 continue;
@@ -545,12 +442,12 @@ class PluginManager extends AbstractPluginManager
 
             // PageLayoutにlayout_id = $Layout->getId()のレコードがないこと
             $count = $em->createQueryBuilder()
-                        ->select('count(pl.page_id)')
-                        ->from('Eccube\Entity\PageLayout', 'pl')
-                        ->where('pl.layout_id = ?1')
-                        ->setParameter(1, $Layout->getId())
-                        ->getQuery()
-                        ->getSingleScalarResult();
+                ->select('count(pl.page_id)')
+                ->from('Eccube\Entity\PageLayout', 'pl')
+                ->where('pl.layout_id = ?1')
+                ->setParameter(1, $Layout->getId())
+                ->getQuery()
+                ->getSingleScalarResult();
             if ($count) {
                 continue;
             }
@@ -560,7 +457,8 @@ class PluginManager extends AbstractPluginManager
         }
 
         // Blockを削除
-        foreach ($this->blocks as $b) {
+        $blocks = $this->loadSetupFile('blocks.php');
+        foreach ($blocks as $b) {
             $Block = $blockRepository->findOneBy(['file_name' => $b['file_name']]);
             if (!$Block) {
                 continue;
