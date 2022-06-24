@@ -27,7 +27,7 @@ class MypageController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/mypage/login", name="mypage_login_locale", methods={"GET"})
+     * @Route("/{_locale}/mypage/login", name="mypage_login_locale")
      * @Template("MultiLingual/Resource/template/default/Mypage/login.twig")
      */
     public function login(Request $request, AuthenticationUtils $utils)
