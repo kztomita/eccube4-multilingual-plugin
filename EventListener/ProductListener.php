@@ -64,7 +64,7 @@ class ProductListener implements EventSubscriberInterface
         foreach ($locales as $locale) {
             /** @var LocaleProduct $LocaleProduct */
             $LocaleProduct = $this->localeProductRepository->findOneBy([
-                'product_id' => $Product->getId(),
+                'parent_id' => $Product->getId(),
                 'locale' => $locale,
             ]);
             if (!$LocaleProduct) {
@@ -78,7 +78,7 @@ class ProductListener implements EventSubscriberInterface
             $freeArea = $form->get('free_area_' . $locale)->getData();
 
             $LocaleProduct->setName($productName);
-            $LocaleProduct->setProductId($Product->getId());
+            $LocaleProduct->setParentId($Product->getId());
             $LocaleProduct->setProduct($Product);
             $LocaleProduct->setDescriptionDetail($descriptionDetail);
             $LocaleProduct->setDescriptionList($descriptionList);

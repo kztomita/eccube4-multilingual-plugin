@@ -120,7 +120,7 @@ class TwigExtension extends AbstractExtension
         $criteria = [
             'locale' => $locale,
         ];
-        $criteria[$localeClass::getParentColumn()] = $Entity->getId();
+        $criteria['parent_id'] = $Entity->getId();
 
         $LocaleEntity = $localeRepository->findOneBy($criteria);
         if (!$LocaleEntity) {

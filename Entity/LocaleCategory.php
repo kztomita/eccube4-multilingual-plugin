@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="plg_ml_locale_category")
  * @ORM\Entity(repositoryClass="Plugin\MultiLingual\Repository\LocaleCategoryRepository")
  */
-class LocaleCategory extends AbstractLocaleEntity
+class LocaleCategory extends AbstractDataLocaleEntity
 {
     /**
      * @var int
@@ -23,18 +23,11 @@ class LocaleCategory extends AbstractLocaleEntity
     private $id;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="category_id", type="integer", options={"unsigned":true})
-     */
-    private $category_id;
-
-    /**
      * @var Category
      *
      * @ORM\ManyToOne(targetEntity="Eccube\Entity\Category", inversedBy="Locales")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * })
      */
     private $Category;
@@ -52,40 +45,6 @@ class LocaleCategory extends AbstractLocaleEntity
     public function getId(): int
     {
         return $this->id;
-    }
-
-    /**
-     * 親EntityのIDを格納するカラムの名前。
-     *
-     * @return string
-     */
-    public static function getParentColumn(): string
-    {
-        return 'category_id';
-    }
-
-    /**
-     * Set categoryId.
-     *
-     * @param int $categoryId
-     *
-     * @return LocaleCategory
-     */
-    public function setCategoryId(int $categoryId): LocaleCategory
-    {
-        $this->category_id = $categoryId;
-
-        return $this;
-    }
-
-    /**
-     * Get categoryId.
-     *
-     * @return int
-     */
-    public function getCategoryId(): int
-    {
-        return $this->category_id;
     }
 
     /**

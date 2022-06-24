@@ -351,6 +351,7 @@ class PluginManager extends AbstractPluginManager
         foreach ($products as $product) {
             foreach ($locales as $locale) {
                 $lp = new LocaleProduct();
+                $lp->setParentId($product->getId());
                 $lp->setProduct($product);
                 $lp->setName($product->getName());
                 $lp->setDescriptionDetail($product->getDescriptionDetail());

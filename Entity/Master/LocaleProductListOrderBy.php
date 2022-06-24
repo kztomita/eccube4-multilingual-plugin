@@ -3,7 +3,7 @@
 namespace Plugin\MultiLingual\Entity\Master;
 
 use Eccube\Entity\Master\ProductListOrderBy;
-use Plugin\MultiLingual\Entity\AbstractLocaleEntity;
+use Plugin\MultiLingual\Entity\AbstractMasterLocaleEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="plg_ml_mtb_locale_product_list_order_by")
  * @ORM\Entity(repositoryClass="Plugin\MultiLingual\Repository\Master\LocaleProductListOrderByRepository")
  */
-class LocaleProductListOrderBy extends AbstractLocaleEntity
+class LocaleProductListOrderBy extends AbstractMasterLocaleEntity
 {
     /**
      * @var int
@@ -22,13 +22,6 @@ class LocaleProductListOrderBy extends AbstractLocaleEntity
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="parent_id", type="smallint", options={"unsigned":true})
-     */
-    private $parent_id;
 
     /**
      * @var ProductListOrderBy
@@ -56,41 +49,7 @@ class LocaleProductListOrderBy extends AbstractLocaleEntity
     }
 
     /**
-     * 親EntityのIDを格納するカラムの名前。
-     *
-     * @return string
-     */
-    public static function getParentColumn(): string
-    {
-        return 'parent_id';
-    }
-
-    /**
-     * Set parentId.
-     *
-     * @param int $parentId
-     *
-     * @return LocaleProductListOrderBy
-     */
-    public function setParentId(int $parentId): LocaleProductListOrderBy
-    {
-        $this->parent_id = $parentId;
-
-        return $this;
-    }
-
-    /**
-     * Get parentId.
-     *
-     * @return int
-     */
-    public function getParentId(): int
-    {
-        return $this->parent_id;
-    }
-
-    /**
-     * Set category.
+     * Set parent.
      *
      * @param ProductListOrderBy $parent
      * @return LocaleProductListOrderBy
@@ -103,7 +62,7 @@ class LocaleProductListOrderBy extends AbstractLocaleEntity
     }
 
     /**
-     * Get category.
+     * Get parent.
      *
      * @return ProductListOrderBy
      */

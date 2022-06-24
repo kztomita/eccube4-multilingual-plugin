@@ -73,7 +73,7 @@ class CategoryListener implements EventSubscriberInterface
         $locales = $this->eccubeConfig['multi_lingual_locales'];
         foreach ($locales as $locale) {
             $LocaleCategory = new LocaleCategory;
-            $LocaleCategory->setCategoryId($TargetCategory->getId());
+            $LocaleCategory->setParentId($TargetCategory->getId());
             $LocaleCategory->setCategory($TargetCategory);
             $LocaleCategory->setLocale($locale);
             $LocaleCategory->setName($form->get('name_' . $locale)->getData());
@@ -97,7 +97,7 @@ class CategoryListener implements EventSubscriberInterface
             /** @var LocaleCategory $LocaleCategory */
             $LocaleCategory = $this->localeCategoryRepository->findOneBy([
                 'locale' => $locale,
-                'category_id' => $TargetCategory->getId(),
+                'parent_id' => $TargetCategory->getId(),
             ]);
             if (!$LocaleCategory) {
                 continue;

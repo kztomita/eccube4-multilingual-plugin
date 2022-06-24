@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="plg_ml_locale_product")
  * @ORM\Entity(repositoryClass="Plugin\MultiLingual\Repository\LocaleProductRepository")
  */
-class LocaleProduct extends AbstractLocaleEntity
+class LocaleProduct extends AbstractDataLocaleEntity
 {
     /**
      * @var int
@@ -21,13 +21,6 @@ class LocaleProduct extends AbstractLocaleEntity
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="product_id", type="integer", options={"unsigned":true})
-     */
-    private $product_id;
 
     /**
      * @var Product
@@ -73,40 +66,6 @@ class LocaleProduct extends AbstractLocaleEntity
     public function getId(): int
     {
         return $this->id;
-    }
-
-    /**
-     * 親EntityのIDを格納するカラムの名前。
-     *
-     * @return string
-     */
-    public static function getParentColumn(): string
-    {
-        return 'product_id';
-    }
-
-    /**
-     * Set productId.
-     *
-     * @param int $productId
-     *
-     * @return LocaleProduct
-     */
-    public function setProductId(int $productId): LocaleProduct
-    {
-        $this->product_id = $productId;
-
-        return $this;
-    }
-
-    /**
-     * Get productId.
-     *
-     * @return int
-     */
-    public function getProductId(): int
-    {
-        return $this->product_id;
     }
 
     /**
