@@ -53,7 +53,15 @@ class PluginManager extends AbstractPluginManager
         // TODO enable時はレコードがあれば再利用する。
         $this->truncateTable($container, 'plg_locale_category');
         $this->truncateTable($container, 'plg_locale_product');
-        $this->truncateTable($container, 'plg_locale_product_list_order_by');
+
+        $em = $this->getEntityManager($container);
+        $masters = $this->loadSetupFile('master_locales.php');
+        foreach ($masters as $master) {
+            $localeClass = $master['locale_entity'];
+            $tableName = $em->getClassMetadata($localeClass)->getTableName();
+            $this->truncateTable($container, $tableName);
+
+        }
 
         // シンボリックリンク削除
         $fs = new Filesystem;
