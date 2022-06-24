@@ -12,14 +12,14 @@ file that was distributed with this source code.
 <div class="ec-headerNav">
     {% if is_granted('ROLE_USER') %}
         <div class="ec-headerNav__item">
-            <a href="{{ url('mypage') }}">
+            <a href="{{ locale_url('mypage_locale') }}">
                 <i class="ec-headerNav__itemIcon fas fa-user fa-fw"></i>
                 <span class="ec-headerNav__itemLink">{{ 'front.block.login.mypage'|trans }}</span>
             </a>
         </div>
         {% if BaseInfo.option_favorite_product %}
             <div class="ec-headerNav__item">
-                <a href="{{ url('mypage_favorite') }}">
+                <a href="{{ locale_url('mypage_favorite_locale') }}">
                     <i class="ec-headerNav__itemIcon fas fa-heart fa-fw"></i>
                     <span class="ec-headerNav__itemLink">{{ 'front.block.login.favorite'|trans }}</span>
                 </a>
@@ -40,7 +40,7 @@ file that was distributed with this source code.
         </div>
         {% if BaseInfo.option_favorite_product %}
             <div class="ec-headerNav__item">
-                <a href="{{ url('mypage_favorite') }}">
+                <a href="{{ locale_url('mypage_favorite_locale') }}">
                     <i class="ec-headerNav__itemIcon fas fa-heart fa-fw"></i>
                     <span class="ec-headerNav__itemLink">{{ 'front.block.login.favorite'|trans }}</span>
                 </a>
