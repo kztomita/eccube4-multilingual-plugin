@@ -17,7 +17,14 @@ Resource/template/default/Block
 	配下のファイルを直接参照できないようなので、プラグイン有効化時に
 	Blockを作成する際、app/template/default/Block/にコピーする。
 
-	ファイル名は既存のものと競合しないようlocale_のプレフィクスをつける。
+	ファイル名は既存のものと競合しないよう_localeのサフィックスをつける。
+
+	block.twigからuse_controller = 1のBlockを読み込む際は
+	{{ render(path('block_' ~ Block.file_name)) }}
+	のようにして'block_' + ファイル名 のrouteのコントローラ経由で
+	htmlを生成しているので、Blockのコントローラのroute名は
+	block_<ファイル名>(Ex. block_search_product_locale)としておく
+	必要がある。
 
 [参考]
 テンプレートの読み出し順
