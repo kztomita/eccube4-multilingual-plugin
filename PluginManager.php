@@ -51,8 +51,8 @@ class PluginManager extends AbstractPluginManager
         // app/templateにコピーしたテンプレートは残しておく
         // TODO データはクリアせずに残す。
         // TODO enable時はレコードがあれば再利用する。
-        $this->truncateTable($container, 'plg_ml_locale_category');
-        $this->truncateTable($container, 'plg_ml_locale_product');
+        $this->truncate($container, LocaleCategory::class);
+        $this->truncate($container, LocaleProduct::class);
 
         $em = $this->getEntityManager($container);
         $masters = $this->loadSetupFile('master_locales.php');
@@ -91,6 +91,8 @@ class PluginManager extends AbstractPluginManager
     }
 
     /**
+     * 指定テーブルをtruncate。
+     *
      * @param ContainerInterface $container
      * @param string $table
      * @return void
@@ -109,6 +111,21 @@ class PluginManager extends AbstractPluginManager
             // EC-CUBE4.1(Symfony4)
             $connection->executeStatement($platform->getTruncateTableSQL($table));
         }
+    }
+
+
+    /**
+     * 指定Entityのテーブルをtruncateする。
+     *
+     * @param ContainerInterface $container
+     * @param string $entity
+     * @return void
+     */
+    private function truncate(ContainerInterface  $container, string $entity)
+    {
+        $em = $this->getEntityManager($container);
+        $tableName = $em->getClassMetadata($entity)->getTableName();
+        $this->truncateTable($container, $tableName);
     }
 
     /**
