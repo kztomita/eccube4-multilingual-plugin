@@ -31,6 +31,24 @@ return [
                 'edit_type' => Page::EDIT_TYPE_DEFAULT,
             ],
             [
+                'name'  => 'MYページ - Locale',
+                'url'   => 'mypage_locale',
+                'file_name' => 'Mypage/index',
+                'edit_type' => Page::EDIT_TYPE_DEFAULT,
+            ],
+            [
+                'name'  => 'MYページ/お気に入り一覧 - Locale',
+                'url'   => 'mypage_favorite_locale',
+                'file_name' => 'Mypage/favorite',
+                'edit_type' => Page::EDIT_TYPE_DEFAULT,
+            ],
+            [
+                'name'  => 'MYページ/購入履歴詳細 - Locale',
+                'url'   => 'mypage_history_locale',
+                'file_name' => 'Mypage/history',
+                'edit_type' => Page::EDIT_TYPE_DEFAULT,
+            ],
+            [
                 'name'  => 'MYページ/ログイン - Locale',
                 'url'   => 'mypage_login_locale',
                 'file_name' => 'Mypage/login',
