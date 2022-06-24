@@ -29,7 +29,13 @@ return [
                 'url'   => 'product_detail_locale',
                 'file_name' => 'Product/detail',
                 'edit_type' => Page::EDIT_TYPE_DEFAULT,
-            ]
+            ],
+            [
+                'name'  => 'MYページ/ログイン - Locale',
+                'url'   => 'mypage_login_locale',
+                'file_name' => 'Mypage/login',
+                'edit_type' => Page::EDIT_TYPE_DEFAULT,
+            ],
         ],
         'src_name' => '下層ページ用レイアウト',
     ],
