@@ -6,7 +6,11 @@ use Eccube\Entity\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\MappedSuperclass;
 
-/** @MappedSuperclass */
+/**
+ * 各Localeでのテキスト情報を格納するEntityの基底クラス。
+ *
+ * @MappedSuperclass
+ */
 class AbstractLocaleEntity extends AbstractEntity
 {
     /*
