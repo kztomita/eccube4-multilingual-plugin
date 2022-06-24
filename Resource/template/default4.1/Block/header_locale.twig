@@ -12,20 +12,20 @@ file that was distributed with this source code.
     <div class="ec-headerNaviRole__left">
         <div class="ec-headerNaviRole__search">
             {# ここはincludeではなくController経由でのhtml取得になる。
-	       読み込まれるテンプレートはlocale_search_product.twig。
+	       読み込まれるテンプレートはsearch_product_locale.twig。
 	    #}
             {{ render(locale_path('block_search_product_locale')) }}
         </div>
         <div class="ec-headerRole__navSP">
-            {{ include('Block/locale_nav_sp.twig') }}
+            {{ include('Block/nav_sp_locale.twig') }}
         </div>
     </div>
     <div class="ec-headerNaviRole__right">
         <div class="ec-headerNaviRole__nav">
-            {{ include('Block/locale_login.twig') }}
+            {{ include('Block/login_locale.twig') }}
         </div>
         <div class="ec-headerRole__cart">
-            {{ include('Block/locale_cart.twig') }}
+            {{ include('Block/cart_locale.twig') }}
         </div>
     </div>
 </div>

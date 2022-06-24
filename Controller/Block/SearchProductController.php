@@ -27,7 +27,7 @@ class SearchProductController extends AbstractController
     /**
      * @Route("/{_locale}/block/search_product", name="block_search_product_locale", methods={"GET"})
      * @Route("/{_locale}/block/search_product_sp", name="block_search_product_sp_locale", methods={"GET"})
-     * @Template("Block/locale_search_product.twig")
+     * @Template("Block/search_product_locale.twig")
      */
     public function index(Request $request)
     {
