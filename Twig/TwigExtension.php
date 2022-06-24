@@ -104,7 +104,7 @@ class TwigExtension extends AbstractExtension
      */
     public function getLocaleField(AbstractEntity $Entity, string $field, ?string $locale = null): string
     {
-        if (!method_exists($Entity, 'getLocales')) {
+        if (!Locale::hasLocaleFeature($Entity)) {
             throw new \InvalidArgumentException('$Entity has no getLocales() method.');
         }
 

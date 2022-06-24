@@ -14,4 +14,15 @@ class Locale
 
         return $locale;
     }
+
+    /**
+     * Entityがxxxを持っているかどうかを返す。
+     *
+     * @param object|string $object  Entityのオブジェクトかクラス名
+     * @return bool
+     */
+    public static function hasLocaleFeature($object): bool
+    {
+        return method_exists($object, 'getLocales');
+    }
 }

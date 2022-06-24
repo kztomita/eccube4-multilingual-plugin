@@ -5,6 +5,7 @@ namespace Plugin\MultiLingual\Form\Extension\Admin;
 use Doctrine\Common\Collections\Collection;
 use Eccube\Common\EccubeConfig;
 use Eccube\Form\Type\Admin\MasterdataEditType;
+use Plugin\MultiLingual\Common\Locale;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -70,7 +71,7 @@ class MasterdataEditExtension extends AbstractTypeExtension
             $entityName = str_replace('-', '\\', $masterdataName);
 
             // Traitで拡張したgetLocales()が存在するかチェック
-            if (!method_exists($entityName, 'getLocales')) {
+            if (!Locale::hasLocaleFeature($entityName)) {
                 // Localeの存在しないMasterデータ
                 $form->get('has_locale')->setData('0');
                 return;
