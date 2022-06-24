@@ -2,7 +2,6 @@
 
 namespace Plugin\MultiLingual\Entity;
 
-use Eccube\Entity\AbstractEntity;
 use Eccube\Entity\Category;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -12,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="plg_ml_locale_category")
  * @ORM\Entity(repositoryClass="Plugin\MultiLingual\Repository\LocaleCategoryRepository")
  */
-class LocaleCategory extends AbstractEntity
+class LocaleCategory extends AbstractLocaleEntity
 {
     /**
      * @var int
@@ -46,13 +45,6 @@ class LocaleCategory extends AbstractEntity
      * @ORM\Column(name="category_name", type="string", length=255)
      */
     private $name;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="locale", type="string", length=10)
-     */
-    private $locale;
 
     /**
      * @return int
@@ -142,29 +134,5 @@ class LocaleCategory extends AbstractEntity
     public function getName(): string
     {
         return $this->name;
-    }
-
-    /**
-     * Set locale name.
-     *
-     * @param string $locale
-     *
-     * @return LocaleCategory
-     */
-    public function setLocale(string $locale): LocaleCategory
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
-    /**
-     * Get locale name.
-     *
-     * @return string
-     */
-    public function getLocale(): string
-    {
-        return $this->locale;
     }
 }

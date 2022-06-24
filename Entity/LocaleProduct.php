@@ -2,7 +2,6 @@
 
 namespace Plugin\MultiLingual\Entity;
 
-use Eccube\Entity\AbstractEntity;
 use Eccube\Entity\Product;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -12,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="plg_ml_locale_product")
  * @ORM\Entity(repositoryClass="Plugin\MultiLingual\Repository\LocaleProductRepository")
  */
-class LocaleProduct extends AbstractEntity
+class LocaleProduct extends AbstractLocaleEntity
 {
     /**
      * @var int
@@ -67,13 +66,6 @@ class LocaleProduct extends AbstractEntity
      * @ORM\Column(name="free_area", type="text", nullable=true)
      */
     private $free_area;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="locale", type="string", length=10)
-     */
-    private $locale;
 
     /**
      * @return int
@@ -235,29 +227,5 @@ class LocaleProduct extends AbstractEntity
     public function getFreeArea(): ?string
     {
         return $this->free_area;
-    }
-
-    /**
-     * Set locale name.
-     *
-     * @param string $locale
-     *
-     * @return LocaleProduct
-     */
-    public function setLocale(string $locale): LocaleProduct
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
-    /**
-     * Get locale name.
-     *
-     * @return string
-     */
-    public function getLocale(): string
-    {
-        return $this->locale;
     }
 }

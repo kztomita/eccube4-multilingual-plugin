@@ -2,8 +2,8 @@
 
 namespace Plugin\MultiLingual\Entity\Master;
 
-use Eccube\Entity\AbstractEntity;
 use Eccube\Entity\Master\ProductListOrderBy;
+use Plugin\MultiLingual\Entity\AbstractLocaleEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="plg_ml_mtb_locale_product_list_order_by")
  * @ORM\Entity(repositoryClass="Plugin\MultiLingual\Repository\Master\LocaleProductListOrderByRepository")
  */
-class LocaleProductListOrderBy extends AbstractEntity
+class LocaleProductListOrderBy extends AbstractLocaleEntity
 {
     /**
      * @var int
@@ -46,13 +46,6 @@ class LocaleProductListOrderBy extends AbstractEntity
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="locale", type="string", length=10)
-     */
-    private $locale;
 
     /**
      * @return int
@@ -141,29 +134,5 @@ class LocaleProductListOrderBy extends AbstractEntity
     public function getName(): string
     {
         return $this->name;
-    }
-
-    /**
-     * Set locale name.
-     *
-     * @param string $locale
-     *
-     * @return LocaleProductListOrderBy
-     */
-    public function setLocale(string $locale): LocaleProductListOrderBy
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
-    /**
-     * Get locale name.
-     *
-     * @return string
-     */
-    public function getLocale(): string
-    {
-        return $this->locale;
     }
 }
