@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class LocaleProduct.
  *
- * @ORM\Table(name="plg_locale_product")
+ * @ORM\Table(name="plg_ml_locale_product")
  * @ORM\Entity(repositoryClass="Plugin\MultiLingual\Repository\LocaleProductRepository")
  */
 class LocaleProduct extends AbstractEntity

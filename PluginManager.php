@@ -51,8 +51,8 @@ class PluginManager extends AbstractPluginManager
         // app/templateにコピーしたテンプレートは残しておく
         // TODO データはクリアせずに残す。
         // TODO enable時はレコードがあれば再利用する。
-        $this->truncateTable($container, 'plg_locale_category');
-        $this->truncateTable($container, 'plg_locale_product');
+        $this->truncateTable($container, 'plg_ml_locale_category');
+        $this->truncateTable($container, 'plg_ml_locale_product');
 
         $em = $this->getEntityManager($container);
         $masters = $this->loadSetupFile('master_locales.php');

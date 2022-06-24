@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class LocaleProductListOrderBy.
  *
- * @ORM\Table(name="plg_locale_product_list_order_by")
+ * @ORM\Table(name="plg_ml_mtb_locale_product_list_order_by")
  * @ORM\Entity(repositoryClass="Plugin\MultiLingual\Repository\Master\LocaleProductListOrderByRepository")
  */
 class LocaleProductListOrderBy extends AbstractEntity
