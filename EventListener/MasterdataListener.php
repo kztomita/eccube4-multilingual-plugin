@@ -5,7 +5,7 @@ namespace Plugin\MultiLingual\EventListener;
 use Eccube\Common\EccubeConfig;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
-use Plugin\MultiLingual\Common\Locale;
+use Plugin\MultiLingual\Common\LocaleHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -50,7 +50,7 @@ class MasterdataListener implements EventSubscriberInterface
         $entityName = str_replace('-', '\\', $masterdataName);
 
         // Traitで拡張したgetLocales()が存在するかチェック
-        if (!Locale::hasLocaleFeature(($entityName))) {
+        if (!LocaleHelper::hasLocaleFeature(($entityName))) {
             // Localeの存在しないMasterデータ
             return;
         }

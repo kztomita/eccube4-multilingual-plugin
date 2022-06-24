@@ -2,7 +2,7 @@
 
 namespace Plugin\MultiLingual\Common;
 
-class Locale
+class LocaleHelper
 {
     public static function getCurrentRequestLocale(): string
     {

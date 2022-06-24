@@ -4,7 +4,7 @@ namespace Plugin\MultiLingual\Twig;
 
 use Eccube\Entity\AbstractEntity;
 use Eccube\Entity\Category;
-use Plugin\MultiLingual\Common\Locale;
+use Plugin\MultiLingual\Common\LocaleHelper;
 use Plugin\MultiLingual\Entity\LocaleCategory;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -59,7 +59,7 @@ class TwigExtension extends AbstractExtension
      */
     public function getLocaleUrl(string $name, $parameters = [], bool $schemeRelative = false): string
     {
-        $locale = Locale::getCurrentRequestLocale();
+        $locale = LocaleHelper::getCurrentRequestLocale();
 
         if (!isset($parameters['_locale'])) {
             $parameters['_locale'] = $locale;
@@ -83,7 +83,7 @@ class TwigExtension extends AbstractExtension
      */
     public function getLocalePath(string $name, $parameters = [], bool $relative = false): string
     {
-        $locale = Locale::getCurrentRequestLocale();
+        $locale = LocaleHelper::getCurrentRequestLocale();
 
         if (!isset($parameters['_locale'])) {
             $parameters['_locale'] = $locale;
@@ -104,12 +104,12 @@ class TwigExtension extends AbstractExtension
      */
     public function getLocaleField(AbstractEntity $Entity, string $field, ?string $locale = null): string
     {
-        if (!Locale::hasLocaleFeature($Entity)) {
+        if (!LocaleHelper::hasLocaleFeature($Entity)) {
             throw new \InvalidArgumentException('$Entity has no getLocales() method.');
         }
 
         if ($locale === null) {
-            $locale = Locale::getCurrentRequestLocale();
+            $locale = LocaleHelper::getCurrentRequestLocale();
         }
 
         $method = 'get' . Container::camelize($field);
