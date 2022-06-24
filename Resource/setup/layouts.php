@@ -37,6 +37,18 @@ return [
                 'edit_type' => Page::EDIT_TYPE_DEFAULT,
             ],
             [
+                'name'  => 'MYページ/会員登録内容変更(入力ページ) - Locale',
+                'url'   => 'mypage_change_locale',
+                'file_name' => 'Mypage/change',
+                'edit_type' => Page::EDIT_TYPE_DEFAULT,
+            ],
+            [
+                'name'  => 'MYページ/会員登録内容変更(完了ページ) - Locale',
+                'url'   => 'mypage_change_complete_locale',
+                'file_name' => 'Mypage/change_complete',
+                'edit_type' => Page::EDIT_TYPE_DEFAULT,
+            ],
+            [
                 'name'  => 'MYページ/お気に入り一覧 - Locale',
                 'url'   => 'mypage_favorite_locale',
                 'file_name' => 'Mypage/favorite',

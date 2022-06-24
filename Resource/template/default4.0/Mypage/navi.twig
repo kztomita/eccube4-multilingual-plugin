@@ -19,7 +19,7 @@ file that was distributed with this source code.
             </li>
         {% endif %}
         <li class="ec-navlistRole__item {% if mypageno|default('') == 'change' %}active{% endif %}">
-            <a href="{{ url('mypage_change') }}">{{ 'front.mypage.nav__customer'|trans }}</a>
+            <a href="{{ locale_url('mypage_change_locale') }}">{{ 'front.mypage.nav__customer'|trans }}</a>
         </li>
         <li class="ec-navlistRole__item {% if mypageno|default('') == 'delivery' %}active{% endif %}">
             <a href="{{ url('mypage_delivery') }}">{{ 'front.mypage.nav__customer_address'|trans }}</a>
