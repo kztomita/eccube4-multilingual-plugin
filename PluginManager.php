@@ -14,7 +14,6 @@ use Eccube\Entity\BlockPosition;
 use Eccube\Entity\Category;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\AbstractMasterEntity;
-use Eccube\Entity\Master\ProductListOrderBy;
 use Eccube\Entity\Page;
 use Eccube\Entity\PageLayout;
 use Eccube\Entity\Product;
@@ -22,7 +21,6 @@ use Eccube\Entity\Master\DeviceType;
 use Eccube\Plugin\AbstractPluginManager;
 use Plugin\MultiLingual\Entity\LocaleCategory;
 use Plugin\MultiLingual\Entity\LocaleProduct;
-use Plugin\MultiLingual\Entity\Master\LocaleProductListOrderBy;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -36,7 +34,7 @@ class PluginManager extends AbstractPluginManager
         $this->copyBlockTemplate($container);
         $this->createLocaleCategory($container);
         $this->createLocaleProduct($container);
-        $this->createMasterLocaleRecord($container, ProductListOrderBy::class, LocaleProductListOrderBy::class);
+        $this->createMasterLocaleRecord($container);
     }
 
     /**
@@ -100,7 +98,7 @@ class PluginManager extends AbstractPluginManager
             // EC-CUBE4.0(Symfony3)
             $connection->executeUpdate($platform->getTruncateTableSQL($table));
         } else {
-            // EC-CUBE4.1(Symofny4)
+            // EC-CUBE4.1(Symfony4)
             $connection->executeStatement($platform->getTruncateTableSQL($table));
         }
     }
@@ -340,23 +338,19 @@ class PluginManager extends AbstractPluginManager
     }
 
     /**
-     * 指定MasterテーブルのLocaleデータを設定する。
+     * MasterテーブルのLocaleデータを設定する。
      *
      * Locale Entityのクラス名は$masterClassのgetLocaleClass()で取得できそうだが、
      * Pluginのenableがまだなので、Traitで拡張するgetLocaleClass()はまだ使えない。
      * このため$localeClass引数で指定する
      *
      * @param ContainerInterface $container
-     * @param string $masterClass   MasterテーブルのEntityクラス名(AbstractMasterentityを継承している)
-     * @param string $localeClass   設定対象のLocale Entityのクラス名
      * @return void
      * @throws ORMException
      * @throws OptimisticLockException
      */
     private function createMasterLocaleRecord(
-        ContainerInterface $container,
-        string $masterClass,
-        string $localeClass
+        ContainerInterface $container
     )
     {
         $em = $this->getEntityManager($container);
@@ -365,20 +359,32 @@ class PluginManager extends AbstractPluginManager
         $eccubeConfig = $container->get(EccubeConfig::class);
         $locales = $eccubeConfig['multi_lingual_locales'];
 
-        $repository = $em->getRepository($masterClass);
+        $masters = $this->loadSetupFile('master_locales.php');
+        foreach ($masters as $master) {
+            $masterClass = $master['entity'];
+            $localeClass = $master['locale_entity'];
 
-        /** @var AbstractMasterentity[] $entities */
-        $entities = $repository->findAll();
+            $repository = $em->getRepository($masterClass);
 
-        foreach ($entities as $entity) {
-            foreach ($locales as $locale) {
-                $LocaleEntity = new $localeClass;
-                $LocaleEntity->setParent($entity);
-                // TODO 翻訳データがあれば登録
-                $LocaleEntity->setName($entity->getName());
-                $LocaleEntity->setLocale($locale);
-                $em->persist($LocaleEntity);
-                $em->flush();
+            /** @var AbstractMasterEntity[] $entities */
+            $entities = $repository->findAll();
+
+            foreach ($entities as $entity) {
+                foreach ($locales as $locale) {
+                    $LocaleEntity = new $localeClass;
+                    $LocaleEntity->setParent($entity);
+                    // 翻訳データがあれば登録
+                    $name = $entity->getName();
+                    if (isset($master['translates'][$name]) &&
+                        isset($master['translates'][$name][$locale])) {
+                        $LocaleEntity->setName($master['translates'][$name][$locale]);
+                    } else {
+                        $LocaleEntity->setName($name);
+                    }
+                    $LocaleEntity->setLocale($locale);
+                    $em->persist($LocaleEntity);
+                    $em->flush();
+                }
             }
         }
     }
