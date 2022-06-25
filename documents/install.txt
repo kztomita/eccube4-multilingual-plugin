@@ -19,4 +19,8 @@ Localeページ用のブロックを作成。
 	元のテンプレートがカスタマイズされていた場合、競合する。
 
 
+[プラグインのインストールの他に必要な作業]
+app/config/eccube/packages/security.yamlの編集
 
+src/Eccube/Doctrine/ORM/Mapping/Driver/AnnotationDriver.php
+を不具合修正版に差し替え。
