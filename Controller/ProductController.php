@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 /*
  * コントローラはオリジナルのものを利用する。
  * forward()すると転送先のactionでannotationしたテンプレートが使われる。
- * テンプレートを分けたい場合は、コントローラを生成して手動で呼び出す。
+ * テンプレートを分けたい場合は、転送先のコントローラを生成して手動で呼び出す。
  *
  * https://stackoverflow.com/questions/17611447/forward-with-another-template
  */
