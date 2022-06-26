@@ -34,7 +34,7 @@ trait LocaleTrait
      * @param array $args
      * @return mixed|RedirectResponse
      */
-   public function forward(Request $request, AbstractController $controller, string $method, array $args)
+   public function forwardLocaleRequest(Request $request, AbstractController $controller, string $method, array $args)
    {
        $controller->setContainer($this->container);
 
