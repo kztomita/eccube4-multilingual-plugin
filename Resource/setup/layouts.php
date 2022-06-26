@@ -49,6 +49,18 @@ return [
                 'edit_type' => Page::EDIT_TYPE_DEFAULT,
             ],
             [
+                'name'  => 'MYページ/お届け先一覧 - Locale',
+                'url'   => 'mypage_delivery_locale',
+                'file_name' => 'Mypage/delivery',
+                'edit_type' => Page::EDIT_TYPE_DEFAULT,
+            ],
+            [
+                'name'  => 'MYページ/お届け先一覧追加 - Locale',
+                'url'   => 'mypage_delivery_new_locale',
+                'file_name' => 'Mypage/delivery_edit',
+                'edit_type' => Page::EDIT_TYPE_DEFAULT,
+            ],
+            [
                 'name'  => 'MYページ/お気に入り一覧 - Locale',
                 'url'   => 'mypage_favorite_locale',
                 'file_name' => 'Mypage/favorite',
@@ -64,6 +76,18 @@ return [
                 'name'  => 'MYページ/ログイン - Locale',
                 'url'   => 'mypage_login_locale',
                 'file_name' => 'Mypage/login',
+                'edit_type' => Page::EDIT_TYPE_DEFAULT,
+            ],
+            [
+                'name'  => 'MYページ/退会手続き(入力ページ) - Locale',
+                'url'   => 'mypage_withdraw_locale',
+                'file_name' => 'Mypage/withdraw',
+                'edit_type' => Page::EDIT_TYPE_DEFAULT,
+            ],
+            [
+                'name'  => 'MYページ/退会手続き(完了ページ) - Locale',
+                'url'   => 'mypage_withdraw_complete_locale',
+                'file_name' => 'Mypage/withdraw_complete',
                 'edit_type' => Page::EDIT_TYPE_DEFAULT,
             ],
             [

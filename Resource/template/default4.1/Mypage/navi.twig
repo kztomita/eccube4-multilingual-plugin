@@ -22,7 +22,7 @@ file that was distributed with this source code.
             <a href="{{ locale_url('mypage_change_locale') }}">{{ 'front.mypage.nav__customer'|trans }}</a>
         </li>
         <li class="ec-navlistRole__item {% if mypageno|default('') == 'delivery' %}active{% endif %}">
-            <a href="{{ url('mypage_delivery') }}">{{ 'front.mypage.nav__customer_address'|trans }}</a>
+            <a href="{{ locale_url('mypage_delivery_locale') }}">{{ 'front.mypage.nav__customer_address'|trans }}</a>
         </li>
         <li class="ec-navlistRole__item {% if mypageno|default('') == 'withdraw' %}active{% endif %}">
             <a href="{{ url('mypage_withdraw') }}">{{ 'front.mypage.nav__withdrow'|trans }}</a>
