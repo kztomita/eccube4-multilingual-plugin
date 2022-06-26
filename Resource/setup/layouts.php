@@ -66,6 +66,12 @@ return [
                 'file_name' => 'Mypage/login',
                 'edit_type' => Page::EDIT_TYPE_DEFAULT,
             ],
+            [
+                'name'  => '現在のカゴの中 - Locale',
+                'url'   => 'cart_locale',
+                'file_name' => 'Cart/index',
+                'edit_type' => Page::EDIT_TYPE_DEFAULT,
+            ],
         ],
         'src_name' => '下層ページ用レイアウト',
     ],
