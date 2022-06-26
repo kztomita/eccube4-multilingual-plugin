@@ -2,6 +2,7 @@
 
 namespace Plugin\MultiLingual\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Annotation\EntityExtension;
@@ -25,7 +26,7 @@ trait CategoryTrait
      */
     public function getLocales(): Collection
     {
-        return $this->Locales;
+        return $this->Locales ?? new ArrayCollection();
     }
 
     /**

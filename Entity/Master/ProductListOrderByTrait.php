@@ -2,6 +2,7 @@
 
 namespace Plugin\MultiLingual\Entity\Master;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Annotation\EntityExtension;
@@ -28,7 +29,7 @@ trait ProductListOrderByTrait
      */
     public function getLocales(): Collection
     {
-        return $this->Locales;
+        return $this->Locales ?? new ArrayCollection();
     }
 
     /**
