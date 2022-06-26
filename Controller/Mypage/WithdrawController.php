@@ -3,15 +3,11 @@
 namespace Plugin\MultiLingual\Controller\Mypage;
 
 use Eccube\Controller\AbstractController;
-use Eccube\Entity\Product;
 use Plugin\MultiLingual\Controller\LocaleTrait;
-use Knp\Component\Pager\Paginator;
-use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class WithdrawController extends AbstractController
 {
