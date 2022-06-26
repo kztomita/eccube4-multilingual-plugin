@@ -32,6 +32,11 @@ class CartController extends AbstractController
     {
         $this->testLocale($request);
 
-        return $this->controller->index($request);
+        return $this->forwardLocaleRequest(
+            $request,
+            $this->controller,
+            __FUNCTION__,
+            func_get_args()
+        );
     }
 }
