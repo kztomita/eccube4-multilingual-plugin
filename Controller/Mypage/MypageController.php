@@ -38,8 +38,6 @@ class MypageController extends AbstractController
     {
         $this->testLocale($request);
 
-        $this->controller->setContainer($this->container);
-
         return $this->forward(
             $request,
             $this->controller,
@@ -56,8 +54,6 @@ class MypageController extends AbstractController
     public function index(Request $request, Paginator $paginator)
     {
         $this->testLocale($request);
-
-        $this->controller->setContainer($this->container);
 
         return $this->forward(
             $request,
@@ -76,8 +72,6 @@ class MypageController extends AbstractController
     {
         $this->testLocale($request);
 
-        $this->controller->setContainer($this->container);
-
         return $this->forward(
             $request,
             $this->controller,
@@ -93,8 +87,6 @@ class MypageController extends AbstractController
     public function order(Request $request, $order_no)
     {
         $this->testLocale($request);
-
-        $this->controller->setContainer($this->container);
 
         return $this->forward(
             $request,
@@ -113,8 +105,6 @@ class MypageController extends AbstractController
     {
         $this->testLocale($request);
 
-        $this->controller->setContainer($this->container);
-
         return $this->forward(
             $request,
             $this->controller,
@@ -130,8 +120,6 @@ class MypageController extends AbstractController
     public function delete(Request $request, Product $Product)
     {
         $this->testLocale($request);
-
-        $this->controller->setContainer($this->container);
 
         return $this->forward(
             $request,

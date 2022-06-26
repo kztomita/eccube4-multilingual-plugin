@@ -42,8 +42,6 @@ class ProductController extends AbstractController
     {
         $this->testLocale($request);
 
-        $this->controller->setContainer($this->container);
-
         return $this->forward(
             $request,
             $this->controller,
@@ -59,8 +57,6 @@ class ProductController extends AbstractController
     public function detail(Request $request, Product $Product)
     {
         $this->testLocale($request);
-
-        $this->controller->setContainer($this->container);
 
         return $this->forward(
             $request,

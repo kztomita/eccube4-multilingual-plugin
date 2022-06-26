@@ -36,6 +36,8 @@ trait LocaleTrait
      */
    public function forward(Request $request, AbstractController $controller, string $method, array $args)
    {
+       $controller->setContainer($this->container);
+
        $result = call_user_func_array([$controller, $method], $args);
        if ($result instanceof RedirectResponse) {
            $localeUrl = '/' . $request->getLocale() . $result->getTargetUrl();

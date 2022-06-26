@@ -35,8 +35,6 @@ class ChangeController extends AbstractController
     {
         $this->testLocale($request);
 
-        $this->controller->setContainer($this->container);
-
         return $this->forward(
             $request,
             $this->controller,
@@ -53,8 +51,6 @@ class ChangeController extends AbstractController
     public function complete(Request $request)
     {
         $this->testLocale($request);
-
-        $this->controller->setContainer($this->container);
 
         return $this->forward(
             $request,
