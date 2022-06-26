@@ -33,6 +33,11 @@ class TopController extends AbstractController
 
         $this->controller->setContainer($this->container);
 
-        return $this->controller->index();
+        return $this->forward(
+            $request,
+            $this->controller,
+            __FUNCTION__,
+            func_get_args()
+        );
     }
 }

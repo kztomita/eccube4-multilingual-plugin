@@ -56,7 +56,12 @@ class ChangeController extends AbstractController
 
         $this->controller->setContainer($this->container);
 
-        return $this->controller->complete($request);
+        return $this->forward(
+            $request,
+            $this->controller,
+            __FUNCTION__,
+            func_get_args()
+        );
     }
 }
 

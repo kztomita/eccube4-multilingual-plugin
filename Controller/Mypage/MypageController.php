@@ -40,7 +40,12 @@ class MypageController extends AbstractController
 
         $this->controller->setContainer($this->container);
 
-        return $this->controller->login($request, $utils);
+        return $this->forward(
+            $request,
+            $this->controller,
+            __FUNCTION__,
+            func_get_args()
+        );
     }
 
     /**
@@ -54,7 +59,12 @@ class MypageController extends AbstractController
 
         $this->controller->setContainer($this->container);
 
-        return $this->controller->index($request, $paginator);
+        return $this->forward(
+            $request,
+            $this->controller,
+            __FUNCTION__,
+            func_get_args()
+        );
     }
 
     /**
@@ -68,7 +78,12 @@ class MypageController extends AbstractController
 
         $this->controller->setContainer($this->container);
 
-        return $this->controller->history($request, $order_no);
+        return $this->forward(
+            $request,
+            $this->controller,
+            __FUNCTION__,
+            func_get_args()
+        );
     }
 
     /**
@@ -81,8 +96,12 @@ class MypageController extends AbstractController
 
         $this->controller->setContainer($this->container);
 
-        // TODO Localeページへのリダイレクト処理が必要？
-        return $this->controller->order($request, $order_no);
+        return $this->forward(
+            $request,
+            $this->controller,
+            __FUNCTION__,
+            func_get_args()
+        );
     }
 
     /**
@@ -96,7 +115,12 @@ class MypageController extends AbstractController
 
         $this->controller->setContainer($this->container);
 
-        return $this->controller->favorite($request, $paginator);
+        return $this->forward(
+            $request,
+            $this->controller,
+            __FUNCTION__,
+            func_get_args()
+        );
     }
 
     /**
@@ -109,7 +133,11 @@ class MypageController extends AbstractController
 
         $this->controller->setContainer($this->container);
 
-        // TODO Localeページへのリダイレクト処理が必要？
-        return $this->controller->delete($request, $Product);
+        return $this->forward(
+            $request,
+            $this->controller,
+            __FUNCTION__,
+            func_get_args()
+        );
     }
 }

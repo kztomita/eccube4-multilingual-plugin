@@ -44,7 +44,12 @@ class ProductController extends AbstractController
 
         $this->controller->setContainer($this->container);
 
-        return $this->controller->index($request, $paginator);
+        return $this->forward(
+            $request,
+            $this->controller,
+            __FUNCTION__,
+            func_get_args()
+        );
     }
 
     /**
@@ -57,6 +62,11 @@ class ProductController extends AbstractController
 
         $this->controller->setContainer($this->container);
 
-        return $this->controller->detail($request, $Product);
+        return $this->forward(
+            $request,
+            $this->controller,
+            __FUNCTION__,
+            func_get_args()
+        );
     }
 }
