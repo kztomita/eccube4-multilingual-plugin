@@ -35,7 +35,7 @@ class ChangeController extends AbstractController
     {
         $this->testLocale($request);
 
-        return $this->forwardLocaleRequest(
+        return $this->invokeController(
             $request,
             $this->controller,
             __FUNCTION__,
@@ -52,7 +52,7 @@ class ChangeController extends AbstractController
     {
         $this->testLocale($request);
 
-        return $this->forwardLocaleRequest(
+        return $this->invokeController(
             $request,
             $this->controller,
             __FUNCTION__,
