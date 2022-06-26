@@ -9,14 +9,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 
-/*
- * コントローラはオリジナルのものを利用する。
- * forward()すると転送先のactionでannotationしたテンプレートが使われる。
- * テンプレートを分けたい場合は、転送先のコントローラを生成して手動で呼び出す。
- *
- * https://stackoverflow.com/questions/17611447/forward-with-another-template
- */
-
 class ProductController extends AbstractController
 {
     use LocaleTrait;

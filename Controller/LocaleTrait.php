@@ -26,7 +26,12 @@ trait LocaleTrait
 
     /**
      * 別のコントローラーへのリクエストを転送する。
-     * 転送先のコントローラからRedirectResponseが変えされた場合は、localeページのURLに書き換える。
+     * 転送先のコントローラからRedirectResponseが返された場合は、localeページのURLに書き換える。
+     *
+     * forward()だと転送先のactionでannotationしたテンプレートが使われる。
+     * テンプレートを分けたい場合は本メソッドを使う。
+     *
+     * https://stackoverflow.com/questions/17611447/forward-with-another-template
      *
      * @param Request $request
      * @param AbstractController $controller
