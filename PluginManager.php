@@ -47,21 +47,14 @@ class PluginManager extends AbstractPluginManager
      */
     public function disable(array $meta, ContainerInterface $container)
     {
+        // ページ管理から該当ページの表示を消す
         $this->removePageRecord($container);
+
         // app/templateにコピーしたテンプレートは残しておく
+
         // TODO データはクリアせずに残す。
         // TODO enable時はレコードがあれば再利用する。
-        $this->truncate($container, LocaleCategory::class);
-        $this->truncate($container, LocaleProduct::class);
-
-        $em = $this->getEntityManager($container);
-        $masters = $this->loadSetupFile('master_locales.php');
-        foreach ($masters as $master) {
-            $localeClass = $master['locale_entity'];
-            $tableName = $em->getClassMetadata($localeClass)->getTableName();
-            $this->truncateTable($container, $tableName);
-
-        }
+        $this->cleanupLocaleRecords($container);
 
         // シンボリックリンク削除
         $fs = new Filesystem;
@@ -498,6 +491,28 @@ class PluginManager extends AbstractPluginManager
 
             $em->remove($Block);
             $em->flush();
+        }
+    }
+
+    /**
+     * Locale関連テーブルのtruncate処理
+     *
+     * @param ContainerInterface $container
+     * @return void
+     */
+    private function cleanupLocaleRecords(ContainerInterface $container)
+    {
+        $this->truncate($container, LocaleCategory::class);
+        $this->truncate($container, LocaleProduct::class);
+
+        $em = $this->getEntityManager($container);
+
+        $masters = $this->loadSetupFile('master_locales.php');
+        foreach ($masters as $master) {
+            $localeClass = $master['locale_entity'];
+            $tableName = $em->getClassMetadata($localeClass)->getTableName();
+            $this->truncateTable($container, $tableName);
+
         }
     }
 }
