@@ -37,11 +37,12 @@ class ChangeController extends AbstractController
 
         $this->controller->setContainer($this->container);
 
-        $result = $this->controller->index($request);
-        if ($result instanceof RedirectResponse) {
-            $result->setTargetUrl('/' . $request->getLocale() . $result->getTargetUrl());
-        }
-        return $result;
+        return $this->forward(
+            $request,
+            $this->controller,
+            __FUNCTION__,
+            func_get_args()
+        );
     }
 
     /**
