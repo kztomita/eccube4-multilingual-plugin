@@ -52,9 +52,9 @@ class PluginManager extends AbstractPluginManager
 
         // app/templateにコピーしたテンプレートは残しておく
 
-        // TODO データはクリアせずに残す。
-        // TODO enable時はレコードがあれば再利用する。
-        $this->cleanupLocaleRecords($container);
+        // 再度enableした時に翻訳データが残っているようにLocaleレコードは削除しない。
+        // enable時は足りないレコードのみ新規作成する。
+        //$this->cleanupLocaleRecords($container);
 
         // シンボリックリンク削除
         $fs = new Filesystem;
@@ -305,12 +305,20 @@ class PluginManager extends AbstractPluginManager
         $eccubeConfig = $container->get(EccubeConfig::class);
         $locales = $eccubeConfig['multi_lingual_locales'];
 
-        $categoryRepository = $em->getRepository(Category::class);
         /** @var Category[] $categories */
-        $categories = $categoryRepository->findAll();
+        $categories = $em->getRepository(Category::class)->findAll();
+
+        $localeRepository = $em->getRepository(LocaleCategory::class);
 
         foreach ($categories as $category) {
             foreach ($locales as $locale) {
+                $entity = $localeRepository->findOneBy([
+                    'parent_id' => $category->getId(),
+                    'locale'    => $locale,
+                ]);
+                if ($entity) {
+                    continue;
+                }
                 $lc = new LocaleCategory();
                 $lc->setCategory($category);
                 $lc->setName($category->getName());
@@ -337,12 +345,20 @@ class PluginManager extends AbstractPluginManager
         $eccubeConfig = $container->get(EccubeConfig::class);
         $locales = $eccubeConfig['multi_lingual_locales'];
 
-        $productRepository = $em->getRepository(Product::class);
         /** @var Product[] $products */
-        $products = $productRepository->findAll();
+        $products = $em->getRepository(Product::class)->findAll();
+
+        $localeRepository = $em->getRepository(LocaleProduct::class);
 
         foreach ($products as $product) {
             foreach ($locales as $locale) {
+                $entity = $localeRepository->findOneBy([
+                    'parent_id' => $product->getId(),
+                    'locale'    => $locale,
+                ]);
+                if ($entity) {
+                    continue;
+                }
                 $lp = new LocaleProduct();
                 $lp->setParentId($product->getId());
                 $lp->setProduct($product);
@@ -383,13 +399,20 @@ class PluginManager extends AbstractPluginManager
             $masterClass = $master['entity'];
             $localeClass = $master['locale_entity'];
 
-            $repository = $em->getRepository($masterClass);
-
             /** @var AbstractMasterEntity[] $entities */
-            $entities = $repository->findAll();
+            $entities = $em->getRepository($masterClass)->findAll();
+
+            $localeRepository = $em->getRepository($localeClass);
 
             foreach ($entities as $entity) {
                 foreach ($locales as $locale) {
+                    $exists = $localeRepository->findOneBy([
+                        'parent_id' => $entity->getId(),
+                        'locale'    => $locale,
+                    ]);
+                    if ($exists) {
+                        continue;
+                    }
                     $LocaleEntity = new $localeClass;
                     $LocaleEntity->setParent($entity);
                     // 翻訳データがあれば登録
