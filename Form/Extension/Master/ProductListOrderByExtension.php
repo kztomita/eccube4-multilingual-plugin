@@ -3,24 +3,13 @@
 namespace Plugin\MultiLingual\Form\Extension\Master;
 
 use Eccube\Form\Type\Master\ProductListOrderByType;
-use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Master\ProductListOrderByTypeを拡張する
  */
-class ProductListOrderByExtension extends AbstractTypeExtension
+class ProductListOrderByExtension extends AbstractMasterTypeExtension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'choice_label' => 'locale_name',
-        ]);
-    }
-
     public function getExtendedType()
     {
         return ProductListOrderByType::class;
