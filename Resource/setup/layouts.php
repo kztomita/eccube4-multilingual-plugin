@@ -102,6 +102,20 @@ return [
                 'file_name' => 'Cart/index',
                 'edit_type' => Page::EDIT_TYPE_DEFAULT,
             ],
+
+            [
+                'name'  => 'お問い合わせ(入力ページ) - Locale',
+                'url'   => 'contact_locale',
+                'file_name' => 'Contact/index',
+                'edit_type' => Page::EDIT_TYPE_DEFAULT,
+            ],
+            [
+                'name'  => 'お問い合わせ(完了ページ) - Locale',
+                'url'   => 'contact_complete_locale',
+                'file_name' => 'Contact/complete',
+                'edit_type' => Page::EDIT_TYPE_DEFAULT,
+            ],
+
             [
                 'name'  => 'ご利用規約 - Locale',
                 'url'   => 'help_agreement_locale',
