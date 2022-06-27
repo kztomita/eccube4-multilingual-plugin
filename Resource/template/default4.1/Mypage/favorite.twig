@@ -35,13 +35,13 @@ file that was distributed with this source code.
                                 {% set Product = FavoriteProduct.Product %}
                                 <li class="ec-favoriteRole__item">
                                     <a class="ec-closeBtn--circle"
-                                       href="{{ url('mypage_favorite_delete', { id : Product.id }) }}" {{ csrf_token_for_anchor() }}
+                                       href="{{ locale_url('mypage_favorite_delete_locale', { id : Product.id }) }}" {{ csrf_token_for_anchor() }}
                                        data-method="delete">
                                         <div class="ec-icon">
                                             <img src="{{ asset('assets/icon/cross-white.svg') }}" alt="close">
                                         </div>
                                     </a>
-                                    <a class="ec-favoriteRole__itemThumb" href="{{ url('product_detail', {'id': Product.id}) }}">
+                                    <a class="ec-favoriteRole__itemThumb" href="{{ locale_url('product_detail_locale', {'id': Product.id}) }}">
                                         <p class="ec-favoriteRole__item-image">
                                             <img src="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}">
                                         </p>
