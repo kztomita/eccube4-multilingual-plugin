@@ -22,7 +22,6 @@ Entityの拡張はtraitで行う必要があり、traitに対してinterfaceの�
 Masterテーブル(mtb_)のLocaleクラスは以下の要求を満たすこと
 
 - AbstractMasterLocaleEntityを継承する
-  - parent_id(smallint)カラムを持つ
+  - id(smallint),parent_id(smallint),nameカラムを持つ
   - localeカラムを持つ (AbstractLocaleEntity)
-- カラムはid,parent_id,name,localeに固定
 - 親Entityへのrelationプロパティとメソッドを持つ($DeviceType,...)
