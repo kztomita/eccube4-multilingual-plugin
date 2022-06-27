@@ -11,11 +11,11 @@ file that was distributed with this source code.
 
 <div class="ec-headerLinkArea">
     <div class="ec-headerLink__list">
-        <a class="ec-headerLink__item" href="{{ url('cart') }}">
+        <a class="ec-headerLink__item" href="{{ locale_url('cart_locale') }}">
             <div class="ec-headerLink__icon">
                 <i class="fas fa-shopping-cart fa-fw"></i>
             </div>
-            <span>{{ 'カートを見る'|trans }}</span>
+            <span>{{ 'front.block.login.to_cart'|trans }}</span>
         </a>
         {% if is_granted('ROLE_USER') %}
             <a class="ec-headerLink__item" href="{{ locale_url('mypage_locale') }}">
@@ -60,11 +60,11 @@ file that was distributed with this source code.
                 <span>{{ 'front.block.login.login'|trans }}</span>
             </a>
         {% endif %}
-        <a class="ec-headerLink__item" href="{{ url('homepage') }}">
+        <a class="ec-headerLink__item" href="{{ locale_url('homepage_locale') }}">
             <div class="ec-headerLink__icon">
                 <i class="fas fa-home fa-fw"></i>
             </div>
-            <span>{{ 'ホームに戻る'|trans }}</span>
+            <span>{{ 'front.block.login.to_home'|trans }}</span>
         </a>
     </div>
 </div>
