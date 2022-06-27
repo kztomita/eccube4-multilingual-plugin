@@ -22,28 +22,10 @@ class LocaleProductListMax extends AbstractMasterLocaleEntity
      *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * })
      */
-    private $Parent;
+    protected $Parent;
 
-    /**
-     * Set parent.
-     *
-     * @param ProductListMax $parent
-     * @return self
-     */
-    public function setParent(ProductListMax $parent): self
+    public function getParentClass(): string
     {
-        $this->Parent = $parent;
-
-        return $this;
-    }
-
-    /**
-     * Get parent.
-     *
-     * @return ProductListMax
-     */
-    public function getParent(): ProductListMax
-    {
-        return $this->Parent;
+        return ProductListMax::class;
     }
 }

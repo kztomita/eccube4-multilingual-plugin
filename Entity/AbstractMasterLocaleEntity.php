@@ -4,6 +4,7 @@ namespace Plugin\MultiLingual\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\MappedSuperclass;
+use Eccube\Entity\AbstractEntity;
 
 /**
  * 各Localeでのテキスト情報を格納するEntityの基底クラス。
@@ -12,7 +13,7 @@ use Doctrine\ORM\Mapping\MappedSuperclass;
  *
  * @MappedSuperclass
  */
-class AbstractMasterLocaleEntity extends AbstractLocaleEntity
+abstract class AbstractMasterLocaleEntity extends AbstractLocaleEntity
 {
     /**
      * @var int
@@ -29,6 +30,8 @@ class AbstractMasterLocaleEntity extends AbstractLocaleEntity
      * @ORM\Column(name="parent_id", type="smallint", options={"unsigned":true})
      */
     protected $parent_id;
+
+    /* $Parentの型は具象クラスによって異なるので、サブクラスで宣言する。 */
 
     /**
      * @var string
@@ -67,6 +70,41 @@ class AbstractMasterLocaleEntity extends AbstractLocaleEntity
     public function getParentId(): int
     {
         return $this->parent_id;
+    }
+
+    /**
+     * $Parentのクラス名を返す。
+     *
+     * @return string
+     */
+    abstract public function getParentClass(): string;
+
+    /**
+     * Set parent.
+     *
+     * @param AbstractEntity $parent
+     * @return self
+     */
+    public function setParent(AbstractEntity $parent): self
+    {
+        $parentClass = $this->getParentClass();
+        if (!($parent instanceof $parentClass)) {
+            throw new \InvalidArgumentException('$parent is not ' .$parentClass);
+        }
+
+        $this->Parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get parent.
+     *
+     * @return AbstractEntity
+     */
+    public function getParent(): AbstractEntity
+    {
+        return $this->Parent;
     }
 
     /**

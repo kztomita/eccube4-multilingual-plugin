@@ -22,28 +22,10 @@ class LocaleProductListOrderBy extends AbstractMasterLocaleEntity
      *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * })
      */
-    private $Parent;
+    protected $Parent;
 
-    /**
-     * Set parent.
-     *
-     * @param ProductListOrderBy $parent
-     * @return self
-     */
-    public function setParent(ProductListOrderBy $parent): self
+    public function getParentClass(): string
     {
-        $this->Parent = $parent;
-
-        return $this;
-    }
-
-    /**
-     * Get parent.
-     *
-     * @return ProductListOrderBy
-     */
-    public function getParent(): ProductListOrderBy
-    {
-        return $this->Parent;
+        return ProductListOrderBy::class;
     }
 }

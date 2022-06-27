@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping\MappedSuperclass;
  *
  * @MappedSuperclass
  */
-class AbstractDataLocaleEntity extends AbstractLocaleEntity
+abstract class AbstractDataLocaleEntity extends AbstractLocaleEntity
 {
     /**
      * @var int
