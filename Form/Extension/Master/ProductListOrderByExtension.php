@@ -2,9 +2,6 @@
 
 namespace Plugin\MultiLingual\Form\Extension\Master;
 
-use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\EntityRepository;
-use Eccube\Common\EccubeConfig;
 use Eccube\Form\Type\Master\ProductListOrderByType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\OptionsResolver\OptionsResolver;
