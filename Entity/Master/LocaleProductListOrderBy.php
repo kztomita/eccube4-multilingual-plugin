@@ -52,9 +52,9 @@ class LocaleProductListOrderBy extends AbstractMasterLocaleEntity
      * Set parent.
      *
      * @param ProductListOrderBy $parent
-     * @return LocaleProductListOrderBy
+     * @return self
      */
-    public function setParent(ProductListOrderBy $parent): LocaleProductListOrderBy
+    public function setParent(ProductListOrderBy $parent): self
     {
         $this->Parent = $parent;
 
@@ -76,9 +76,9 @@ class LocaleProductListOrderBy extends AbstractMasterLocaleEntity
      *
      * @param string $name
      *
-     * @return LocaleProductListOrderBy
+     * @return self
      */
-    public function setName(string $name): LocaleProductListOrderBy
+    public function setName(string $name): self
     {
         $this->name = $name;
 

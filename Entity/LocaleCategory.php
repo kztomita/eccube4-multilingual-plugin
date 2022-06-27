@@ -52,9 +52,9 @@ class LocaleCategory extends AbstractDataLocaleEntity
      *
      * @param Category $category
      *
-     * @return LocaleCategory
+     * @return self
      */
-    public function setCategory(Category $category): LocaleCategory
+    public function setCategory(Category $category): self
     {
         $this->Category = $category;
 
@@ -76,9 +76,9 @@ class LocaleCategory extends AbstractDataLocaleEntity
      *
      * @param string $name
      *
-     * @return LocaleCategory
+     * @return self
      */
-    public function setName(string $name): LocaleCategory
+    public function setName(string $name): self
     {
         $this->name = $name;
 

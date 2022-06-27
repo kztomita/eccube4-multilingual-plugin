@@ -73,9 +73,9 @@ class LocaleProduct extends AbstractDataLocaleEntity
      *
      * @param Product $product
      *
-     * @return LocaleProduct
+     * @return self
      */
-    public function setProduct(Product $product): LocaleProduct
+    public function setProduct(Product $product): self
     {
         $this->Product = $product;
 
@@ -97,9 +97,9 @@ class LocaleProduct extends AbstractDataLocaleEntity
      *
      * @param string $name
      *
-     * @return LocaleProduct
+     * @return self
      */
-    public function setName(string $name): LocaleProduct
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -121,9 +121,9 @@ class LocaleProduct extends AbstractDataLocaleEntity
      *
      * @param string|null $text
      *
-     * @return LocaleProduct
+     * @return self
      */
-    public function setDescriptionList(?string $text): LocaleProduct
+    public function setDescriptionList(?string $text): self
     {
         $this->description_list = $text;
 
@@ -145,9 +145,9 @@ class LocaleProduct extends AbstractDataLocaleEntity
      *
      * @param string|null $text
      *
-     * @return LocaleProduct
+     * @return self
      */
-    public function setDescriptionDetail(?string $text): LocaleProduct
+    public function setDescriptionDetail(?string $text): self
     {
         $this->description_detail = $text;
 
@@ -169,9 +169,9 @@ class LocaleProduct extends AbstractDataLocaleEntity
      *
      * @param string|null $freeArea
      *
-     * @return LocaleProduct
+     * @return self
      */
-    public function setFreeArea(?string $freeArea = null): LocaleProduct
+    public function setFreeArea(?string $freeArea = null): self
     {
         $this->free_area = $freeArea;
 
