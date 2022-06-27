@@ -27,7 +27,7 @@ file that was distributed with this source code.
             <div class="ec-favoriteRole">
                 {% if pagination.totalItemCount > 0 %}
                     <div class="ec-favoriteRole__header">
-                        <p>{{ '%count%件のお気に入りがあります'|trans({'%count%':pagination.totalItemCount}) }}</p>
+                        <p>{{ 'front.mypage.favorite_count'|trans({'%count%':pagination.totalItemCount}) }}</p>
                     </div>
                     <div class="ec-favoriteRole__detail">
                         <ul class="ec-favoriteRole__itemList">
@@ -46,7 +46,7 @@ file that was distributed with this source code.
                                             <img src="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}">
                                         </p>
                                     </a>
-                                    <p class="ec-favoriteRole__itemTitle">{{ Product.name }}</p>
+                                    <p class="ec-favoriteRole__itemTitle">{{ locale_field(Product, 'name') }}</p>
                                     <p class="ec-favoriteRole__itemPrice">
                                         {% if Product.price02_inc_tax_min == Product.price02_inc_tax_max %}
                                             {{ Product.price02_inc_tax_min|price }}
