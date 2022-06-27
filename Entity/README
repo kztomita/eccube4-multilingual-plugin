@@ -24,4 +24,5 @@ Masterテーブル(mtb_)のLocaleクラスは以下の要求を満たすこと
 - AbstractMasterLocaleEntityを継承する
   - id(smallint),parent_id(smallint),nameカラムを持つ
   - localeカラムを持つ (AbstractLocaleEntity)
-- 親Entityへのrelationプロパティとメソッドを持つ($DeviceType,...)
+  - getParentClass()を実装する
+- 親Entityへのrelationプロパティ($Parent)を宣言する
