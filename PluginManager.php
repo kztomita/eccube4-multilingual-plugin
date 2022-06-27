@@ -305,6 +305,8 @@ class PluginManager extends AbstractPluginManager
         $eccubeConfig = $container->get(EccubeConfig::class);
         $locales = $eccubeConfig['multi_lingual_locales'];
 
+        $translates = $this->loadSetupFile('initial_data.php')['category']['translates'];
+
         /** @var Category[] $categories */
         $categories = $em->getRepository(Category::class)->findAll();
 
@@ -321,7 +323,14 @@ class PluginManager extends AbstractPluginManager
                 }
                 $lc = new LocaleCategory();
                 $lc->setCategory($category);
-                $lc->setName($category->getName());
+                // 翻訳データがあれば登録
+                $name = $category->getName();
+                if (isset($translates[$name]) &&
+                    isset($translates[$name][$locale])) {
+                    $lc->setName($translates[$name][$locale]);
+                } else {
+                    $lc->setName($name);
+                }
                 $lc->setLocale($locale);
                 $em->persist($lc);
                 $em->flush();
@@ -345,6 +354,8 @@ class PluginManager extends AbstractPluginManager
         $eccubeConfig = $container->get(EccubeConfig::class);
         $locales = $eccubeConfig['multi_lingual_locales'];
 
+        $translates = $this->loadSetupFile('initial_data.php')['product']['translates'];
+
         /** @var Product[] $products */
         $products = $em->getRepository(Product::class)->findAll();
 
@@ -362,7 +373,14 @@ class PluginManager extends AbstractPluginManager
                 $lp = new LocaleProduct();
                 $lp->setParentId($product->getId());
                 $lp->setProduct($product);
-                $lp->setName($product->getName());
+                // 翻訳データがあれば登録
+                $name = $product->getName();
+                if (isset($translates[$name]) &&
+                    isset($translates[$name][$locale])) {
+                    $lp->setName($translates[$name][$locale]);
+                } else {
+                    $lp->setName($name);
+                }
                 $lp->setDescriptionDetail($product->getDescriptionDetail());
                 $lp->setDescriptionList($product->getDescriptionList());
                 $lp->setLocale($locale);
