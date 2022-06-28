@@ -115,11 +115,22 @@ return [
                 'file_name' => 'Contact/complete',
                 'edit_type' => Page::EDIT_TYPE_DEFAULT,
             ],
-
+            [
+                'name'  => '会員登録(入力ページ) - Locale',
+                'url'   => 'entry_locale',
+                'file_name' => 'Entry/index',
+                'edit_type' => Page::EDIT_TYPE_DEFAULT,
+            ],
             [
                 'name'  => 'ご利用規約 - Locale',
                 'url'   => 'help_agreement_locale',
                 'file_name' => 'Help/agreement',
+                'edit_type' => Page::EDIT_TYPE_DEFAULT,
+            ],
+            [
+                'name'  => '会員登録(完了ページ) - Locale',
+                'url'   => 'entry_complete_locale',
+                'file_name' => 'Entry/complete',
                 'edit_type' => Page::EDIT_TYPE_DEFAULT,
             ],
             [
