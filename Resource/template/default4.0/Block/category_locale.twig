@@ -10,26 +10,25 @@ file that was distributed with this source code.
 #}
 
 <div class="ec-categoryRole">
-##{{ app.request.locale }}
     <div class="ec-role">
         <div class="ec-secHeading">
-            <span class="ec-secHeading__en">{{ 'CATEGORY'|trans }}</span>
+            <span class="ec-secHeading__en">{{ 'front.block.category.category__en'|trans }}</span>
             <span class="ec-secHeading__line"></span>
-            <span class="ec-secHeading__ja">{{ 'カテゴリ'|trans }}</span>
+            <span class="ec-secHeading__ja">{{ 'front.block.category.category__ja'|trans }}</span>
         </div>
         <div class="ec-categoryRole__list">
             <div class="ec-categoryRole__listItem">
-                <a href="{{ url('product_list') }}?category_id=2">
+                <a href="{{ locale_url('product_list_locale') }}?category_id=2">
                     <img src="{{ asset('assets/img/top/fpo_355x150.png') }}">
                 </a>
             </div>
             <div class="ec-categoryRole__listItem">
-                <a href="{{ url('product_list') }}?category_id=1">
+                <a href="{{ locale_url('product_list_locale') }}?category_id=1">
                     <img src="{{ asset('assets/img/top/fpo_355x150.png') }}">
                 </a>
             </div>
             <div class="ec-categoryRole__listItem">
-                <a href="{{ url('product_list') }}?category_id=5">
+                <a href="{{ locale_url('product_list_locale') }}?category_id=5">
                     <img src="{{ asset('assets/img/top/fpo_355x150.png') }}">
                 </a>
             </div>
