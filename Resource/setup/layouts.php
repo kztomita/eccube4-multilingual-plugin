@@ -140,6 +140,12 @@ return [
                 'edit_type' => Page::EDIT_TYPE_DEFAULT,
             ],
             [
+                'name'  => '本会員登録(完了ページ) - Locale',
+                'url'   => 'entry_activate_locale',
+                'file_name' => 'Entry/activate',
+                'edit_type' => Page::EDIT_TYPE_DEFAULT,
+            ],
+            [
                 'name'  => 'プライバシーポリシー - Locale',
                 'url'   => 'help_privacy_locale',
                 'file_name' => 'Help/privacy',
