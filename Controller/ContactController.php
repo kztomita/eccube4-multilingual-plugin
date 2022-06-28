@@ -41,7 +41,6 @@ class ContactController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            error_log('submitted');
             // 確認ページは直接Responseを返してくるのでここで横取りして処理する。
             if ($request->get('mode') == 'confirm') {
                 error_log('confirm');
