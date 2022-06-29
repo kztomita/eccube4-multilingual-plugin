@@ -21,6 +21,13 @@ Localeページ用のブロックを作成。
 
 [プラグインのインストールの他に必要な作業]
 app/config/eccube/packages/security.yamlの編集
+	localeごとのfirewallの追加
+	firewallにはcontext: customerも指定する。
+	context指定がないと、enでloginしてもjpではログインしていない状態になる
+
+	参考
+	https://symfony.com/doc/current/security.html#frequently-asked-questions
+	https://symfony.com/doc/current/reference/configuration/security.html#reference-security-firewall-context
 
 src/Eccube/Doctrine/ORM/Mapping/Driver/AnnotationDriver.php
 を不具合修正版に差し替え。
