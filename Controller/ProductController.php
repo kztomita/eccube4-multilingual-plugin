@@ -57,4 +57,37 @@ class ProductController extends AbstractController
             func_get_args()
         );
     }
+
+    /**
+     * @Route("/{_locale}/products/add_favorite/{id}", name="product_add_favorite_locale", requirements={"id" = "\d+"})
+     *
+     * テンプレートの存在しないrouteでも、コントローラ内でメッセージが生成される
+     * 場合があるので、localeを切り替えるためにrouteを用意する。
+     */
+    public function addFavorite(Request $request, Product $Product)
+    {
+        $this->testLocale($request);
+
+        return $this->invokeController(
+            $request,
+            $this->controller,
+            __FUNCTION__,
+            func_get_args()
+        );
+    }
+
+    /**
+     * @Route("/{_locale}/products/add_cart/{id}", name="product_add_cart_locale", methods={"POST"}, requirements={"id" = "\d+"})
+     */
+    public function addCart(Request $request, Product $Product)
+    {
+        $this->testLocale($request);
+
+        return $this->invokeController(
+            $request,
+            $this->controller,
+            __FUNCTION__,
+            func_get_args()
+        );
+    }
 }

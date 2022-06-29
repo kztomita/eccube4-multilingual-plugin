@@ -175,7 +175,7 @@ file that was distributed with this source code.
 
                             {% if Product.stock_find %}
                                 {% set form = forms[Product.id] %}
-                                <form name="form{{ Product.id }}" id="productForm{{ Product.id }}" action="{{ url('product_add_cart', {id:Product.id}) }}" method="post">
+                                <form name="form{{ Product.id }}" id="productForm{{ Product.id }}" action="{{ locale_url('product_add_cart_locale', {id:Product.id}) }}" method="post">
                                     <div class="ec-productRole__actions">
                                         {% if form.classcategory_id1 is defined %}
                                             <div class="ec-select">
