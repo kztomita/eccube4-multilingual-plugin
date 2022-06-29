@@ -26,9 +26,8 @@ class CartController extends AbstractController
     /**
      * @Route("/{_locale}/cart", name="cart_locale")
      * @Template("@MultiLingual/default/Cart/index.twig")
-
      */
-    public function login(Request $request)
+    public function index(Request $request)
     {
         $this->testLocale($request);
 
