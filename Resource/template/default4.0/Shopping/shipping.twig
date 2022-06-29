@@ -22,7 +22,7 @@ file that was distributed with this source code.
             <div class="ec-off1Grid__cell">
                 <div class="ec-addressRole">
                     {% if Customer.CustomerAddresses|length < eccube_config.eccube_deliv_addr_max %}
-                        <div class="ec-addressRole__actions"><a class="ec-inlineBtn" href="{{ url('shopping_shipping_edit', {'id': shippingId}) }}">{{ 'ront.shopping.shipping_add_new_shipping'|trans }}</a></div>
+                        <div class="ec-addressRole__actions"><a class="ec-inlineBtn" href="{{ locale_url('shopping_shipping_edit_locale', {'id': shippingId}) }}">{{ 'ront.shopping.shipping_add_new_shipping'|trans }}</a></div>
                     {% else %}
                         <div class="ec-alert-warning">
                             <div class="ec-alert-warning__text">
@@ -41,7 +41,7 @@ file that was distributed with this source code.
                     {% endif %}
                 </div>
 
-                <form method="post" action="{{ url('shopping_shipping', {'id': shippingId}) }}">
+                <form method="post" action="{{ locale_url('shopping_shipping_locale', {'id': shippingId}) }}">
                     {{ form_widget(form._token) }}
                     <div class="ec-addressList">
                         {% for choice in form.addresses.vars.choices %}
@@ -64,7 +64,7 @@ file that was distributed with this source code.
                         <div class="ec-off4Grid">
                             <div class="ec-off4Grid__cell">
                                 <button type="submit" class="ec-blockBtn--action">{{ 'front.shopping.shipping_send_selected_shipping'|trans }}</button>
-                                <a class="ec-blockBtn--cancel" href="{{ url('shopping') }}">{{ 'common.back'|trans }}</a>
+                                <a class="ec-blockBtn--cancel" href="{{ locale_url('shopping_locale') }}">{{ 'common.back'|trans }}</a>
                             </div>
                         </div>
                     </div>
