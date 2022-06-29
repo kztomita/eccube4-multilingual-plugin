@@ -98,7 +98,6 @@ file that was distributed with this source code.
 {% endblock %}
 
 {% block main %}
-XXXXX{{ app.request.locale }}
     {% if search_form.category_id.vars.errors|length > 0 %}
         <div class="ec-searchnavRole">
             <p class="errormsg text-danger">{{ 'ご指定のカテゴリは存在しません'|trans }}</p>
@@ -221,7 +220,7 @@ XXXXX{{ app.request.locale }}
                         <div class="ec-modal-box">
                             <div class="ec-role">
                                 <span class="ec-inlineBtn--cancel">{{ 'front.product.continue'|trans }}</span>
-                                <a href="{{ url('cart') }}" class="ec-inlineBtn--action">{{ 'front.block.cart.go_to_cart'|trans }}</a>
+                                <a href="{{ locale_url('cart_locale') }}" class="ec-inlineBtn--action">{{ 'front.block.cart.go_to_cart'|trans }}</a>
                             </div>
                         </div>
                     </div>
