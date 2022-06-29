@@ -191,7 +191,7 @@ file that was distributed with this source code.
 
                     // カートブロックを更新する
                     $.ajax({
-                        url: "{{ url('block_cart') }}",
+                        url: "{{ locale_url('block_cart_locale') }}",
                         type: 'GET',
                         dataType: 'html'
                     }).done(function(html) {
@@ -233,7 +233,7 @@ file that was distributed with this source code.
         {% endif %}
         "offers": {
             "@type": "Offer",
-            "url": "{{ url('product_detail', {'id': Product.id}) }}",
+            "url": "{{ locale_url('product_detail_locale', {'id': Product.id}) }}",
             "priceCurrency": "{{ eccube_config.currency }}",
             "price": {{ Product.getPrice02IncTaxMin }},
             "availability": "{{ Product.stock_find ? "InStock" : "OutOfStock" }}"
@@ -334,7 +334,7 @@ file that was distributed with this source code.
                             {% endfor %}
                         </div>
                     {% endif %}
-                    <form action="{{ url('product_add_cart', {id:Product.id}) }}" method="post" id="form1" name="form1">
+                    <form action="{{ locale_url('product_add_cart_locale', {id:Product.id}) }}" method="post" id="form1" name="form1">
                         {% if Product.stock_find %}
                             <div class="ec-productRole__actions">
                                 {% if form.classcategory_id1 is defined %}
@@ -377,14 +377,14 @@ file that was distributed with this source code.
                                 <div class="ec-modal-box">
                                     <div class="ec-role">
                                         <span class="ec-inlineBtn--cancel">{{ 'front.product.continue'|trans }}</span>
-                                        <a href="{{ url('cart') }}" class="ec-inlineBtn--action">{{ 'front.block.cart.go_to_cart'|trans }}</a>
+                                        <a href="{{ locale_url('cart_locale') }}" class="ec-inlineBtn--action">{{ 'front.block.cart.go_to_cart'|trans }}</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     {% if BaseInfo.option_favorite_product %}
-                        <form action="{{ url('product_add_favorite', {id:Product.id}) }}" method="post">
+                        <form action="{{ locale_url('product_add_favorite_locale', {id:Product.id}) }}" method="post">
                             <div class="ec-productRole__btn">
                                 {% if is_favorite == false %}
                                     <button type="submit" id="favorite" class="ec-blockBtn--cancel">
