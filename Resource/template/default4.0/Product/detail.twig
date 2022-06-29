@@ -191,7 +191,7 @@ file that was distributed with this source code.
 
                     // カートブロックを更新する
                     $.ajax({
-                        url: "{{ locale_url('block_cart_locale') }}",
+                        url: "{{ url('block_cart') }}",
                         type: 'GET',
                         dataType: 'html'
                     }).done(function(html) {
