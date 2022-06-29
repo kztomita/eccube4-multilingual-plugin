@@ -31,7 +31,7 @@ class ShoppingController extends AbstractController
      * @Route("/{_locale}/shopping", name="shopping_locale")
      * @Template("@MultiLingual/default/Shopping/index.twig")
      */
-    public function index(PurchaseFlow $cartPurchaseFlow)
+    public function index(Request $request, PurchaseFlow $cartPurchaseFlow)
     {
         $this->testLocale($request);
 
@@ -39,7 +39,7 @@ class ShoppingController extends AbstractController
             $request,
             $this->controller,
             __FUNCTION__,
-            func_get_args()
+            [$cartPurchaseFlow]
         );
     }
 
