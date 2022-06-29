@@ -24,7 +24,7 @@ class ShippingMultipleController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/shopping/shipping_multiple", name="shopping_shipping_multiple_default")
+     * @Route("/{_locale}/shopping/shipping_multiple", name="shopping_shipping_multiple_locale")
      * @Template("@MultiLingual/default/Shopping/shipping_multiple.twig")
      */
     public function index(Request $request)
