@@ -3,3 +3,5 @@
 カテゴリのCSV import/exportは未対応。
 
 新着情報
+
+本体のcontrollerのsignatureが変わるとplugin側も直す必要がある。
