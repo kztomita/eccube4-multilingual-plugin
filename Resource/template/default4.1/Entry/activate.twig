@@ -28,7 +28,7 @@ file that was distributed with this source code.
                 <div class="ec-off4Grid">
                     <div class="ec-off4Grid__cell">
                         {% if qtyInCart %}
-                            <a class="ec-blockBtn--action" style="margin-bottom: 3px" href="{{ url('cart') }}">{{ 'front.block.cart.go_to_cart'|trans }}</a>
+                            <a class="ec-blockBtn--action" style="margin-bottom: 3px" href="{{ locale_url('cart_locale') }}">{{ 'front.block.cart.go_to_cart'|trans }}</a>
                         {% endif %}
                         <a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{ 'common.go_to_top'|trans }}</a>
                     </div>

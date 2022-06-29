@@ -38,5 +38,43 @@ class CartController extends AbstractController
             func_get_args()
         );
     }
+
+    /**
+     * @Route(
+     *     path="/{_locale}/cart/{operation}/{productClassId}",
+     *     name="cart_handle_item_locale",
+     *     methods={"PUT"},
+     *     requirements={
+     *          "operation": "up|down|remove",
+     *          "productClassId": "\d+"
+     *     }
+     * )
+     */
+    public function handleCartItem(Request $request, $operation, $productClassId)
+    {
+        $this->testLocale($request);
+
+        return $this->invokeController(
+            $request,
+            $this->controller,
+            __FUNCTION__,
+            [$operation, $productClassId]
+        );
+    }
+
+    /**
+     * @Route("/{_locale}/cart/buystep/{cart_key}", name="cart_buystep_locale", requirements={"cart_key" = "[a-zA-Z0-9]+[_][\x20-\x7E]+"})
+     */
+    public function buystep(Request $request, $cart_key)
+    {
+        $this->testLocale($request);
+
+        return $this->invokeController(
+            $request,
+            $this->controller,
+            __FUNCTION__,
+            func_get_args()
+        );
+    }
     // TODO その他のメソッド
 }

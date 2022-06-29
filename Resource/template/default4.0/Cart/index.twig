@@ -100,7 +100,7 @@ file that was distributed with this source code.
                 </div>
             {% endif %}
 
-            <form name="form" id="form_cart" class="ec-cartRole" method="post" action="{{ url('cart') }}">
+            <form name="form" id="form_cart" class="ec-cartRole" method="post" action="{{ locale_url('cart_locale') }}">
 
                 {% for CartIndex,Cart in Carts %}
                     {% set cartKey = Cart.cart_key %}
@@ -128,19 +128,19 @@ file that was distributed with this source code.
                                 {% set Product = ProductClass.Product %}
                                 <ul class="ec-cartRow">
                                     <li class="ec-cartRow__delColumn">
-                                        <a href="{{ url('cart_handle_item', {'operation': 'remove', 'productClassId': ProductClass.id }) }}" {{ csrf_token_for_anchor() }} class="ec-icon" data-method="put" data-message="{{ 'front.cart.delete__confirm'|trans }}">
+                                        <a href="{{ locale_url('cart_handle_item_locale', {'operation': 'remove', 'productClassId': ProductClass.id }) }}" {{ csrf_token_for_anchor() }} class="ec-icon" data-method="put" data-message="{{ 'front.cart.delete__confirm'|trans }}">
                                             <img src="{{ asset('assets/icon/cross.svg') }}" alt="delete">
                                         </a>
                                     </li>
                                     <li class="ec-cartRow__contentColumn">
                                         <div class="ec-cartRow__img">
-                                            <a target="_blank" href="{{ url('product_detail', {id : Product.id} ) }}">
+                                            <a target="_blank" href="{{ locale_url('product_detail_locale', {id : Product.id} ) }}">
                                                 <img src="{{ asset(Product.MainListImage|no_image_product, 'save_image') }}" alt="{{ locale_field(Product, 'name') }}"/>
                                             </a>
                                         </div>
                                         <div class="ec-cartRow__summary">
                                             <div class="ec-cartRow__name">
-                                                <a target="_blank" href="{{ url('product_detail', {id : Product.id} ) }}">{{ locale_field(Product, 'name') }}</a>
+                                                <a target="_blank" href="{{ locale_url('product_detail_locale', {id : Product.id} ) }}">{{ locale_field(Product, 'name') }}</a>
                                                 {% if ProductClass.ClassCategory1 and ProductClass.ClassCategory1.id %}
                                                     <br>{{ ProductClass.ClassCategory1.ClassName.name }}：{{ ProductClass.ClassCategory1 }}
                                                 {% endif %}
@@ -157,7 +157,7 @@ file that was distributed with this source code.
                                         <div class="ec-cartRow__amountSP">{{ 'common.quantity：'|trans }}{{ CartItem.quantity|number_format }}</div>
                                         <div class="ec-cartRow__amountUpDown">
                                             {% if CartItem.quantity > 1 %}
-                                                <a href="{{ url('cart_handle_item', {'operation': 'down', 'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} class="ec-cartRow__amountDownButton load-overlay" data-method="put" data-confirm="false">
+                                                <a href="{{ locale_url('cart_handle_item_locale', {'operation': 'down', 'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} class="ec-cartRow__amountDownButton load-overlay" data-method="put" data-confirm="false">
                                                     <span class="ec-cartRow__amountDownButton__icon"><img src="{{ asset('assets/icon/minus-dark.svg') }}" alt="reduce"></span>
                                                 </a>
                                             {% else %}
@@ -165,7 +165,7 @@ file that was distributed with this source code.
                                                     <span class="ec-cartRow__amountDownButton__icon"><img src="{{ asset('assets/icon/minus.svg') }}" alt="reduce"></span>
                                                 </div>
                                             {% endif %}
-                                            <a href="{{ url('cart_handle_item', {'operation': 'up', 'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} class="ec-cartRow__amountUpButton load-overlay" data-method="put" data-confirm="false">
+                                            <a href="{{ locale_url('cart_handle_item_locale', {'operation': 'up', 'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} class="ec-cartRow__amountUpButton load-overlay" data-method="put" data-confirm="false">
                                                 <span class="ec-cartRow__amountUpButton__icon"><img src="{{ asset('assets/icon/plus-dark.svg') }}" alt="increase"></span>
                                             </a>
                                         </div>
@@ -204,7 +204,7 @@ file that was distributed with this source code.
                     <div class="ec-cartRole__actions">
                         <div class="ec-cartRole__total">{{ 'common.total__with_separator'|trans }}<span class="ec-cartRole__totalAmount">{{ Cart.totalPrice|price }}</span>
                         </div>
-                        <a class="ec-blockBtn--action" href="{{ path('cart_buystep', {'cart_key':cartKey}) }}">{{ 'front.cart.checkout'|trans }}</a>
+                        <a class="ec-blockBtn--action" href="{{ locale_path('cart_buystep_locale', {'cart_key':cartKey}) }}">{{ 'front.cart.checkout'|trans }}</a>
                         {% if loop.last %}
                             <a class="ec-blockBtn--cancel" href="{{ locale_path('homepage_locale') }}">{{ 'front.cart.continue'|trans }}</a>
                         {% endif %}
