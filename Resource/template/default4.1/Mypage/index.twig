@@ -24,7 +24,7 @@ file that was distributed with this source code.
         </div>
         <div class="ec-mypageRole">
             {% if pagination.totalItemCount > 0 %}
-                <p class="ec-para-normal">{{ '%count%件の履歴があります'|trans({'%count%':pagination.totalItemCount}) }}</p>
+                <p class="ec-para-normal">{{ 'front.mypage.history_count'|trans({'%count%':pagination.totalItemCount}) }}</p>
                 {% for Order in pagination %}
                     <div class="ec-historyRole">
                         <div class="ec-historyRole__contents">
@@ -33,17 +33,17 @@ file that was distributed with this source code.
                                 <div class="ec-historyListHeader">
                                     <p class="ec-historyListHeader__date">{{ Order.order_date|date_sec }}</p>
                                     <dl class="ec-definitions">
-                                        <dt>{{ 'ご注文番号'|trans }}</dt>
+                                        <dt>{{ 'front.mypage.order_no'|trans }}</dt>
                                         <dd>{{ Order.order_no }}</dd>
                                     </dl>
                                     {% if (BaseInfo.option_mypage_order_status_display) %}
                                         <dl class="ec-definitions">
-                                            <dt>{{ 'ご注文状況'|trans }}</dt>
+                                            <dt>{{ 'front.mypage.order_status'|trans }}</dt>
                                             <dd>{{ Order.CustomerOrderStatus }}</dd>
                                         </dl>
                                     {% endif %}
                                     <p class="ec-historyListHeader__action"><a class="ec-inlineBtn"
-                                                                               href="{{ url('mypage_history', {'order_no': Order.order_no}) }}">{{ '詳細を見る'|trans }}</a>
+                                                                               href="{{ locale_url('mypage_history_locale', {'order_no': Order.order_no}) }}">{{ 'front.mypage.view_detail'|trans }}</a>
                                     </p>
                                 </div>
                             </div>
