@@ -76,5 +76,4 @@ class CartController extends AbstractController
             func_get_args()
         );
     }
-    // TODO その他のメソッド
 }
