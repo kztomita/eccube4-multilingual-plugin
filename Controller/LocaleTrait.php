@@ -15,7 +15,7 @@ trait LocaleTrait
      *
      * @param Request $request
      */
-    public function testLocale(Request $request)
+    protected function testLocale(Request $request)
     {
         $locales = $this->eccubeConfig['multi_lingual_locales'];
 
@@ -39,7 +39,7 @@ trait LocaleTrait
      * @param array $args
      * @return mixed|RedirectResponse
      */
-   public function invokeController(Request $request, AbstractController $controller, string $method, array $args)
+   protected function invokeController(Request $request, AbstractController $controller, string $method, array $args)
    {
        $controller->setContainer($this->container);
 
