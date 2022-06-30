@@ -50,6 +50,10 @@ trait LocaleTrait
            /** @var Router $router */
            $router = $this->get('router');
            try {
+               // match(),matchRequest()は現在のリクエストのMethodを使うので、
+               // 元のリクエストがPOSTだった場合、MethodNotAllowedException
+               // になることがある。このため、ここでMethodを指定しておく。
+               $router->getContext()->setMethod('GET');
                $route = $router->match($localeUrl)['_route'];
                //error_log($route);
            } catch (\Exception $e) {
