@@ -22,7 +22,7 @@ file that was distributed with this source code.
             <div class="ec-off1Grid__cell">
                 <div class="ec-addressRole">
                     {% if Customer.CustomerAddresses|length < eccube_config.eccube_deliv_addr_max %}
-                        <div class="ec-addressRole__actions"><a class="ec-inlineBtn" href="{{ locale_url('shopping_shipping_edit_locale', {'id': shippingId}) }}">{{ 'ront.shopping.shipping_add_new_shipping'|trans }}</a></div>
+                        <div class="ec-addressRole__actions"><a class="ec-inlineBtn" href="{{ locale_url('shopping_shipping_edit_locale', {'id': shippingId}) }}">{{ 'front.shopping.shipping_add_new_shipping'|trans }}</a></div>
                     {% else %}
                         <div class="ec-alert-warning">
                             <div class="ec-alert-warning__text">
