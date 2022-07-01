@@ -1,0 +1,6 @@
+Locale毎に必要な翻訳
+
+messages.ja.yaml
+validators.ja.yaml
+Resource/setup/master_locales.php
+メールテンプレート
