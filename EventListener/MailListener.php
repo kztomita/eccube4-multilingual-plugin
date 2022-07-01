@@ -96,7 +96,7 @@ class MailListener implements EventSubscriberInterface
     }
 
     /**
-     * HTMLメールは対応しないのでaddPart()されたものがあれば削除
+     * HTMLメールがあれば削除
      *
      * @param \Swift_Message $message
      * @return void
@@ -113,6 +113,18 @@ class MailListener implements EventSubscriberInterface
             return true;
         });
         $message->setChildren($children);
+    }
+
+    private function updateMessage(\Swift_Message $message, string $subject, string $body): void
+    {
+        // TODO from名の変更
+        $message
+            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$subject)
+            ->setFrom([$this->BaseInfo->getEmail03() => $this->BaseInfo->getShopName()])
+            ->setBody($body, 'text/plain');
+
+        // HTMLメールは対応しないのでaddPart()されたものがあれば削除
+        $this->stripHtmlMail($message);
     }
 
     public function onSendMailContact(EventArgs $event): void
@@ -141,13 +153,7 @@ class MailListener implements EventSubscriberInterface
             'BaseInfo' => $this->BaseInfo,
         ]);
 
-        // TODO from書き換え
-
-        $message
-            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$localeTemplate['subject'])
-            ->setBody($body, 'text/plain');
-
-        $this->stripHtmlMail($message);
+        $this->updateMessage($message, $localeTemplate['subject'], $body);
     }
 
     public function onSendMailPasswordReset(EventArgs $event): void
@@ -181,14 +187,9 @@ class MailListener implements EventSubscriberInterface
             'reset_url' => $reset_url,
         ]);
 
-        // TODO from書き換え
         // TODO reset urlの書き換え
 
-        $message
-            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$localeTemplate['subject'])
-            ->setBody($body, 'text/plain');
-
-        $this->stripHtmlMail($message);
+        $this->updateMessage($message, $localeTemplate['subject'], $body);
     }
 
     public function onSendMailPasswordResetComplete(EventArgs $event): void
