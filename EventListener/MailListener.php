@@ -11,6 +11,7 @@ use Eccube\Event\EventArgs;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\MailTemplateRepository;
 use Plugin\MultiLingual\Common\LocaleHelper;
+use Swift_MimePart;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class MailListener implements EventSubscriberInterface
@@ -55,7 +56,9 @@ class MailListener implements EventSubscriberInterface
             EccubeEvents::MAIL_CUSTOMER_CONFIRM => '',
             EccubeEvents::MAIL_CUSTOMER_COMPLETE => '',
             EccubeEvents::MAIL_CUSTOMER_WITHDRAW => '',
-            EccubeEvents::MAIL_CONTACT => '',
+            */
+            EccubeEvents::MAIL_CONTACT => 'onSendMailContact',
+            /*
             EccubeEvents::MAIL_ORDER => '',
             EccubeEvents::MAIL_ADMIN_CUSTOMER_CONFIRM => '',
             EccubeEvents::MAIL_ADMIN_ORDER => '',
@@ -92,6 +95,61 @@ class MailListener implements EventSubscriberInterface
         return $localeTemplate;
     }
 
+    /**
+     * HTMLメールは対応しないのでaddPart()されたものがあれば削除
+     *
+     * @param \Swift_Message $message
+     * @return void
+     */
+    private function stripHtmlMail(\Swift_Message $message): void
+    {
+        $children = $message->getChildren();
+        $children = array_filter($children, function ($var) {
+            if ($var instanceof Swift_MimePart) {
+                if ($var->getContentType() == 'text/html') {
+                    return false;
+                }
+            }
+            return true;
+        });
+        $message->setChildren($children);
+    }
+
+    public function onSendMailContact(EventArgs $event): void
+    {
+        $locale = LocaleHelper::getCurrentRequestLocale();
+
+        if (!in_array($locale, $this->eccubeConfig['multi_lingual_locales'])) {
+            return;
+        }
+
+        /** @var MailTemplate $MailTemplate */
+        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_contact_mail_template_id']);
+
+        $localeTemplate = $this->findLocaleTemplate($MailTemplate->getFileName(), $locale);
+        if (!$localeTemplate) {
+            return;
+        }
+
+        /** @var \Swift_Message $message */
+        $message = $event->getArgument('message');
+
+        $formData = $event->getArgument('formData');
+
+        $body = $this->twig->render($localeTemplate['template'], [
+            'data' => $formData,
+            'BaseInfo' => $this->BaseInfo,
+        ]);
+
+        // TODO from書き換え
+
+        $message
+            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$localeTemplate['subject'])
+            ->setBody($body, 'text/plain');
+
+        $this->stripHtmlMail($message);
+    }
+
     public function onSendMailPasswordReset(EventArgs $event): void
     {
         $locale = LocaleHelper::getCurrentRequestLocale();
@@ -125,11 +183,12 @@ class MailListener implements EventSubscriberInterface
 
         // TODO from書き換え
         // TODO reset urlの書き換え
-        // TODO addPart()されたものの削除が必要
 
         $message
             ->setSubject('['.$this->BaseInfo->getShopName().'] '.$localeTemplate['subject'])
             ->setBody($body, 'text/plain');
+
+        $this->stripHtmlMail($message);
     }
 
     public function onSendMailPasswordResetComplete(EventArgs $event): void
