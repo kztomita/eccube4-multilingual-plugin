@@ -51,7 +51,19 @@ class MailListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
+            /*
+            EccubeEvents::MAIL_CUSTOMER_CONFIRM => '',
+            EccubeEvents::MAIL_CUSTOMER_COMPLETE => '',
+            EccubeEvents::MAIL_CUSTOMER_WITHDRAW => '',
+            EccubeEvents::MAIL_CONTACT => '',
+            EccubeEvents::MAIL_ORDER => '',
+            EccubeEvents::MAIL_ADMIN_CUSTOMER_CONFIRM => '',
+            EccubeEvents::MAIL_ADMIN_ORDER => '',
+            */
             EccubeEvents::MAIL_PASSWORD_RESET => 'onSendMailPasswordReset',
+            // 現在パスワード変更完了メールは送信されていない
+            //EccubeEvents::MAIL_PASSWORD_RESET_COMPLETE => 'onSendPasswordResetComplete',
+            // TODO 出荷完了通知メールのイベントがない
         ];
     }
 
@@ -62,13 +74,11 @@ class MailListener implements EventSubscriberInterface
      * @param string $templateFile  オリジナルのメールテンプレートファイル名
      * @param string $locale        Ex. 'en'
      * @return array|null
-     *         array exmaple: ['subject' => 'xxxx',
+     *         array example: ['subject' => 'xxxx',
      *                         'template' => 'Mail/forgo_mail_en.twig']
      */
     private function findLocaleTemplate(string $templateFile, string $locale)
     {
-        $locale = LocaleHelper::getCurrentRequestLocale();
-
         $templates = $this->eccubeConfig['multi_lingual_mail_templates'];
 
         if (!isset($templates[$templateFile]) ||
@@ -115,9 +125,15 @@ class MailListener implements EventSubscriberInterface
 
         // TODO from書き換え
         // TODO reset urlの書き換え
+        // TODO addPart()されたものの削除が必要
 
         $message
             ->setSubject('['.$this->BaseInfo->getShopName().'] '.$localeTemplate['subject'])
             ->setBody($body, 'text/plain');
+    }
+
+    public function onSendMailPasswordResetComplete(EventArgs $event): void
+    {
+        return;
     }
 }
