@@ -1,0 +1,10 @@
+# Locale用メールテンプレートのレコードをdtb_mail_templateに登録しない理由
+
+テンプレート選択のキーにはDB内のIDを使用している。
+
+Ex.
+$MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_reset_complete_mail_template_id']);
+
+Pluginから安易にdtb_mail_templateにレコードを追加してしまうと、将来、本家で
+テンプレートが追加された時にIDの整合性が取れなくなる可能性があるので、
+レコードの追加は行わない。services.yamlに定義する。
