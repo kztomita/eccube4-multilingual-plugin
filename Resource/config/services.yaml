@@ -2,3 +2,11 @@
 parameters:
     multi_lingual_locales: ['en', 'cn']
 
+    multi_lingual_mail_templates:
+        'Mail/forgot_mail.twig':
+            en:
+                subject: 'password reset'
+                template: 'Mail/en/forgot_mail.twig'
+#            cn:
+#                subject: '密码重置'
+#                template: 'Mail/cn/forgot_mail.twig'
