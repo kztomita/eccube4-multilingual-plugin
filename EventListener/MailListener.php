@@ -78,7 +78,7 @@ class MailListener implements EventSubscriberInterface
      * @param string $locale        Ex. 'en'
      * @return array|null
      *         array example: ['subject' => 'xxxx',
-     *                         'template' => 'Mail/forgo_mail_en.twig']
+     *                         'template' => 'Mail/en/forgot_mail.twig']
      */
     private function findLocaleTemplate(string $templateFile, string $locale)
     {
@@ -91,6 +91,41 @@ class MailListener implements EventSubscriberInterface
 
         $localeTemplate = $templates[$templateFile][$locale];
         $localeTemplate['template'] = '@MultiLingual/default/' . $localeTemplate['template'];
+
+        return $localeTemplate;
+    }
+
+    /**
+     * イベントハンドラで処理すべき仕事があるかを返す。
+     *
+     * Return:
+     * Localeのテンプレートの情報   呼び出し元は、返されたテンプレート情報に
+     *                           合わせてSwift_Messageを書き換える必要がある
+     * null                      なにもする必要はない
+     *
+     * @param $templateId
+     * @return array|null  Localeテンプレートの情報
+     *         array example: ['subject' => 'xxxx',
+     *                         'template' => 'Mail/en/forgot_mail.twig']
+     */
+    private function isThereJob($templateId)
+    {
+        $locale = LocaleHelper::getCurrentRequestLocale();
+
+        if (!in_array($locale, $this->eccubeConfig['multi_lingual_locales'])) {
+            return null;
+        }
+
+        /** @var MailTemplate $MailTemplate */
+        $MailTemplate = $this->mailTemplateRepository->find($templateId);
+        if (!$MailTemplate) {
+            return null;
+        }
+
+        $localeTemplate = $this->findLocaleTemplate($MailTemplate->getFileName(), $locale);
+        if (!$localeTemplate) {
+            return null;
+        }
 
         return $localeTemplate;
     }
@@ -129,16 +164,7 @@ class MailListener implements EventSubscriberInterface
 
     public function onSendMailContact(EventArgs $event): void
     {
-        $locale = LocaleHelper::getCurrentRequestLocale();
-
-        if (!in_array($locale, $this->eccubeConfig['multi_lingual_locales'])) {
-            return;
-        }
-
-        /** @var MailTemplate $MailTemplate */
-        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_contact_mail_template_id']);
-
-        $localeTemplate = $this->findLocaleTemplate($MailTemplate->getFileName(), $locale);
+        $localeTemplate = $this->isThereJob($this->eccubeConfig['eccube_contact_mail_template_id']);
         if (!$localeTemplate) {
             return;
         }
@@ -158,16 +184,7 @@ class MailListener implements EventSubscriberInterface
 
     public function onSendMailPasswordReset(EventArgs $event): void
     {
-        $locale = LocaleHelper::getCurrentRequestLocale();
-
-        if (!in_array($locale, $this->eccubeConfig['multi_lingual_locales'])) {
-            return;
-        }
-
-        /** @var MailTemplate $MailTemplate */
-        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_forgot_mail_template_id']);
-
-        $localeTemplate = $this->findLocaleTemplate($MailTemplate->getFileName(), $locale);
+        $localeTemplate = $this->isThereJob($this->eccubeConfig['eccube_forgot_mail_template_id']);
         if (!$localeTemplate) {
             return;
         }
