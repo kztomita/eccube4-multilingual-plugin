@@ -211,6 +211,24 @@ return [
                 'edit_type' => Page::EDIT_TYPE_DEFAULT,
             ],
             [
+                'name'  => 'パスワード再発行(入力ページ) - Locale',
+                'url'   => 'forgot_locale',
+                'file_name' => 'Forgot/index',
+                'edit_type' => Page::EDIT_TYPE_DEFAULT,
+            ],
+            [
+                'name'  => 'パスワード再発行(完了ページ) - Locale',
+                'url'   => 'forgot_complete_locale',
+                'file_name' => 'Forgot/complete',
+                'edit_type' => Page::EDIT_TYPE_DEFAULT,
+            ],
+            [
+                'name'  => 'パスワード再発行(再設定ページ) - Locale',
+                'url'   => 'forgot_reset_locale',
+                'file_name' => 'Forgot/reset',
+                'edit_type' => Page::EDIT_TYPE_DEFAULT,
+            ],
+            [
                 'name'  => '商品購入/遷移 - Locale',
                 'url'   => 'shopping_redirect_to_locale',
                 'file_name' => 'Shopping/index',
