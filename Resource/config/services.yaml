@@ -3,10 +3,38 @@ parameters:
     multi_lingual_locales: ['en', 'cn']
 
     multi_lingual_mail_templates:
+        'Mail/order.twig':
+            en:
+                subject: 'Thank you for your order'
+                template: 'Mail/en/order.twig'
+#            cn:
+#                subject: '谢谢你的订单'
+#                template: 'Mail/cn/order.twig'
+        'Mail/entry_confirm.twig':
+            en:
+                subject: 'Temporary member registration'
+                template: 'Mail/en/entry_confirm.twig'
+        'Mail/entry_complete.twig':
+            en:
+                subject: 'Your registration has been completed'
+                template: 'Mail/en/entry_complete.twig'
+        'Mail/customer_withdraw_mail.twig':
+            en:
+                subject: 'Completion of withdrawal procedure'
+                template: 'Mail/en/customer_withdraw_mail.twig'
+        'Mail/contact_mail.twig':
+            en:
+                subject: 'Inquiry received'
+                template: 'Mail/en/contact_mail.twig'
         'Mail/forgot_mail.twig':
             en:
                 subject: 'password reset'
                 template: 'Mail/en/forgot_mail.twig'
-#            cn:
-#                subject: '密码重置'
-#                template: 'Mail/cn/forgot_mail.twig'
+        'Mail/reset_complete_mail.twig':
+            en:
+                subject: 'Notice of Password Change'
+                template: 'Mail/en/reset_complete_mail.twig'
+        'Mail/shipping_notify.twig':
+            en:
+                subject: 'Notice of Product Shipment'
+                template: 'Mail/en/shipping_notify.twig'
