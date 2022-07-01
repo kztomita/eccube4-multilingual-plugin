@@ -1,0 +1,17 @@
+{% autoescape 'safe_textmail' %}
+* This is an automatic distribution e-mail.
+
+Dear {{ data.name01 }} {{ data.name02 }}
+
+We have received the following inquiry.
+Please wait a moment and we will contact you as soon as we confirm.
+
+Name：{{ data.name01 }} {{ data.name02 }}{% if data.kana01 or data.kana02 %} ({{ data.kana01 }} {{ data.kana02 }}){% endif %}
+
+Address：{% if data.pref.name is defined %} {{ data.pref.name }}{% endif %}{{ data.addr01 }}{{ data.addr02 }}
+Tel.：{{ data.phone_number }}
+e-mail：{{ data.email }}
+Details：
+
+{{ data.contents }}
+{% endautoescape  %}
