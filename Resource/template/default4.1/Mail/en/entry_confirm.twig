@@ -1,0 +1,15 @@
+{% autoescape 'safe_textmail' %}
+* This is an automatic distribution e-mail.
+
+Dear {{ Customer.name02 }} {{ Customer.name01 }}
+
+Thank you for your membership request.
+
+Your registration is currently in provisional status.
+
+To complete this membership registration, please access the URL below.
+
+{{ activateUrl }}
+
+We will send you an email to confirm your registration details after you complete the registration at the above URL.
+{% endautoescape %}

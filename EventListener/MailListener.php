@@ -52,11 +52,9 @@ class MailListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            /*
-            EccubeEvents::MAIL_CUSTOMER_CONFIRM => '',
-            EccubeEvents::MAIL_CUSTOMER_COMPLETE => '',
-            EccubeEvents::MAIL_CUSTOMER_WITHDRAW => '',
-            */
+            EccubeEvents::MAIL_CUSTOMER_CONFIRM => 'onSendMailCustomerConfirm',
+            EccubeEvents::MAIL_CUSTOMER_COMPLETE => 'onSendMailCustomerComplete',
+            EccubeEvents::MAIL_CUSTOMER_WITHDRAW => 'onSendMailCustomerWithdraw',
             EccubeEvents::MAIL_CONTACT => 'onSendMailContact',
             /*
             EccubeEvents::MAIL_ORDER => '',
@@ -160,6 +158,74 @@ class MailListener implements EventSubscriberInterface
 
         // HTMLメールは対応しないのでaddPart()されたものがあれば削除
         $this->stripHtmlMail($message);
+    }
+
+    public function onSendMailCustomerConfirm(EventArgs $event): void
+    {
+        $localeTemplate = $this->isThereJob($this->eccubeConfig['eccube_entry_confirm_mail_template_id']);
+        if (!$localeTemplate) {
+            return;
+        }
+
+        /** @var \Swift_Message $message */
+        $message = $event->getArgument('message');
+
+        /** @var Customer $Customer */
+        $Customer = $event->getArgument('Customer');
+
+        $activateUrl = $event->getArgument('activateUrl');
+
+        // TODO $activateUrl書き換え
+
+        $body = $this->twig->render($localeTemplate['template'], [
+            'BaseInfo' => $this->BaseInfo,
+            'Customer' => $Customer,
+            'activateUrl' => $activateUrl,
+        ]);
+
+        $this->updateMessage($message, $localeTemplate['subject'], $body);
+    }
+
+    public function onSendMailCustomerComplete(EventArgs $event): void
+    {
+        $localeTemplate = $this->isThereJob($this->eccubeConfig['eccube_entry_complete_mail_template_id']);
+        if (!$localeTemplate) {
+            return;
+        }
+
+        /** @var \Swift_Message $message */
+        $message = $event->getArgument('message');
+
+        /** @var Customer $Customer */
+        $Customer = $event->getArgument('Customer');
+
+        $body = $this->twig->render($localeTemplate['template'], [
+            'Customer' => $Customer,
+            'BaseInfo' => $this->BaseInfo,
+        ]);
+
+        $this->updateMessage($message, $localeTemplate['subject'], $body);
+    }
+
+    public function onSendMailCustomerWithdraw(EventArgs $event): void
+    {
+        $localeTemplate = $this->isThereJob($this->eccubeConfig['eccube_customer_withdraw_mail_template_id']);
+        if (!$localeTemplate) {
+            return;
+        }
+
+        /** @var \Swift_Message $message */
+        $message = $event->getArgument('message');
+
+        /** @var Customer $Customer */
+        $Customer = $event->getArgument('Customer');
+
+        $body = $this->twig->render($localeTemplate['template'], [
+            'Customer' => $Customer,
+            'BaseInfo' => $this->BaseInfo,
+        ]);
+
+        $this->updateMessage($message, $localeTemplate['subject'], $body);
     }
 
     public function onSendMailContact(EventArgs $event): void
