@@ -9,7 +9,7 @@ Thank you very much for your order. Please make sure that the following order de
 
 Order Date: {{ Order.order_date|date_sec }}
 Order No.: {{ Order.order_no }}
-お支払い合計: {{ Order.payment_total|price}}
+Payment Total: {{ Order.payment_total|price}}
 Payment Method: {{ Order.payment_method }}
 {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
 Points Used: {{ Order.usePoint|number_format }} pt
