@@ -57,6 +57,7 @@ class MailListener implements EventSubscriberInterface
             EccubeEvents::MAIL_CUSTOMER_WITHDRAW => 'onSendMailCustomerWithdraw',
             EccubeEvents::MAIL_CONTACT => 'onSendMailContact',
             EccubeEvents::MAIL_ORDER => 'onSendMailOrder',
+            // TODO ADMIN系は送信先ユーザに応じてLocaleを決めないといけない
             /*
             EccubeEvents::MAIL_ADMIN_CUSTOMER_CONFIRM => '',
             EccubeEvents::MAIL_ADMIN_ORDER => '',
