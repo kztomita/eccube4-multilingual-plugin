@@ -56,8 +56,8 @@ class MailListener implements EventSubscriberInterface
             EccubeEvents::MAIL_CUSTOMER_COMPLETE => 'onSendMailCustomerComplete',
             EccubeEvents::MAIL_CUSTOMER_WITHDRAW => 'onSendMailCustomerWithdraw',
             EccubeEvents::MAIL_CONTACT => 'onSendMailContact',
+            EccubeEvents::MAIL_ORDER => 'onSendMailOrder',
             /*
-            EccubeEvents::MAIL_ORDER => '',
             EccubeEvents::MAIL_ADMIN_CUSTOMER_CONFIRM => '',
             EccubeEvents::MAIL_ADMIN_ORDER => '',
             */
@@ -243,6 +243,26 @@ class MailListener implements EventSubscriberInterface
         $body = $this->twig->render($localeTemplate['template'], [
             'data' => $formData,
             'BaseInfo' => $this->BaseInfo,
+        ]);
+
+        $this->updateMessage($message, $localeTemplate['subject'], $body);
+    }
+
+    public function onSendMailOrder(EventArgs $event): void
+    {
+        $localeTemplate = $this->isThereJob($this->eccubeConfig['eccube_order_mail_template_id']);
+        if (!$localeTemplate) {
+            return;
+        }
+
+        /** @var \Swift_Message $message */
+        $message = $event->getArgument('message');
+
+        /** @var Order $Order */
+        $Order = $event->getArgument('Order');
+
+        $body = $this->twig->render($localeTemplate['template'], [
+            'Order' => $Order,
         ]);
 
         $this->updateMessage($message, $localeTemplate['subject'], $body);

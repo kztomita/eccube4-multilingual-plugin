@@ -1,0 +1,104 @@
+{% autoescape false %}
+Dear {{ Order.name02 }} {{ Order.name01 }}
+
+Thank you very much for your order. Please make sure that the following order details are correct.
+
+************************************************
+　Amount Billed
+************************************************
+
+Order Date: {{ Order.order_date|date_sec }}
+Order No.: {{ Order.order_no }}
+お支払い合計: {{ Order.payment_total|price}}
+Payment Method: {{ Order.payment_method }}
+{% if BaseInfo.isOptionPoint and Order.Customer is not null %}
+Points Used: {{ Order.usePoint|number_format }} pt
+Points Earned: {{ Order.addPoint|number_format }} pt
+{% endif %}
+Contact Us: {{ Order.message }}
+
+
+************************************************
+　Product Details
+************************************************
+
+{% set isShowReducedTaxMess = false %}
+{% for OrderItem in Order.MergedProductOrderItems %}
+SKU: {{ OrderItem.product_code }}
+Product Name: {{ OrderItem.product_name }}  {{ OrderItem.classcategory_name1 }}  {{ OrderItem.classcategory_name2 }}{% if is_reduced_tax_rate(OrderItem) %}※{% set isShowReducedTaxMess = true %}{% endif %}
+
+Unit Price: {{ OrderItem.price_inctax|price }}
+Quantity: {{ OrderItem.quantity|number_format }}
+
+{% endfor %}
+{% if isShowReducedTaxMess %}* is subject to reduced tax rate.
+{% endif %}
+-------------------------------------------------
+Subtotal: {{ Order.subtotal|price }}
+Charges: {{ Order.charge|price }}
+Shipping Charge: {{ Order.delivery_fee_total|price}}
+{% if Order.taxable_discount < 0 %}
+Discount: {{ Order.taxable_discount|price }}
+{% endif %}
+-------------------------------------------------
+Total: {{ Order.taxable_total|price }}
+    {% for rate, total in Order.taxable_total_by_tax_rate %}
+    ({{ rate }} %対象: {{ total|price }})
+    {% endfor %}
+{% for item in Order.tax_free_discount_items %}
+-------------------------------------------------
+{{ item.product_name }}: {{ item.total_price|price }}
+{% endfor %}
+============================================
+Payment Total: {{ Order.payment_total|price }}
+
+************************************************
+　Customer Info
+************************************************
+Name: {{ Order.name02 }} {{ Order.name01 }}
+Name (Phonetic): {{ Order.kana02 }} {{ Order.kana01 }}
+{% if Order.company_name %}
+Company Name: {{ Order.company_name }}
+{% endif %}
+Postal Code: {{ Order.postal_code }}
+Address: {{ Order.Pref.name }}{{ Order.addr01 }}{{ Order.addr02 }}
+Phone: {{ Order.phone_number }}
+mail_address: {{ Order.email }}
+
+************************************************
+　Delivery Info
+************************************************
+
+{%  for Shipping in Order.Shippings %}
+Delivery to{% if Order.multiple %}{{ loop.index }}{% endif %}
+
+Name: {{ Shipping.name02 }} {{ Shipping.name01 }}
+Name (Phonetic): {{ Shipping.kana02 }} {{ Shipping.kana01 }}
+{% if Shipping.company_name %}
+Company Name: {{ Shipping.company_name }}
+{% endif %}
+Postal Code: {{ Shipping.postal_code }}
+Address: {{ Shipping.Pref.name }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}
+Phone: {{ Shipping.phone_number }}
+
+Delivery Method: {{ Shipping.shipping_delivery_name }}
+Delivery Date: {{ Shipping.shipping_delivery_date is empty ? 'Unspecified' : Shipping.shipping_delivery_date|date_day }}
+Delivery Time: {{ Shipping.shipping_delivery_time|default('Unspecified') }}
+
+{%  for OrderItem in Shipping.productOrderItems %}
+SKU: {{ OrderItem.product_code }}
+Product Name: {{ OrderItem.product_name }}  {{ OrderItem.classcategory_name1 }}  {{ OrderItem.classcategory_name2 }}
+Quantity: {{ OrderItem.quantity|number_format }}
+
+{% endfor %}
+{% endfor %}
+
+{% if Order.complete_mail_message is not empty %}
+{{ Order.complete_mail_message }}
+{% endif %}
+
+============================================
+
+This message is for customer notification only.
+We will not be able to answer any questions you may have in response to this message.
+{% endautoescape %}
