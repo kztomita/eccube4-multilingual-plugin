@@ -2,6 +2,7 @@ Locale情報を子に持つ親クラスの拡張(XXXXTrait)は以下の要求を
 
 - getLocales()メソッドを持つ
 - getLocaleClass()メソッドを持つ
+- getLocaleField()メソッドを持つ
 
 これらは本来interfaceで定義して、それを実装するようにしたいが、
 Entityの拡張はtraitで行う必要があり、traitに対してinterfaceの実装はできない。

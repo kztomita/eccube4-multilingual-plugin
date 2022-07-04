@@ -100,34 +100,15 @@ class TwigExtension extends AbstractExtension
      * @param AbstractEntity $Entity
      * @param string $field
      * @param string|null $locale
-     * @return string
+     * @return mixed
      */
-    public function getLocaleField(AbstractEntity $Entity, string $field, ?string $locale = null): string
+    public function getLocaleField(AbstractEntity $Entity, string $field, ?string $locale = null)
     {
         if (!LocaleHelper::hasLocaleFeature($Entity)) {
             throw new \InvalidArgumentException('$Entity has no getLocales() method.');
         }
 
-        if ($locale === null) {
-            $locale = LocaleHelper::getCurrentRequestLocale();
-        }
-
-        $method = 'get' . Container::camelize($field);
-
-        $localeClass = $Entity::getLocaleClass();
-        $localeRepository = $this->em->getRepository($localeClass);
-
-        $criteria = [
-            'locale' => $locale,
-        ];
-        $criteria['parent_id'] = $Entity->getId();
-
-        $LocaleEntity = $localeRepository->findOneBy($criteria);
-        if (!$LocaleEntity) {
-            return $Entity->$method();
-        }
-
-        return $LocaleEntity->$method();
+        return LocaleHelper::getLocaleField($Entity, $field, $locale);
     }
 }
 

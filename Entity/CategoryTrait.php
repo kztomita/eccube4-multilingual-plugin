@@ -4,7 +4,6 @@ namespace Plugin\MultiLingual\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Annotation\EntityExtension;
 use Plugin\MultiLingual\Common\LocaleHelper;
@@ -42,21 +41,21 @@ trait CategoryTrait
         return LocaleCategory::class;
     }
 
-    public function getLocaleName(): string
+    /**
+     * 指定Localeでのフィールド値を返す。
+     * getLocales()を実装する場合は、本メソッドも実装すること。
+     *
+     * @param string $field
+     * @param string|null $locale
+     * @return mixed
+     */
+    public function getLocaleField(string $field, ?string $locale = null)
     {
-        $criteria = Criteria::create();
-        $criteria->where(Criteria::expr()->eq('locale', LocaleHelper::getCurrentRequestLocale()));
-
-        $locales = $this->getLocales()->matching($criteria);
-        if ($locales->count() == 0) {
-            return $this->getName();
-        } else {
-            return $locales[0]->getName();
-        }
+        return LocaleHelper::getLocaleField($this, $field, $locale);
     }
 
     public function getLocaleNameWithLevel(): string
     {
-        return str_repeat('　', $this->getHierarchy() - 1).$this->getLocaleName();
+        return str_repeat('　', $this->getHierarchy() - 1).$this->getLocaleField('name');
     }
 }
