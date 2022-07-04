@@ -3,8 +3,10 @@
 namespace Plugin\MultiLingual\Controller;
 
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Order;
 use Eccube\Entity\Shipping;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
+use Plugin\MultiLingual\Service\OrderHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,11 +22,18 @@ class ShoppingController extends AbstractController
      */
     private $controller;
 
+    /**
+     * @var OrderHelper
+     */
+    private $orderHelper;
+
     public function __construct(
-        \Eccube\Controller\ShoppingController $c
+        \Eccube\Controller\ShoppingController $c,
+        OrderHelper $orderHelper
     )
     {
         $this->controller = $c;
+        $this->orderHelper = $orderHelper;
     }
 
     /**
@@ -35,12 +44,18 @@ class ShoppingController extends AbstractController
     {
         $this->testLocale($request);
 
-        return $this->invokeController(
+        $result = $this->invokeController(
             $request,
             $this->controller,
             __FUNCTION__,
             [$cartPurchaseFlow]
         );
+
+        /** @var Order $Order */
+        $Order = $result['Order'];
+        $this->orderHelper->setLocaleNameAsOrder($Order);
+
+        return $result;
     }
 
     /**

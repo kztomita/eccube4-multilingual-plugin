@@ -298,9 +298,9 @@ file that was distributed with this source code.
                                 {% for orderItem in shipping.productOrderItems %}
                                     <li>
                                         <div class="ec-imageGrid">
-                                            <div class="ec-imageGrid__img"><img src="{{ asset((orderItem.product is null ? null : orderItem.product.MainListImage)|no_image_product, 'save_image') }}" alt="{{ orderItem.productName }}"></div>
+                                            <div class="ec-imageGrid__img"><img src="{{ asset((orderItem.product is null ? null : orderItem.product.MainListImage)|no_image_product, 'save_image') }}" alt="{{ orderItem.localeProductName|default(orderItem.productName) }}"></div>
                                             <div class="ec-imageGrid__content">
-                                                <p>{{ orderItem.productName }}{% if is_reduced_tax_rate(orderItem) %}{{ '※'|trans }}{% set isShowReducedTaxMess = true %}{% endif %}</p>
+                                                <p>{{ orderItem.localeProductName|default(orderItem.productName) }}{% if is_reduced_tax_rate(orderItem) %}{{ '※'|trans }}{% set isShowReducedTaxMess = true %}{% endif %}</p>
                                                 {% if orderItem.productClass is not null and orderItem.productClass.classCategory1 %}
                                                     <p>{{ orderItem.productClass.classCategory1.className.name }}：{{ orderItem.productClass.classCategory1 }}</p>
                                                 {% endif %}
@@ -413,7 +413,7 @@ file that was distributed with this source code.
                     {% for item in Order.tax_free_discount_items %}
                         {% if loop.first %}<div class="ec-totalBox__total"></div>{% endif %}
                         <dl class="ec-totalBox__spec">
-                            <dt>{{ item.product_name }}</dt>
+                            <dt>{{ item.locale_product_name|default(item.product_name) }}</dt>
                             <dd>{{ item.total_price|price }}</dd>
                         </dl>
                     {% endfor %}
