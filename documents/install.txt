@@ -10,6 +10,9 @@ Localeページ用に以下のレイアウトを作成。
 Localeページ用のブロックを作成。
 	ブロック管理より編集可。
 
+dtb_order_itemにlocale_product_nameカラムを追加。
+
+
 カテゴリ管理のコントローラのテンプレートを差し替える
 	src/Eccube/Resource/template/admin/Product/category.twig
 	の代わりに
