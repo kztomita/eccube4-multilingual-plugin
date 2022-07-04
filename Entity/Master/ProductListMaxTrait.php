@@ -43,18 +43,22 @@ trait ProductListMaxTrait
         return LocaleProductListMax::class;
     }
 
+    /**
+     * 指定Localeでのフィールド値を返す。
+     * getLocales()を実装する場合は、本メソッドも実装すること。
+     *
+     * @param string $field
+     * @param string|null $locale
+     * @return mixed
+     */
+    public function getLocaleField(string $field, ?string $locale = null)
+    {
+        return LocaleHelper::getLocaleField($this, $field, $locale);
+    }
+
+    // For AbstractMasterTypeExtension
     public function getLocaleName(?string $locale = null): string
     {
-        $locale = $locale ?? LocaleHelper::getCurrentRequestLocale();
-
-        $criteria = Criteria::create();
-        $criteria->where(Criteria::expr()->eq('locale', $locale));
-
-        $locales = $this->getLocales()->matching($criteria);
-        if ($locales->count() == 0) {
-            return $this->getName();
-        } else {
-            return $locales[0]->getName();
-        }
+        return $this->getLocaleField('name');
     }
 }
