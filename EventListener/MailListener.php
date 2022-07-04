@@ -60,8 +60,9 @@ class MailListener implements EventSubscriberInterface
             // TODO ADMIN系は送信先ユーザに応じてLocaleを決めないといけない
             /*
             EccubeEvents::MAIL_ADMIN_CUSTOMER_CONFIRM => '',
-            EccubeEvents::MAIL_ADMIN_ORDER => '',
             */
+            // 受注管理からのメール送信は、指定された文面での送信なので、ここではなにもしない。
+            //EccubeEvents::MAIL_ADMIN_ORDER => '',
             EccubeEvents::MAIL_PASSWORD_RESET => 'onSendMailPasswordReset',
             // 現在パスワード変更完了メールは送信されていない
             //EccubeEvents::MAIL_PASSWORD_RESET_COMPLETE => 'onSendPasswordResetComplete',
