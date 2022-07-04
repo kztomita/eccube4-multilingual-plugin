@@ -43,10 +43,12 @@ trait ProductListOrderByTrait
         return LocaleProductListOrderBy::class;
     }
 
-    public function getLocaleName(): string
+    public function getLocaleName(?string $locale = null): string
     {
+        $locale = $locale ?? LocaleHelper::getCurrentRequestLocale();
+
         $criteria = Criteria::create();
-        $criteria->where(Criteria::expr()->eq('locale', LocaleHelper::getCurrentRequestLocale()));
+        $criteria->where(Criteria::expr()->eq('locale', $locale));
 
         $locales = $this->getLocales()->matching($criteria);
         if ($locales->count() == 0) {
