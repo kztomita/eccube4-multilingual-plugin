@@ -3,6 +3,7 @@
 namespace Plugin\MultiLingual;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\OptimisticLockException;
@@ -12,15 +13,21 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Block;
 use Eccube\Entity\BlockPosition;
 use Eccube\Entity\Category;
+use Eccube\Entity\ClassCategory;
+use Eccube\Entity\ClassName;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\AbstractMasterEntity;
 use Eccube\Entity\Page;
 use Eccube\Entity\PageLayout;
 use Eccube\Entity\Product;
 use Eccube\Entity\Master\DeviceType;
+use Eccube\Entity\Tag;
 use Eccube\Plugin\AbstractPluginManager;
 use Plugin\MultiLingual\Entity\LocaleCategory;
+use Plugin\MultiLingual\Entity\LocaleClassCategory;
+use Plugin\MultiLingual\Entity\LocaleClassName;
 use Plugin\MultiLingual\Entity\LocaleProduct;
+use Plugin\MultiLingual\Entity\LocaleTag;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -34,6 +41,9 @@ class PluginManager extends AbstractPluginManager
         $this->copyBlockTemplate($container);
         $this->createLocaleCategory($container);
         $this->createLocaleProduct($container);
+        $this->createLocaleClassName($container);
+        $this->createLocaleClassCategory($container);
+        $this->createLocaleTag($container);
         $this->createMasterLocaleRecord($container);
     }
 
@@ -289,6 +299,47 @@ class PluginManager extends AbstractPluginManager
         }
     }
 
+    private function createLocaleRecord(
+        ContainerInterface  $container,
+        string $class,
+        string $localeClass,
+        callable $callback
+    )
+    {
+        $em = $this->getEntityManager($container);
+
+        /** @var EccubeConfig $eccubeConfig */
+        $eccubeConfig = $container->get(EccubeConfig::class);
+        $locales = $eccubeConfig['multi_lingual_locales'];
+
+        $entities = $em->getRepository($class)->findAll();
+
+        $localeRepository = $em->getRepository($localeClass);
+
+        foreach ($entities as $entity) {
+            foreach ($locales as $locale) {
+                // 既にレコードがあればなにもしない
+                $e = $localeRepository->findOneBy([
+                    'parent_id' => $entity->getId(),
+                    'locale'    => $locale,
+                ]);
+                if ($e) {
+                    continue;
+                }
+
+                $localeEntity = new $localeClass();
+                $localeEntity->setParentId($entity->getId());
+                $localeEntity->setLocale($locale);
+
+                $callback($localeEntity, $entity, $locale);
+
+                $em->persist($localeEntity);
+                $em->flush();
+            }
+        }
+
+    }
+
     /**
      * plg_locale_categoryの設定
      *
@@ -388,6 +439,99 @@ class PluginManager extends AbstractPluginManager
                 $em->flush();
             }
         }
+    }
+
+    /**
+     * plg_locale_class_nameの設定
+     *
+     * @param ContainerInterface $container
+     * @return void
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    private function createLocaleClassName(ContainerInterface  $container)
+    {
+        $translates = $this->loadSetupFile('initial_data.php')['class_name']['translates'];
+
+        $this->createLocaleRecord(
+            $container,
+            ClassName::class,
+            LocaleClassName::class,
+            function ($localeEntity, $entity, $locale) use ($translates) {
+                $localeEntity->setClassName($entity);
+
+                // 翻訳データがあれば登録
+                $name = $entity->getName();
+                if (isset($translates[$name]) &&
+                    isset($translates[$name][$locale])) {
+                    $localeEntity->setName($translates[$name][$locale]);
+                } else {
+                    $localeEntity->setName($name);
+                }
+            }
+        );
+    }
+
+    /**
+     * plg_locale_class_categoryの設定
+     *
+     * @param ContainerInterface $container
+     * @return void
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    private function createLocaleClassCategory(ContainerInterface  $container)
+    {
+        $translates = $this->loadSetupFile('initial_data.php')['class_category']['translates'];
+
+        $this->createLocaleRecord(
+            $container,
+            ClassCategory::class,
+            LocaleClassCategory::class,
+            function ($localeEntity, $entity, $locale) use ($translates) {
+                $localeEntity->setClassCategory($entity);
+
+                // 翻訳データがあれば登録
+                $name = $entity->getName();
+                if (isset($translates[$name]) &&
+                    isset($translates[$name][$locale])) {
+                    $localeEntity->setName($translates[$name][$locale]);
+                } else {
+                    $localeEntity->setName($name);
+                }
+            }
+        );
+    }
+
+    /**
+     * plg_locale_tagの設定
+     *
+     * @param ContainerInterface $container
+     * @return void
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    private function createLocaleTag(ContainerInterface  $container)
+    {
+        $translates = $this->loadSetupFile('initial_data.php')['tag']['translates'];
+
+        $this->createLocaleRecord(
+            $container,
+            Tag::class,
+            LocaleTag::class,
+            function ($localeEntity, $entity, $locale) use ($translates) {
+                $localeEntity->setTag($entity);
+
+                // 翻訳データがあれば登録
+                $name = $entity->getName();
+                if (isset($translates[$name]) &&
+                    isset($translates[$name][$locale])) {
+                    $localeEntity->setName($translates[$name][$locale]);
+                } else {
+                    $localeEntity->setName($name);
+                }
+            }
+        );
     }
 
     /**
