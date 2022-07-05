@@ -69,6 +69,7 @@ class PluginManager extends AbstractPluginManager
         // シンボリックリンク削除
         $fs = new Filesystem;
         $fs->remove(__DIR__ . '/Resource/template/default');
+        $fs->remove(__DIR__ . '/Resource/template/admin');
     }
 
     /**
@@ -146,6 +147,11 @@ class PluginManager extends AbstractPluginManager
         $fs->symlink(
             __DIR__ . '/Resource/template/default' . $version,
             __DIR__ . '/Resource/template/default',
+            true
+        );
+        $fs->symlink(
+            __DIR__ . '/Resource/template/admin' . $version,
+            __DIR__ . '/Resource/template/admin',
             true
         );
     }
