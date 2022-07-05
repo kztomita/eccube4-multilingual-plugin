@@ -299,6 +299,17 @@ class PluginManager extends AbstractPluginManager
         }
     }
 
+    /**
+     * plg_ml_locale_xxxxテーブルにレコードを作成する共通処理。
+     *
+     * @param ContainerInterface $container
+     * @param string $class        親のEntityのクラス名
+     * @param string $localeClass  Localeクラス名
+     * @param callable $callback   新しく作成したLocale Entityを設定するcallback
+     * @return void
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
     private function createLocaleRecord(
         ContainerInterface  $container,
         string $class,
@@ -341,7 +352,7 @@ class PluginManager extends AbstractPluginManager
     }
 
     /**
-     * plg_locale_categoryの設定
+     * plg_ml_locale_categoryの設定
      *
      * @param ContainerInterface $container
      * @return void
@@ -350,47 +361,29 @@ class PluginManager extends AbstractPluginManager
      */
     private function createLocaleCategory(ContainerInterface  $container)
     {
-        $em = $this->getEntityManager($container);
-
-        /** @var EccubeConfig $eccubeConfig */
-        $eccubeConfig = $container->get(EccubeConfig::class);
-        $locales = $eccubeConfig['multi_lingual_locales'];
-
         $translates = $this->loadSetupFile('initial_data.php')['category']['translates'];
 
-        /** @var Category[] $categories */
-        $categories = $em->getRepository(Category::class)->findAll();
+        $this->createLocaleRecord(
+            $container,
+            Category::class,
+            LocaleCategory::class,
+            function (LocaleCategory $localeEntity, Category $entity, $locale) use ($translates) {
+                $localeEntity->setCategory($entity);
 
-        $localeRepository = $em->getRepository(LocaleCategory::class);
-
-        foreach ($categories as $category) {
-            foreach ($locales as $locale) {
-                $entity = $localeRepository->findOneBy([
-                    'parent_id' => $category->getId(),
-                    'locale'    => $locale,
-                ]);
-                if ($entity) {
-                    continue;
-                }
-                $lc = new LocaleCategory();
-                $lc->setCategory($category);
                 // 翻訳データがあれば登録
-                $name = $category->getName();
+                $name = $entity->getName();
                 if (isset($translates[$name]) &&
                     isset($translates[$name][$locale])) {
-                    $lc->setName($translates[$name][$locale]);
+                    $localeEntity->setName($translates[$name][$locale]);
                 } else {
-                    $lc->setName($name);
+                    $localeEntity->setName($name);
                 }
-                $lc->setLocale($locale);
-                $em->persist($lc);
-                $em->flush();
             }
-        }
+        );
     }
 
     /**
-     * plg_locale_productの設定
+     * plg_ml_locale_productの設定
      *
      * @param ContainerInterface $container
      * @return void
@@ -399,50 +392,32 @@ class PluginManager extends AbstractPluginManager
      */
     private function createLocaleProduct(ContainerInterface  $container)
     {
-        $em = $this->getEntityManager($container);
-
-        /** @var EccubeConfig $eccubeConfig */
-        $eccubeConfig = $container->get(EccubeConfig::class);
-        $locales = $eccubeConfig['multi_lingual_locales'];
-
         $translates = $this->loadSetupFile('initial_data.php')['product']['translates'];
 
-        /** @var Product[] $products */
-        $products = $em->getRepository(Product::class)->findAll();
+        $this->createLocaleRecord(
+            $container,
+            Product::class,
+            LocaleProduct::class,
+            function (LocaleProduct $localeEntity, Product $entity, $locale) use ($translates) {
+                $localeEntity->setProduct($entity);
 
-        $localeRepository = $em->getRepository(LocaleProduct::class);
-
-        foreach ($products as $product) {
-            foreach ($locales as $locale) {
-                $entity = $localeRepository->findOneBy([
-                    'parent_id' => $product->getId(),
-                    'locale'    => $locale,
-                ]);
-                if ($entity) {
-                    continue;
-                }
-                $lp = new LocaleProduct();
-                $lp->setParentId($product->getId());
-                $lp->setProduct($product);
                 // 翻訳データがあれば登録
-                $name = $product->getName();
+                $name = $entity->getName();
                 if (isset($translates[$name]) &&
                     isset($translates[$name][$locale])) {
-                    $lp->setName($translates[$name][$locale]);
+                    $localeEntity->setName($translates[$name][$locale]);
                 } else {
-                    $lp->setName($name);
+                    $localeEntity->setName($name);
                 }
-                $lp->setDescriptionDetail($product->getDescriptionDetail());
-                $lp->setDescriptionList($product->getDescriptionList());
-                $lp->setLocale($locale);
-                $em->persist($lp);
-                $em->flush();
+
+                $localeEntity->setDescriptionDetail($entity->getDescriptionDetail());
+                $localeEntity->setDescriptionList($entity->getDescriptionList());
             }
-        }
+        );
     }
 
     /**
-     * plg_locale_class_nameの設定
+     * plg_ml_locale_class_nameの設定
      *
      * @param ContainerInterface $container
      * @return void
@@ -457,7 +432,7 @@ class PluginManager extends AbstractPluginManager
             $container,
             ClassName::class,
             LocaleClassName::class,
-            function ($localeEntity, $entity, $locale) use ($translates) {
+            function (LocaleClassName $localeEntity, ClassName $entity, $locale) use ($translates) {
                 $localeEntity->setClassName($entity);
 
                 // 翻訳データがあれば登録
@@ -473,7 +448,7 @@ class PluginManager extends AbstractPluginManager
     }
 
     /**
-     * plg_locale_class_categoryの設定
+     * plg_ml_locale_class_categoryの設定
      *
      * @param ContainerInterface $container
      * @return void
@@ -488,7 +463,7 @@ class PluginManager extends AbstractPluginManager
             $container,
             ClassCategory::class,
             LocaleClassCategory::class,
-            function ($localeEntity, $entity, $locale) use ($translates) {
+            function (LocaleClassCategory $localeEntity, ClassCategory $entity, $locale) use ($translates) {
                 $localeEntity->setClassCategory($entity);
 
                 // 翻訳データがあれば登録
@@ -504,7 +479,7 @@ class PluginManager extends AbstractPluginManager
     }
 
     /**
-     * plg_locale_tagの設定
+     * plg_ml_locale_tagの設定
      *
      * @param ContainerInterface $container
      * @return void
@@ -519,7 +494,7 @@ class PluginManager extends AbstractPluginManager
             $container,
             Tag::class,
             LocaleTag::class,
-            function ($localeEntity, $entity, $locale) use ($translates) {
+            function (LocaleTag $localeEntity, Tag $entity, $locale) use ($translates) {
                 $localeEntity->setTag($entity);
 
                 // 翻訳データがあれば登録
