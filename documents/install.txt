@@ -34,3 +34,9 @@ app/config/eccube/packages/security.yamlの編集
 
 src/Eccube/Doctrine/ORM/Mapping/Driver/AnnotationDriver.php
 を不具合修正版に差し替え。
+
+src/Eccube/Controller/Admin/Product/ClassNameController.php
+を不具合修正版(Event送信版)に差し替え。
+
+src/Eccube/Controller/Admin/Product/ClassCategoryController.php
+を不具合修正版(Event送信版)に差し替え。
