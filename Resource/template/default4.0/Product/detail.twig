@@ -94,7 +94,7 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script>
-        eccube.classCategories = {{ class_categories_as_json(Product)|raw }};
+        eccube.classCategories = {{ trans_class_categories(class_categories_as_json(Product))|raw }};
 
         // 規格2に選択肢を割り当てる。
         function fnSetClassCategories(form, classcat_id2_selected) {

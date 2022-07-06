@@ -6,6 +6,7 @@ use Eccube\Entity\AbstractEntity;
 use Eccube\Entity\Category;
 use Plugin\MultiLingual\Common\LocaleHelper;
 use Plugin\MultiLingual\Entity\LocaleCategory;
+use Plugin\MultiLingual\Entity\LocaleClassCategory;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use Symfony\Component\DependencyInjection\Container;
@@ -39,6 +40,7 @@ class TwigExtension extends AbstractExtension
             new TwigFunction('locale_url', [$this, 'getLocaleUrl']),
             new TwigFunction('locale_path', [$this, 'getLocalePath']),
             new TwigFunction('locale_field', [$this, 'getLocaleField']),
+            new TwigFunction('trans_class_categories', [$this, 'translateClassCategoriesJson']),
         ];
     }
 
@@ -109,6 +111,49 @@ class TwigExtension extends AbstractExtension
         }
 
         return LocaleHelper::getLocaleField($Entity, $field, $locale);
+    }
+
+    /**
+     * trans_class_categories()が作成した文字列の規格カテゴリ名を翻訳する。
+     * 規格2の選択プルダウンの言語表示を切り替えるのに使用する。
+     *
+     * @param string $json  trans_class_categories()が返したjson文字列
+     * @param ?string $locale
+     * @return string
+     */
+    public function translateClassCategoriesJson(string $json, ?string $locale = null): string
+    {
+        $classCategories = json_decode($json, true);
+        if ($classCategories === null) {
+            return $json;
+        }
+
+        $repository = $this->em->getRepository(LocaleClassCategory::class);
+
+        $locale = $locale ?? LocaleHelper::getCurrentRequestLocale();
+
+        $id1keys = array_filter(
+            array_keys($classCategories),
+            function ($v) {return is_int($v);}
+        );
+
+        foreach ($id1keys as $id1key) {
+            $id2keys = array_filter(
+                array_keys($classCategories[$id1key]),
+                function ($v) {return $v != '#';}
+            );
+            foreach ($id2keys as $id2key) {
+                $LocaleClassCategory = $repository->findOneBy([
+                    'parent_id' => $classCategories[$id1key][$id2key]['classcategory_id2'],
+                    'locale' => $locale,
+                ]);
+                if ($LocaleClassCategory) {
+                    $classCategories[$id1key][$id2key]['name'] = $LocaleClassCategory->getName();
+                }
+            }
+        }
+
+        return json_encode($classCategories);
     }
 }
 

@@ -16,7 +16,7 @@ file that was distributed with this source code.
     <script>
         eccube.productsClassCategories = {
             {% for Product in pagination %}
-            "{{ Product.id|escape('js') }}": {{ class_categories_as_json(Product)|raw }}{% if loop.last == false %}, {% endif %}
+            "{{ Product.id|escape('js') }}": {{ trans_class_categories(class_categories_as_json(Product))|raw }}{% if loop.last == false %}, {% endif %}
             {% endfor %}
         };
 
