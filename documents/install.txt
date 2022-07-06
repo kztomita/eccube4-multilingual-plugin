@@ -10,8 +10,15 @@ Localeページ用に以下のレイアウトを作成。
 Localeページ用のブロックを作成。
 	ブロック管理より編集可。
 
-dtb_order_itemにlocale_product_nameカラムを追加。
-
+dtb_order_itemに以下のカラムを追加。
+- locale_product_name
+- locale_class_name1
+- locale_class_name2
+- locale_class_category_name1
+- locale_class_category_name2
+	OneToOneでサブテーブルに分けた方がいい？
+	OneToManyで全localeの情報を残しておく？
+	<-- これだとどのlocaleで購入したのか分からなくなる
 
 カテゴリ管理のコントローラのテンプレートを差し替える
 	src/Eccube/Resource/template/admin/Product/category.twig

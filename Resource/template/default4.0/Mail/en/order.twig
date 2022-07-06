@@ -25,7 +25,7 @@ Contact Us: {{ Order.message }}
 {% set isShowReducedTaxMess = false %}
 {% for OrderItem in Order.MergedProductOrderItems %}
 SKU: {{ OrderItem.product_code }}
-Product Name: {{ OrderItem.locale_product_name|default(OrderItem.product_name) }}  {{ OrderItem.classcategory_name1 }}  {{ OrderItem.classcategory_name2 }}{% if is_reduced_tax_rate(OrderItem) %}※{% set isShowReducedTaxMess = true %}{% endif %}
+Product Name: {{ OrderItem.locale_product_name|default(OrderItem.product_name) }}  {{ OrderItem.locale_classcategory_name1|default(OrderItem.classcategory_name1) }}  {{ OrderItem.locale_classcategory_name2|default(OrderItem.classcategory_name2) }}{% if is_reduced_tax_rate(OrderItem) %}※{% set isShowReducedTaxMess = true %}{% endif %}
 
 Unit Price: {{ OrderItem.price_inctax|price }}
 Quantity: {{ OrderItem.quantity|number_format }}
