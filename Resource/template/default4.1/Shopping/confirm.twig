@@ -94,12 +94,12 @@ file that was distributed with this source code.
                                     <div class="ec-imageGrid__content">
                                         <p>{{ orderItem.localeProductName|default(orderItem.productName) }}{% if is_reduced_tax_rate(orderItem) %}{{ 'common.reduced_tax_rate_symbol'|trans }}{% set isShowReducedTaxMess = true %}{% endif %}</p>
                                         {% if orderItem.productClass is not null and orderItem.productClass.classCategory1 %}
-                                            <p>{{ orderItem.productClass.classCategory1.className.name }}：{{ orderItem.productClass.classCategory1 }}</p>
+                                            <p>{{ locale_field(orderItem.productClass.classCategory1.className, 'name') }}：{{ locale_field(orderItem.productClass.classCategory1, 'name') }}</p>
                                         {% endif %}
                                         {% if orderItem.productClass is not null and orderItem.productClass.classCategory2 %}
-                                            <p>{{ orderItem.productClass.classCategory2.className.name }}：{{ orderItem.productClass.classCategory2 }}</p>
+                                            <p>{{ locale_field(orderItem.productClass.classCategory2.className, 'name') }}：{{ locale_field(orderItem.productClass.classCategory2, 'name') }}</p>
                                         {% endif %}
-                                        <p>{{ orderItem.priceIncTax|price }} × {{ orderItem.quantity|number_format }}<span>{{ 'common.subtotal__with_separator：'|trans }}{{ orderItem.totalPrice|price }}</span></p>
+                                        <p>{{ orderItem.priceIncTax|price }} × {{ orderItem.quantity|number_format }}<span>{{ 'common.subtotal__with_separator'|trans }}{{ orderItem.totalPrice|price }}</span></p>
                                     </div>
                                 </div>
                             </li>
