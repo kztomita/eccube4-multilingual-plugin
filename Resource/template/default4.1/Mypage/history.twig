@@ -60,7 +60,7 @@ file that was distributed with this source code.
                     </div>
                     {% for Shipping in Order.Shippings %}
                         {% set isShowReducedTaxMess = false %}
-                        <div class="ec-orderDelivery__title">{{ 'ront.mypage.delivery'|trans }}{% if Order.multiple %}({{ loop.index }}){% endif %}</div>
+                        <div class="ec-orderDelivery__title">{{ 'front.mypage.delivery'|trans }}{% if Order.multiple %}({{ loop.index }}){% endif %}</div>
                         {% for orderItem in Shipping.productOrderItems %}
                             <div class="ec-orderDelivery__item">
                                 <div class="ec-imageGrid">
@@ -75,17 +75,17 @@ file that was distributed with this source code.
                                     <div class="ec-imageGrid__content">
                                         <p>
                                             {% if orderItem.Product is not null and orderItem.Product.Status.id == constant('Eccube\\Entity\\Master\\ProductStatus::DISPLAY_SHOW') %}
-                                                <a href="{{ locale_url('product_detail_locale', {'id': orderItem.Product.id}) }}">{{ orderItem.productName }}</a>
+                                                <a href="{{ locale_url('product_detail_locale', {'id': orderItem.Product.id}) }}">{{ orderItem.localeProductName|default(orderItem.productName) }}</a>
                                             {% else %}
-                                                {{ orderItem.productName }}
+                                                {{ orderItem.localeProductName|default(orderItem.productName) }}
                                             {% endif %} ×{{ orderItem.quantity }} {% if is_reduced_tax_rate(orderItem) %}{{ 'common.reduced_tax_rate_symbol'|trans }}{% set isShowReducedTaxMess = true %}{% endif %}
                                         </p>
                                         {% if orderItem.ProductClass is not null %}
                                             {% if orderItem.ProductClass.ClassCategory1 is not null %}
-                                                {{ orderItem.productClass.classCategory1.className.name }}：{{ orderItem.productClass.classCategory1 }}
+                                                {{ locale_field(orderItem.productClass.classCategory1.className, 'name') }}：{{ locale_field(orderItem.productClass.classCategory1, 'name') }}
                                             {% endif %}
                                             {% if orderItem.ProductClass.ClassCategory2 %}
-                                                <br>{{ orderItem.productClass.classCategory2.className.name }}：{{ orderItem.productClass.classCategory2 }}
+                                                <br>{{ locale_field(orderItem.productClass.classCategory2.className, 'name') }}：{{ locale_field(orderItem.productClass.classCategory2, 'name') }}
                                             {% endif %}
                                         {% endif %}
                                         <p>{{ orderItem.price_inc_tax|price }}

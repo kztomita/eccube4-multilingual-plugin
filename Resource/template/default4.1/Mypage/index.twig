@@ -58,12 +58,12 @@ file that was distributed with this source code.
                                             {% endif %}
                                         </div>
                                         <div class="ec-imageGrid__content">
-                                            <p class="ec-historyRole__detailTitle">{{ OrderItem.product_name }}</p>
+                                            <p class="ec-historyRole__detailTitle">{{ OrderItem.locale_product_name|default(OrderItem.product_name) }}</p>
                                             {% if OrderItem.class_category_name1 is not empty %}
-                                                {{ OrderItem.class_category_name1 }}
+                                                {{ OrderItem.locale_class_category_name1|default(OrderItem.class_category_name1) }}
                                             {% endif %}
-                                            {% if OrderItem.class_category_name2 is not empty %}
-                                                / {{ OrderItem.class_category_name2 }}
+                                            {% if OrderItem.class_category_name1 is not empty %}
+                                                / {{ OrderItem.locale_class_category_name2|default(OrderItem.class_category_name2) }}
                                             {% endif %}
                                             <p class="ec-historyRole__detailPrice">{{ OrderItem.price_inc_tax|price }}
                                                 × {{ OrderItem.quantity }}</p>
