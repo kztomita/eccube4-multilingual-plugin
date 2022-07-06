@@ -142,14 +142,14 @@ file that was distributed with this source code.
                                             <div class="ec-cartRow__name">
                                                 <a target="_blank" href="{{ locale_url('product_detail_locale', {id : Product.id} ) }}">{{ locale_field(Product, 'name') }}</a>
                                                 {% if ProductClass.ClassCategory1 and ProductClass.ClassCategory1.id %}
-                                                    <br>{{ ProductClass.ClassCategory1.ClassName.name }}：{{ ProductClass.ClassCategory1 }}
+                                                    <br>{{ locale_field(ProductClass.ClassCategory1.ClassName, 'name') }}：{{ locale_field(ProductClass.ClassCategory1, 'name') }}
                                                 {% endif %}
                                                 {% if ProductClass.ClassCategory2 and ProductClass.ClassCategory2.id %}
-                                                    <br>{{ ProductClass.ClassCategory2.ClassName.name }}：{{ ProductClass.ClassCategory2 }}
+                                                    <br>{{ locale_field(ProductClass.ClassCategory2.ClassName, 'name') }}：{{ locale_field(ProductClass.ClassCategory2, 'name') }}
                                                 {% endif %}
                                             </div>
                                             <div class="ec-cartRow__unitPrice">{{ CartItem.price|price }}</div>
-                                            <div class="ec-cartRow__sutbtotalSP">{{ '小計：'|trans }}{{ CartItem.total_price|price }}</div>
+                                            <div class="ec-cartRow__sutbtotalSP">{{ 'common.subtotal__with_separator'|trans }}{{ CartItem.total_price|price }}</div>
                                         </div>
                                     </li>
                                     <li class="ec-cartRow__amountColumn">
