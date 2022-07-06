@@ -34,10 +34,10 @@ file that was distributed with this source code.
                             <div class="ec-cartNaviIsset__cartContentTitle">{{ locale_field(Product, 'name') }}
                                 <div class="ec-font-size-1">
                                     {% if ProductClass.ClassCategory1 and ProductClass.ClassCategory1.id %}
-                                        {{ ProductClass.ClassCategory1.ClassName.name }}：{{ ProductClass.ClassCategory1 }}
+                                        {{ locale_field(ProductClass.ClassCategory1.ClassName, 'name') }}：{{ locale_field(ProductClass.ClassCategory1, 'name') }}
                                     {% endif %}
                                     {% if ProductClass.ClassCategory2 and ProductClass.ClassCategory2.id %}
-                                        <br>{{ ProductClass.ClassCategory2.ClassName.name }}：{{ ProductClass.ClassCategory2 }}
+                                        <br>{{ locale_field(ProductClass.ClassCategory2.ClassName, 'name') }}：{{ locale_field(ProductClass.ClassCategory2, 'name') }}
                                     {% endif %}
                                 </div>
                             </div>
