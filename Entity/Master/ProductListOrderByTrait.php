@@ -3,12 +3,10 @@
 namespace Plugin\MultiLingual\Entity\Master;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Annotation\EntityExtension;
 use Doctrine\Common\Collections\Collection;
 use Plugin\MultiLingual\Common\LocaleHelper;
-use Plugin\MultiLingual\Entity\Master\LocaleProductListOrderBy;
 
 /**
  * @EntityExtension("Eccube\Entity\Master\ProductListOrderBy")
