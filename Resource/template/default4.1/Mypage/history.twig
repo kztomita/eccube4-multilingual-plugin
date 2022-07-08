@@ -39,7 +39,7 @@ file that was distributed with this source code.
                     {% if BaseInfo.option_mypage_order_status_display %}
                         <div class="ec-definitions">
                             <dt>{{ 'front.mypage.order_status'|trans }}</dt>
-                            <dd>{{ Order.CustomerOrderStatus }}</dd>
+                            <dd>{{ locale_field(Order.CustomerOrderStatus, 'name') }}</dd>
                         </div>
                     {% endif %}
                     {% if BaseInfo.isOptionPoint %}
