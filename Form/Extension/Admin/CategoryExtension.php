@@ -74,7 +74,7 @@ class CategoryExtension extends AbstractTypeExtension
             foreach ($LocaleCategoeis as $LocaleCategory) {
                 $locale = $LocaleCategory->getLocale();
                 $field = 'name_' . $locale;
-                if (!$form[$field]) {
+                if (!isset($form[$field])) {
                     continue;
                 }
                 $form[$field]->setData($LocaleCategory->getName());

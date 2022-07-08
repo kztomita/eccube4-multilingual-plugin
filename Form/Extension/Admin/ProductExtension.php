@@ -80,22 +80,22 @@ class ProductExtension extends AbstractTypeExtension
             foreach ($LocaleProducts as $LocaleProduct) {
                 $locale = $LocaleProduct->getLocale();
                 $field = 'name_' . $locale;
-                if ($form[$field]) {
+                if (isset($form[$field])) {
                     $form[$field]->setData($LocaleProduct->getName());
                 }
 
                 $field = 'description_detail_' . $locale;
-                if ($form[$field]) {
+                if (isset($form[$field])) {
                     $form[$field]->setData($LocaleProduct->getDescriptionDetail());
                 }
 
                 $field = 'description_list_' . $locale;
-                if ($form[$field]) {
+                if (isset($form[$field])) {
                     $form[$field]->setData($LocaleProduct->getDescriptionList());
                 }
 
                 $field = 'free_area_' . $locale;
-                if ($form[$field]) {
+                if (isset($form[$field])) {
                     $form[$field]->setData($LocaleProduct->getFreeArea());
                 }
             }

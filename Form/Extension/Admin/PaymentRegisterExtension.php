@@ -69,7 +69,7 @@ class PaymentRegisterExtension extends AbstractTypeExtension
                 /** @var LocalePayment $LocalePayment */
                 $locale = $LocalePayment->getLocale();
                 $field = 'method_' . $locale;
-                if (!$form[$field]) {
+                if (!isset($form[$field])) {
                     continue;
                 }
                 $form[$field]->setData($LocalePayment->getMethod());

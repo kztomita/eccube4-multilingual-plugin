@@ -70,7 +70,7 @@ class ClassNameExtension extends AbstractTypeExtension
             foreach ($LocaleClassNames as $LocaleClassName) {
                 $locale = $LocaleClassName->getLocale();
                 $field = 'name_' . $locale;
-                if (!$form[$field]) {
+                if (!isset($form[$field])) {
                     continue;
                 }
                 $form[$field]->setData($LocaleClassName->getName());

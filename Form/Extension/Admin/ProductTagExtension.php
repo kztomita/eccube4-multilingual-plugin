@@ -70,7 +70,7 @@ class ProductTagExtension extends AbstractTypeExtension
             foreach ($LocaleTags as $LocaleTag) {
                 $locale = $LocaleTag->getLocale();
                 $field = 'name_' . $locale;
-                if (!$form[$field]) {
+                if (!isset($form[$field])) {
                     continue;
                 }
                 $form[$field]->setData($LocaleTag->getName());
