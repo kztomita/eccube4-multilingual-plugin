@@ -555,9 +555,9 @@ class PluginManager extends AbstractPluginManager
                 $serviceName = $entity->getServiceName();
                 if (isset($translates[$serviceName]) &&
                     isset($translates[$serviceName][$locale])) {
-                    $localeEntity->setName($translates[$serviceName][$locale]);
+                    $localeEntity->setServiceName($translates[$serviceName][$locale]);
                 } else {
-                    $localeEntity->setName($serviceName);
+                    $localeEntity->setServiceName($serviceName);
                 }
             }
         );
