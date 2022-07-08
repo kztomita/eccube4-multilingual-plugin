@@ -15,10 +15,13 @@ use Eccube\Entity\BlockPosition;
 use Eccube\Entity\Category;
 use Eccube\Entity\ClassCategory;
 use Eccube\Entity\ClassName;
+use Eccube\Entity\Delivery;
+use Eccube\Entity\DeliveryTime;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\AbstractMasterEntity;
 use Eccube\Entity\Page;
 use Eccube\Entity\PageLayout;
+use Eccube\Entity\Payment;
 use Eccube\Entity\Product;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Tag;
@@ -26,6 +29,9 @@ use Eccube\Plugin\AbstractPluginManager;
 use Plugin\MultiLingual\Entity\LocaleCategory;
 use Plugin\MultiLingual\Entity\LocaleClassCategory;
 use Plugin\MultiLingual\Entity\LocaleClassName;
+use Plugin\MultiLingual\Entity\LocaleDelivery;
+use Plugin\MultiLingual\Entity\LocaleDeliveryTime;
+use Plugin\MultiLingual\Entity\LocalePayment;
 use Plugin\MultiLingual\Entity\LocaleProduct;
 use Plugin\MultiLingual\Entity\LocaleTag;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -44,6 +50,9 @@ class PluginManager extends AbstractPluginManager
         $this->createLocaleClassName($container);
         $this->createLocaleClassCategory($container);
         $this->createLocaleTag($container);
+        $this->createLocaleDelivery($container);
+        $this->createLocaleDeliveryTime($container);
+        $this->createLocalePayment($container);
         $this->createMasterLocaleRecord($container);
     }
 
@@ -510,6 +519,108 @@ class PluginManager extends AbstractPluginManager
                     $localeEntity->setName($translates[$name][$locale]);
                 } else {
                     $localeEntity->setName($name);
+                }
+            }
+        );
+    }
+
+    /**
+     * plg_ml_locale_deliveryの設定
+     *
+     * @param ContainerInterface $container
+     * @return void
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    private function createLocaleDelivery(ContainerInterface  $container)
+    {
+        $translates = $this->loadSetupFile('initial_data.php')['delivery']['translates'];
+
+        $this->createLocaleRecord(
+            $container,
+            Delivery::class,
+            LocaleDelivery::class,
+            function (LocaleDelivery $localeEntity, Delivery $entity, $locale) use ($translates) {
+                $localeEntity->setDelivery($entity);
+
+                // 翻訳データがあれば登録
+                $name = $entity->getName();
+                if (isset($translates[$name]) &&
+                    isset($translates[$name][$locale])) {
+                    $localeEntity->setName($translates[$name][$locale]);
+                } else {
+                    $localeEntity->setName($name);
+                }
+
+                $serviceName = $entity->getServiceName();
+                if (isset($translates[$serviceName]) &&
+                    isset($translates[$serviceName][$locale])) {
+                    $localeEntity->setName($translates[$serviceName][$locale]);
+                } else {
+                    $localeEntity->setName($serviceName);
+                }
+            }
+        );
+
+    }
+
+    /**
+     * plg_ml_locale_delivery_timeの設定
+     *
+     * @param ContainerInterface $container
+     * @return void
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    private function createLocaleDeliveryTime(ContainerInterface  $container)
+    {
+        $translates = $this->loadSetupFile('initial_data.php')['delivery_time']['translates'];
+
+        $this->createLocaleRecord(
+            $container,
+            DeliveryTime::class,
+            LocaleDeliveryTime::class,
+            function (LocaleDeliveryTime $localeEntity, DeliveryTime $entity, $locale) use ($translates) {
+                $localeEntity->setParentDeliveryTime($entity);
+
+                // 翻訳データがあれば登録
+                $name = $entity->getDeliveryTime();
+                if (isset($translates[$name]) &&
+                    isset($translates[$name][$locale])) {
+                    $localeEntity->setDeliveryTime($translates[$name][$locale]);
+                } else {
+                    $localeEntity->setDeliveryTime($name);
+                }
+            }
+        );
+    }
+
+    /**
+     * plg_ml_locale_paymentの設定
+     *
+     * @param ContainerInterface $container
+     * @return void
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    private function createLocalePayment(ContainerInterface  $container)
+    {
+        $translates = $this->loadSetupFile('initial_data.php')['payment']['translates'];
+
+        $this->createLocaleRecord(
+            $container,
+            Payment::class,
+            LocalePayment::class,
+            function (LocalePayment $localeEntity, Payment $entity, $locale) use ($translates) {
+                $localeEntity->setPayment($entity);
+
+                // 翻訳データがあれば登録
+                $name = $entity->getMethod();
+                if (isset($translates[$name]) &&
+                    isset($translates[$name][$locale])) {
+                    $localeEntity->setMethod($translates[$name][$locale]);
+                } else {
+                    $localeEntity->setMethod($name);
                 }
             }
         );

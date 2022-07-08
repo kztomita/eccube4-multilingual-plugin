@@ -80,4 +80,40 @@ return [
             ],
         ],
     ],
+    'delivery' => [
+        'translates' => [
+            'サンプル業者' => [
+                'en' => 'Sample Delivery',
+            ],
+            'サンプル宅配' => [
+                'en' => 'Sample Express',
+            ],
+        ],
+    ],
+    'delivery_time' => [
+        'translates' => [
+            '午前' => [
+                'en' => 'AM',
+            ],
+            '午後' => [
+                'en' => 'PM',
+            ],
+        ],
+    ],
+    'payment' => [
+        'translates' => [
+            '郵便振替' => [
+                'en' => 'Postal transfer',
+            ],
+            '現金書留' => [
+                'en' => 'Registered mail',
+            ],
+            '銀行振込' => [
+                'en' => 'Bank transfer',
+            ],
+            '代金引換' => [
+                'en' => 'Cash on delivery',
+            ],
+        ],
+    ],
 ];
