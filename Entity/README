@@ -16,6 +16,7 @@ Entityの拡張はtraitで行う必要があり、traitに対してinterfaceの�
   - localeカラムを持つ (AbstractLocaleEntity)
 - 親Entityへのrelationプロパティとメソッドを持つ($Product,$Category,...)
 - 情報を格納するフィールド名は親Entityに合わせる
+  (厳密にはgetterメソッドの名前を合わせる)
 	twig拡張関数で、該当Localeが見つからなかった時に親Entityから
 	情報を取得するのに使う。
 
