@@ -30,7 +30,7 @@ class LocaleDeliveryTime extends AbstractDataLocaleEntity
      *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * })
      */
-    private $DeliveryTime;
+    private $ParentDeliveryTime;
 
     /**
      * @var string
@@ -56,7 +56,7 @@ class LocaleDeliveryTime extends AbstractDataLocaleEntity
      */
     public function setParentDeliveryTime(DeliveryTime $DeliveryTime): self
     {
-        $this->DeliveryTime = $DeliveryTime;
+        $this->ParentDeliveryTime = $DeliveryTime;
 
         return $this;
     }
@@ -68,7 +68,7 @@ class LocaleDeliveryTime extends AbstractDataLocaleEntity
      */
     public function getParentDeliveryTime(): DeliveryTime
     {
-        return $this->DeliveryTime;
+        return $this->ParentDeliveryTime;
     }
 
     /**
