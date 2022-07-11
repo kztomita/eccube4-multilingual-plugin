@@ -104,6 +104,22 @@ file that was distributed with this source code.
                 // 入力欄を初期化
                 $('#add-delivery-time-value').val('');
 
+
+                var locales = [{{ eccube_config.multi_lingual_locales|map(l => "#{l}"|e('js'))|map(l => "'#{l}'")|join(', ')|raw }}];
+                for (var i = 0 ; i < locales.length ; i++) {
+                    var locale = locales[i];
+                    var deliveryTimeName = $('#add-delivery-time-value-' + locale).val();
+
+                    // お届け時間名を入れる
+                    // Symfonyが生成するid: {{ form.delivery_time_en.vars.id }}のように確認できる
+                    var inputId = '#delivery_delivery_times_' + index + '_delivery_time_' + locale;
+                    $(inputId).val(deliveryTimeName);
+                    $(inputId).attr('data-origin-value', deliveryTimeName);
+
+                    // 入力欄を初期化
+                    $('#add-delivery-time-value-' + locale).val('');
+                }
+
                 // 要素数をインクリメント
                 index++;
 
@@ -318,7 +334,7 @@ file that was distributed with this source code.
                         <div id="ex-delivery-time" class="card-body p-0">
                             <div class="card rounded border-0 mb-2">
                                 <ul id="delivery-time-group" class="list-group list-group-flush sortable-container"
-                                    data-prototype="{% filter escape %}{{ include('@admin/Setting/Shop/delivery_time_prototype.twig', {'form': form.delivery_times.vars.prototype}) }}{% endfilter %}">
+                                    data-prototype="{% filter escape %}{{ include('@MultiLingual/admin/Setting/Shop/delivery_time_prototype.twig', {'form': form.delivery_times.vars.prototype}) }}{% endfilter %}">
                                     <li class="list-group-item">
                                         <div class="form-row">
                                             <div class="col-auto d-flex align-items-center">
@@ -328,9 +344,18 @@ file that was distributed with this source code.
                                                 <button id="add-delivery-time-button" class="btn btn-ec-regular" type="button">{{ 'admin.common.create__new'|trans }}</button>
                                             </div>
                                         </div>
+                                        {% for locale in eccube_config.multi_lingual_locales %}
+                                            {% set field = 'add-delivery-time-value-' ~ locale %}
+                                            <div>{{ locale }}</div>
+                                            <div class="form-row">
+                                                <div class="col-auto d-flex align-items-center">
+                                                    <input id="{{ field }}" class="form-control" type="text">
+                                                </div>
+                                            </div>
+                                        {% endfor %}
                                     </li>
                                     {% for child in form.delivery_times %}
-                                        {{ include('@admin/Setting/Shop/delivery_time_prototype.twig', {'form': child}) }}
+                                        {{ include('@MultiLingual/admin/Setting/Shop/delivery_time_prototype.twig', {'form': child}) }}
                                     {% endfor %}
                                 </ul>
                             </div>

@@ -7,6 +7,7 @@ use Eccube\Entity\Delivery;
 use Eccube\Form\Type\Admin\DeliveryType;
 use Plugin\MultiLingual\Entity\LocaleDelivery;
 use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -55,7 +56,8 @@ class DeliveryExtension extends AbstractTypeExtension
                         ]),
                     ],
                     'mapped' => false,
-                ]);
+                ])
+            ;
         }
 
         $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
