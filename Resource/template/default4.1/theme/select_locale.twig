@@ -1,0 +1,25 @@
+{#
+EntityTypeのフォームで<option>のテキストをLocale用テキストに置き換えるための
+カスタマイズテーマ。
+form_widget(xxx, {'field': 'name'})のようにvariablesで
+どのフィールドからテキストを取得するかを指定する。
+ #}
+{%- block choice_widget_options -%}
+    {% for group_label, choice in options %}
+        {# choice: ChoiceView
+           以下のプロパティがある
+           choice.label
+                 .value
+                 .data   choice項目のdata(EntityTypeならEntity)
+                 .attr
+        #}
+        {%- if choice is iterable -%}
+            <optgroup label="{{ choice_translation_domain is same as(false) ? group_label : group_label|trans({}, choice_translation_domain) }}">
+                {% set options = choice %}
+                {{- block('choice_widget_options') -}}
+            </optgroup>
+        {%- else -%}
+            <option value="{{ choice.value }}"{% if choice.attr %}{% with { attr: choice.attr } %}{{ block('attributes') }}{% endwith %}{% endif %}{% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{{ choice_translation_domain is same as(false) ? locale_field(choice.data, field) : choice.label|trans({}, choice_translation_domain) }}</option>
+        {%- endif -%}
+    {% endfor %}
+{%- endblock choice_widget_options -%}
