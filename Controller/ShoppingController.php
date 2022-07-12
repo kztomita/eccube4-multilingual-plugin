@@ -9,6 +9,7 @@ use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Plugin\MultiLingual\Service\OrderHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -50,6 +51,9 @@ class ShoppingController extends AbstractController
             __FUNCTION__,
             [$cartPurchaseFlow]
         );
+        if ($result instanceof RedirectResponse) {
+            return $result;
+        }
 
         /** @var Order $Order */
         $Order = $result['Order'];
