@@ -53,9 +53,4 @@ trait PaymentTrait
     {
         return LocaleHelper::getLocaleField($this, $field, $locale);
     }
-
-    public function getLocaleMethod(?string $locale = null): string
-    {
-        return $this->getLocaleField('method');
-    }
 }
