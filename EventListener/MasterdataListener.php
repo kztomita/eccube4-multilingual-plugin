@@ -84,7 +84,6 @@ class MasterdataListener implements EventSubscriberInterface
                 ]);
                 if (!$LocaleEntity) {
                     // 新規作成時
-                    error_log("new " . $localeClass);
                     $LocaleEntity = new $localeClass;
                     $LocaleEntity->setParentId($id);
                     $LocaleEntity->setParent($Parent);

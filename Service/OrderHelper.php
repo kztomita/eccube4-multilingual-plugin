@@ -45,7 +45,6 @@ class OrderHelper
                     $item->setLocaleClassName1($Category1->getClassName()->getLocaleField('name'));
                 }
                 $item->setLocaleClassCategoryName1($Category1->getLocaleField('name'));
-                error_log($Category1->getLocaleField('name'));
             }
             $Category2 = $ProductClass->getClassCategory2();
             if ($Category2) {

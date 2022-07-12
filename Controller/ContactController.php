@@ -43,7 +43,6 @@ class ContactController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // 確認ページは直接Responseを返してくるのでここで横取りして処理する。
             if ($request->get('mode') == 'confirm') {
-                error_log('confirm');
                 return $this->render(
                     '@MultiLingual/default/Contact/confirm.twig',
                     [
