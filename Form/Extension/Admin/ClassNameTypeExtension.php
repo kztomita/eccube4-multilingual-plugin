@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Admin\ClassNameTypeを拡張する
  */
-class ClassNameExtension extends AbstractTypeExtension
+class ClassNameTypeExtension extends AbstractTypeExtension
 {
     /**
      * @var EccubeConfig

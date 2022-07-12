@@ -16,7 +16,7 @@ use Doctrine\ORM\EntityManagerInterface;
 /**
  * Admin\MasterdataEditTypeを拡張する
  */
-class MasterdataEditExtension extends AbstractTypeExtension
+class MasterdataEditTypeExtension extends AbstractTypeExtension
 {
     /**
      * @var EccubeConfig

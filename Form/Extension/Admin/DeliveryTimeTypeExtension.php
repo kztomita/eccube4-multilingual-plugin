@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Admin\DeliveryTimeTypeを拡張する
  */
-class DeliveryTimeExtension extends AbstractTypeExtension
+class DeliveryTimeTypeExtension extends AbstractTypeExtension
 {
     /**
      * @var EccubeConfig

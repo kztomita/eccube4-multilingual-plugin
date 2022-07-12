@@ -3,9 +3,11 @@
 namespace Plugin\MultiLingual\Form\Extension\Admin;
 
 use Eccube\Common\EccubeConfig;
-use Eccube\Entity\ClassCategory;
-use Eccube\Form\Type\Admin\ClassCategoryType;
+use Eccube\Entity\Delivery;
+use Eccube\Form\Type\Admin\DeliveryType;
+use Plugin\MultiLingual\Entity\LocaleDelivery;
 use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -13,9 +15,9 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Admin\ClassCategoryTypeを拡張する
+ * Admin\DeliveryTypeを拡張する
  */
-class ClassCategoryExtension extends AbstractTypeExtension
+class DeliveryTypeExtension extends AbstractTypeExtension
 {
     /**
      * @var EccubeConfig
@@ -23,7 +25,7 @@ class ClassCategoryExtension extends AbstractTypeExtension
     protected $eccubeConfig;
 
     /**
-     * ClassCategoryExtension constructor.
+     * PaymentRegisterExtension constructor.
      *
      * @param EccubeConfig $eccubeConfig
      */
@@ -45,47 +47,59 @@ class ClassCategoryExtension extends AbstractTypeExtension
                         ]),
                     ],
                     'mapped' => false,
-                ]);
+                ])
+                ->add('service_name_' . $locale, TextType::class, [
+                    'constraints' => [
+                        new Assert\NotBlank(),
+                        new Assert\Length([
+                            'max' => $this->eccubeConfig['eccube_stext_len'],
+                        ]),
+                    ],
+                    'mapped' => false,
+                ])
+            ;
         }
 
         $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
-            // フォームにClassCategoryモデルがsetData()される際に
-            // LocaleClassCategoryのデータも読み取って初期値として登録
+            // フォームにDeliveryモデルがsetData()される際に
+            // LocaleDeliveryのデータも読み取って初期値として登録
 
             $form = $event->getForm();
 
-            // 新規作成／編集フォームともAdmin\ClassCategoryTypeなので、フォーム名で
-            // 新規作成／編集の区別をする。
-            // 新規作成フォームの名前は'admin_class_category'(ClassCategoryTypeで定義されている)、
-            // 編集フォームの名前は'class_category_<id>'。
-            if ($form->getName() == 'admin_class_category') {
+            /** @var Delivery $Delivery */
+            $Delivery = $form->getData();
+
+            if (!$Delivery->getId()) {
                 // 新規作成の場合は初期値設定は不要
                 return;
             }
 
-            /** @var ClassCategory $ClassCategory */
-            $ClassCategory = $form->getData();
-            $LocaleClassCategories = $ClassCategory->getLocales();
+            $LocaleDeliveries = $Delivery->getLocales();
 
-            foreach ($LocaleClassCategories as $LocaleClassCategory) {
-                $locale = $LocaleClassCategory->getLocale();
+            foreach ($LocaleDeliveries as $LocaleDelivery) {
+                /** @var LocaleDelivery $LocaleDelivery */
+                $locale = $LocaleDelivery->getLocale();
                 $field = 'name_' . $locale;
-                if (!isset($form[$field])) {
-                    continue;
+                if (isset($form[$field])) {
+                    $form[$field]->setData($LocaleDelivery->getName());
                 }
-                $form[$field]->setData($LocaleClassCategory->getName());
+                $field = 'service_name_' . $locale;
+                if (isset($form[$field])) {
+                    $form[$field]->setData($LocaleDelivery->getServiceName());
+                }
             }
         });
     }
 
     public function getExtendedType()
     {
-        return ClassCategoryType::class;
+        return DeliveryType::class;
     }
 
     public static function getExtendedTypes(): iterable
     {
-        yield ClassCategoryType::class;
+        yield DeliveryType::class;
     }
 
 }
+

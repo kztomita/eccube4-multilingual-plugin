@@ -2,10 +2,10 @@
 
 namespace Plugin\MultiLingual\Form\Extension\Admin;
 
+use Doctrine\Common\Collections\Collection;
 use Eccube\Common\EccubeConfig;
-use Eccube\Entity\Payment;
-use Eccube\Form\Type\Admin\PaymentRegisterType;
-use Plugin\MultiLingual\Entity\LocalePayment;
+use Eccube\Entity\Category;
+use Eccube\Form\Type\Admin\CategoryType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,9 +14,12 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Admin\PaymentRegisterTypeを拡張する
+ * Admin\CategoryTypeを拡張する
+ * Ref to:
+ * https://doc4.ec-cube.net/customize_formtype
+ * https://symfony.com/doc/current/form/create_form_type_extension.html
  */
-class PaymentRegisterExtension extends AbstractTypeExtension
+class CategoryTypeExtension extends AbstractTypeExtension
 {
     /**
      * @var EccubeConfig
@@ -24,7 +27,7 @@ class PaymentRegisterExtension extends AbstractTypeExtension
     protected $eccubeConfig;
 
     /**
-     * PaymentRegisterExtension constructor.
+     * CategoryType constructor.
      *
      * @param EccubeConfig $eccubeConfig
      */
@@ -38,7 +41,7 @@ class PaymentRegisterExtension extends AbstractTypeExtension
         $locales = $this->eccubeConfig['multi_lingual_locales'];
         foreach ($locales as $locale) {
             $builder
-                ->add('method_' . $locale, TextType::class, [
+                ->add('name_' . $locale, TextType::class, [
                     'constraints' => [
                         new Assert\NotBlank(),
                         new Assert\Length([
@@ -50,42 +53,43 @@ class PaymentRegisterExtension extends AbstractTypeExtension
         }
 
         $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
-            // フォームにPaymentモデルがsetData()される際に
-            // LocalePaymentのデータも読み取って初期値として登録
+            // フォームにCategoryモデルがsetData()される際に
+            // LocaleCategoryのデータも読み取って初期値として登録
 
             $form = $event->getForm();
 
-            /** @var Payment $Payment */
-            $Payment = $form->getData();
-
-            if (!$Payment->getId()) {
+            // 新規作成／編集フォームともAdmin\CategoryTypeなので、フォーム名で
+            // 新規作成／編集の区別をする。
+            // 新規作成フォームの名前は'admin_category'(CategoryTypeで定義されている)、
+            // 編集フォームの名前は'category_<cat id>'。
+            if ($form->getName() == 'admin_category') {
                 // 新規作成の場合は初期値設定は不要
                 return;
             }
 
-            $LocalePayments = $Payment->getLocales();
+            /** @var Category $Category */
+            $Category = $form->getData();
+            $LocaleCategoeis = $Category->getLocales();
 
-            foreach ($LocalePayments as $LocalePayment) {
-                /** @var LocalePayment $LocalePayment */
-                $locale = $LocalePayment->getLocale();
-                $field = 'method_' . $locale;
+            foreach ($LocaleCategoeis as $LocaleCategory) {
+                $locale = $LocaleCategory->getLocale();
+                $field = 'name_' . $locale;
                 if (!isset($form[$field])) {
                     continue;
                 }
-                $form[$field]->setData($LocalePayment->getMethod());
+                $form[$field]->setData($LocaleCategory->getName());
             }
         });
     }
 
     public function getExtendedType()
     {
-        return PaymentRegisterType::class;
+        return CategoryType::class;
     }
 
     public static function getExtendedTypes(): iterable
     {
-        yield PaymentRegisterType::class;
+        yield CategoryType::class;
     }
 
 }
-

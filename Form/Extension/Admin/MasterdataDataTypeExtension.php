@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Admin\MasterdataDataTypeを拡張する
  */
-class MasterdataDataExtension extends AbstractTypeExtension
+class MasterdataDataTypeExtension extends AbstractTypeExtension
 {
     /**
      * @var EccubeConfig

@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Admin\ProductTypeを拡張する
  */
-class ProductExtension extends AbstractTypeExtension
+class ProductTypeExtension extends AbstractTypeExtension
 {
     /**
      * @var EccubeConfig
