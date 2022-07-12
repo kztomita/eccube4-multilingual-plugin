@@ -13,7 +13,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 /**
  * AddCartTypeを拡張する
  */
-class AddCartExtension extends AbstractTypeExtension
+class AddCartTypeExtension extends AbstractTypeExtension
 {
     /**
      * @var LocaleClassCategoryRepository

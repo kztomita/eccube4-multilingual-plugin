@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Master\ProductListOrderByTypeを拡張する
  */
-class ProductListOrderByExtension extends AbstractMasterTypeExtension
+class ProductListOrderByTypeExtension extends AbstractMasterTypeExtension
 {
     public function getExtendedType()
     {

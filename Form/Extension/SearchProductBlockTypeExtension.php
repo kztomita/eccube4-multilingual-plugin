@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * SearchProductBlockTypeを拡張する
  */
-class SearchProductBlockExtension extends AbstractTypeExtension
+class SearchProductBlockTypeExtension extends AbstractTypeExtension
 {
     /**
      * @var CategoryRepository

@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Master\ProductListMaxTypeを拡張する
  */
-class ProductListMaxExtension extends AbstractMasterTypeExtension
+class ProductListMaxTypeExtension extends AbstractMasterTypeExtension
 {
     public function getExtendedType()
     {
