@@ -81,9 +81,13 @@ Postal Code: {{ Shipping.postal_code }}
 Address: {{ Shipping.Pref.name }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}
 Phone: {{ Shipping.phone_number }}
 
-Delivery Method: {{ Shipping.shipping_delivery_name }}
+Delivery Method: {{ locale_field(Shipping.Delivery, 'name') }}
 Delivery Date: {{ Shipping.shipping_delivery_date is empty ? 'Unspecified' : Shipping.shipping_delivery_date|date_day }}
-Delivery Time: {{ Shipping.shipping_delivery_time|default('Unspecified') }}
+{% set DeliveryTime = null %}
+{% if Shipping.timeId is not null %}
+{% set DeliveryTime = repository('Eccube\\Entity\\DeliveryTime').find(Shipping.timeId) %}
+{% endif %}
+Delivery Time: {{ locale_field(DeliveryTime, 'delivery_time')|default('Unspecified') }}
 
 {%  for OrderItem in Shipping.productOrderItems %}
 SKU: {{ OrderItem.product_code }}
