@@ -99,15 +99,17 @@ class TwigExtension extends AbstractExtension
      * $localeを指定しなかった場合は、現在のリクエストのLocaleを使用する。
      * 該当するLocaleオブジェクトがない場合は、$Entityの同名フィールドの値を返す。
      *
-     * XXX テンプレート用の関数なので$Entityはnullも許容するようにした方がいいか？
-     *
-     * @param AbstractEntity $Entity
+     * @param ?AbstractEntity $Entity
      * @param string $field
      * @param string|null $locale
      * @return mixed
      */
-    public function getLocaleField(AbstractEntity $Entity, string $field, ?string $locale = null)
+    public function getLocaleField(?AbstractEntity $Entity, string $field, ?string $locale = null)
     {
+        if ($Entity === null) {
+            return null;
+        }
+
         if (!LocaleHelper::hasLocaleFeature($Entity)) {
             throw new \InvalidArgumentException('$Entity has no getLocales() method.');
         }
