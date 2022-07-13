@@ -109,7 +109,7 @@ file that was distributed with this source code.
                         </div>
                         <div class="ec-definitions--soft">
                             <dt>{{ 'front.mypage.delivery_provider'|trans }} :</dt>
-                            <dd>{{ Shipping.shipping_delivery_name }}</dd>
+                            <dd>{{ Shipping.locale_delivery_name }}</dd>
                         </div>
                         <div class="ec-definitions--soft">
                             <dt>{{ 'front.mypage.delivery_date'|trans }} :</dt>
@@ -117,7 +117,7 @@ file that was distributed with this source code.
                         </div>
                         <div class="ec-definitions--soft">
                             <dt>{{ 'front.mypage.delivery_time'|trans }} :</dt>
-                            <dd>{{ Shipping.shipping_delivery_time|default('common.select__unspecified'|trans) }}</dd>
+                            <dd>{{ Shipping.locale_delivery_time|default('common.select__unspecified'|trans) }}</dd>
                         </div>
                     {% endfor %}
                 </div>
@@ -125,7 +125,7 @@ file that was distributed with this source code.
                     <div class="ec-rectHeading">
                         <h2>{{ 'front.mypage.payment_info'|trans }}</h2>
                     </div>
-                    <p>{{ 'front.mypage.payment'|trans }} : {{ Order.PaymentMethod }}</p>
+                    <p>{{ 'front.mypage.payment'|trans }} : {{ Order.LocalePaymentMethod }}</p>
                 </div>
                 <div class="ec-orderConfirm">
                     <div class="ec-rectHeading">
