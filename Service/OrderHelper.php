@@ -5,6 +5,8 @@ namespace Plugin\MultiLingual\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
+use Eccube\Entity\Shipping;
+use Eccube\Repository\DeliveryTimeRepository;
 
 class OrderHelper
 {
@@ -13,49 +15,85 @@ class OrderHelper
      */
     private $entityManager;
 
+    /**
+     * @var DeliveryTimeRepository
+     */
+    private $deliveryTimeRepository;
+
     public function __construct(
-        EntityManagerInterface  $entityManager
+        EntityManagerInterface $entityManager,
+        DeliveryTimeRepository $deliveryTimeRepository
     )
     {
         $this->entityManager = $entityManager;
+        $this->deliveryTimeRepository = $deliveryTimeRepository;
     }
 
-    public function setLocaleNameAsOrder(Order $order)
+    public function setLocaleNameAsOrder(Order $Order)
     {
-        foreach ($order->getOrderItems() as $orderItem) {
+        $Payment = $Order->getPayment();
+        if ($Payment) {
+            $Order->setLocalePaymentMethod($Payment->getLocaleField('method'));
+        }
+        $this->entityManager->persist($Order);
+        $this->entityManager->flush();
+
+        foreach ($Order->getOrderItems() as $orderItem) {
             $this->setLocaleNameAsOrderItem($orderItem);
+        }
+
+        foreach ($Order->getShippings() as $shipping) {
+            $this->setLocaleNameAsShipping($shipping);
         }
     }
 
-    public function setLocaleNameAsOrderItem(OrderItem $item)
+    public function setLocaleNameAsOrderItem(OrderItem $Item)
     {
-        $Product = $item->getProduct();
+        $Product = $Item->getProduct();
         if (!$Product) {
             return null;
         }
 
         // 購入時のlocaleでの名称を設定
-        $item->setLocaleProductName($Product->getLocaleField('name'));
+        $Item->setLocaleProductName($Product->getLocaleField('name'));
 
-        $ProductClass = $item->getProductClass();
+        $ProductClass = $Item->getProductClass();
         if ($ProductClass) {
             $Category1 = $ProductClass->getClassCategory1();
             if ($Category1) {
                 if ($Category1->getClassName()) {
-                    $item->setLocaleClassName1($Category1->getClassName()->getLocaleField('name'));
+                    $Item->setLocaleClassName1($Category1->getClassName()->getLocaleField('name'));
                 }
-                $item->setLocaleClassCategoryName1($Category1->getLocaleField('name'));
+                $Item->setLocaleClassCategoryName1($Category1->getLocaleField('name'));
             }
             $Category2 = $ProductClass->getClassCategory2();
             if ($Category2) {
                 if ($Category2->getClassName()) {
-                    $item->setLocaleClassName2($Category2->getClassName()->getLocaleField('name'));
+                    $Item->setLocaleClassName2($Category2->getClassName()->getLocaleField('name'));
                 }
-                $item->setLocaleClassCategoryName2($Category2->getLocaleField('name'));
+                $Item->setLocaleClassCategoryName2($Category2->getLocaleField('name'));
             }
         }
 
-        $this->entityManager->persist($item);
+        $this->entityManager->persist($Item);
+        $this->entityManager->flush();
+    }
+
+    public function setLocaleNameAsShipping(Shipping $Shipping)
+    {
+        $Delivery = $Shipping->getDelivery();
+        if ($Delivery) {
+            $Shipping->setLocaleDeliveryName($Delivery->getLocaleField('name'));
+        }
+
+        if ($Shipping->getTimeId()) {
+            $DeliveryTime = $this->deliveryTimeRepository->find($Shipping->getTimeId());
+            if ($DeliveryTime) {
+                $Shipping->setLocaleDeliveryTime($DeliveryTime->getLocaleField('delivery_time'));
+            }
+        }
+
+        $this->entityManager->persist($Shipping);
         $this->entityManager->flush();
     }
 }

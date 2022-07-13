@@ -86,12 +86,18 @@ class ShoppingController extends AbstractController
     {
         $this->testLocale($request);
 
-        return $this->invokeController(
+        $result = $this->invokeController(
             $request,
             $this->controller,
             __FUNCTION__,
             func_get_args()
         );
+
+        /** @var Order $Order */
+        $Order = $result['Order'];
+        $this->orderHelper->setLocaleNameAsOrder($Order);
+
+        return $result;
     }
 
     /**
@@ -118,12 +124,18 @@ class ShoppingController extends AbstractController
     {
         $this->testLocale($request);
 
-        return $this->invokeController(
+        $result = $this->invokeController(
             $request,
             $this->controller,
             __FUNCTION__,
             func_get_args()
         );
+
+        /** @var Order $Order */
+        $Order = $result['Order'];
+        $this->orderHelper->setLocaleNameAsOrder($Order);
+
+        return $result;
     }
 
     /**

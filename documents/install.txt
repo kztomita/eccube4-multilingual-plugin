@@ -1,14 +1,11 @@
-このプラグインを有効化すると以下の変更を行う。
+このプラグインをインストールするとDBに以下の変更を行う。
 
-Locale用ページを作成。
-	作成されたページはページ管理より編集可。
+dtb_orderに以下のカラムを追加。
+- locale_payment_method
 
-Localeページ用に以下のレイアウトを作成。
-	トップページ用レイアウト - Locale
-	下層ページ用レイアウト - Locale 
-
-Localeページ用のブロックを作成。
-	ブロック管理より編集可。
+dtb_shippingに以下のカラムを追加。
+- locale_delivery_name
+- locale_delivery_time
 
 dtb_order_itemに以下のカラムを追加。
 - locale_product_name
@@ -19,6 +16,22 @@ dtb_order_itemに以下のカラムを追加。
 	OneToOneでサブテーブルに分けた方がいい？
 	OneToManyで全localeの情報を残しておく？
 	<-- これだとどのlocaleで購入したのか分からなくなる
+
+plg_ml_****の各種テーブルの作成。
+
+
+このプラグインを有効化すると以下の変更を行う。
+
+Locale用ページを作成。
+	作成されたページはページ管理より編集可。
+
+Localeページ用に以下のレイアウトを作成。
+	トップページ用レイアウト - Locale
+	下層ページ用レイアウト - Locale
+
+Localeページ用のブロックを作成。
+	ブロック管理より編集可。
+
 
 カテゴリ管理のコントローラのテンプレートを差し替える
 	src/Eccube/Resource/template/admin/Product/category.twig

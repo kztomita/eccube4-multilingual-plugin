@@ -128,15 +128,7 @@ file that was distributed with this source code.
                             </div>
                             <div class="ec-select ec-select__time">
                                 <label>{{ 'front.shopping.delivery_time'|trans }}</label>
-                                {% set DeliveryTime = null %}
-                                {% if Order.Shippings[idx].timeId is not null %}
-                                    {% set DeliveryTime = repository('Eccube\\Entity\\DeliveryTime').find(Order.Shippings[idx].timeId) %}
-                                {% endif %}
-                                {% if DeliveryTime %}
-                                    {{ locale_field(DeliveryTime, 'delivery_time') }}
-                                {% else %}
-                                    {{ 'common.select__unspecified'|trans }}
-                                {% endif %}
+                                {{ Order.Shippings[idx].localeDeliveryTime?: 'common.select__unspecified'|trans }}
                             </div>
                         </div>
                     </div>
