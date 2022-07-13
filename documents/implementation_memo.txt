@@ -8,3 +8,25 @@ $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_
 Pluginから安易にdtb_mail_templateにレコードを追加してしまうと、将来、本家で
 テンプレートが追加された時にIDの整合性が取れなくなる可能性があるので、
 レコードの追加は行わない。services.yamlに定義する。
+
+
+# Frontのプルダウンの多言語化
+
+Frontに使われるプルダウンは元になるFormTypeを拡張することで多言語化に対応している。
+
+参照: Form/Extension/
+
+例)
+- SearchProductBlockTypeExtension    ページ左上のカテゴリ検索プルダウン
+- Master/ProductListMaxTypeExtension 一覧ページでの表示件数選択プルダウン
+
+
+注文ページ(/shopping/)で使われる以下のプルダウン/ラジオボタンについては
+Formの作成にイベントを使っており拡張が大変なので、
+テーマ(theme/select_locale.twig)を使って多言語化を行っている。
+
+- 配送業者  Shopping/ShippingType
+- 配送時間  Shopping/ShippingType
+- 支払方法  Shopping/OrderType
+
+
