@@ -92,6 +92,9 @@ class ShoppingController extends AbstractController
             __FUNCTION__,
             func_get_args()
         );
+        if ($result instanceof RedirectResponse) {
+            return $result;
+        }
 
         /** @var Order $Order */
         $Order = $result['Order'];
@@ -130,6 +133,9 @@ class ShoppingController extends AbstractController
             __FUNCTION__,
             func_get_args()
         );
+        if ($result instanceof RedirectResponse) {
+            return $result;
+        }
 
         /** @var Order $Order */
         $Order = $result['Order'];
