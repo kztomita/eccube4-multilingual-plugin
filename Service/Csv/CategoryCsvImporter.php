@@ -13,7 +13,7 @@ use Eccube\Util\StringUtil;
 use Plugin\MultiLingual\Entity\LocaleCategory;
 use Plugin\MultiLingual\Repository\LocaleCategoryRepository;
 
-class CategoryCsvImporter
+class CategoryCsvImporter extends AbstractCsvImporter
 {
     /**
      * @var EntityManagerInterface
@@ -39,16 +39,6 @@ class CategoryCsvImporter
      * @var CacheUtil
      */
     private $cacheUtil;
-
-    /**
-     * @var string[]
-     */
-    private $errors = [];
-
-    /**
-     * @var int
-     */
-    private $lineNo = 0;
 
     /**
      * @var array<string, string>
@@ -79,37 +69,8 @@ class CategoryCsvImporter
         $this->cacheUtil = $cacheUtil;
     }
 
-    private function addError(string $message)
-    {
-        $this->errors[] = $message;
-    }
-
-    private function addErrorWithLineNo(string $message)
-    {
-        $this->errors[] = $this->lineNo . '行目:' . $message;
-    }
-
     /**
-     * @return bool
-     */
-    public function hasError(): bool
-    {
-        return count($this->errors) ? true : false;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getErrors(): array
-    {
-        return $this->errors;
-    }
-
-    /**
-     * CSVファイルのインポート処理
-     *
-     * @param CsvImportService $importService
-     * @return bool
+     * {@inheritdoc}
      */
     public function import(CsvImportService $importService): bool
     {
