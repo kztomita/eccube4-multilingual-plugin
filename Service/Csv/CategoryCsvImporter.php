@@ -61,6 +61,7 @@ class CategoryCsvImporter
      * @param EntityManagerInterface $entityManager
      * @param EccubeConfig $eccubeConfig
      * @param CategoryRepository $categoryRepository
+     * @param LocaleCategoryRepository $localeCategoryRepository
      * @param CacheUtil $cacheUtil
      */
     public function __construct(
@@ -88,7 +89,10 @@ class CategoryCsvImporter
         $this->errors[] = $this->lineNo . '行目:' . $message;
     }
 
-    private function hasError(): bool
+    /**
+     * @return bool
+     */
+    public function hasError(): bool
     {
         return count($this->errors) ? true : false;
     }
@@ -101,6 +105,12 @@ class CategoryCsvImporter
         return $this->errors;
     }
 
+    /**
+     * CSVファイルのインポート処理
+     *
+     * @param CsvImportService $importService
+     * @return bool
+     */
     public function import(CsvImportService $importService): bool
     {
         $headers = $this->getCsvHeader();
@@ -127,19 +137,25 @@ class CategoryCsvImporter
         }
         $this->entityManager->getConfiguration()->setSQLLogger(null);
         $this->entityManager->getConnection()->beginTransaction();
-        // CSVファイルの登録処理
-        $this->lineNo = 1;
-        foreach ($importService as $row) {
-            if (!$this->importRow($row)) {
-                $this->entityManager->rollback();
-                return false;
+        try {
+            // CSVファイルの登録処理
+            $this->lineNo = 1;
+            foreach ($importService as $row) {
+                if (!$this->importRow($row)) {
+                    $this->entityManager->rollback();
+                    return false;
+                }
+                $this->lineNo++;
             }
-            $this->lineNo++;
+
+            $this->entityManager->getConnection()->commit();
+
+            $this->cacheUtil->clearDoctrineCache();
+        } catch(\Exception $e) {
+            $this->addError($e->getMessage());
+            $this->entityManager->rollback();
+            return false;
         }
-
-        $this->entityManager->getConnection()->commit();
-
-        $this->cacheUtil->clearDoctrineCache();
 
         return true;
     }
@@ -272,7 +288,7 @@ class CategoryCsvImporter
         return true;
     }
 
-    public function getCsvHeader()
+    public function getCsvHeader(): array
     {
         $locales = $this->eccubeConfig['multi_lingual_locales'];
 

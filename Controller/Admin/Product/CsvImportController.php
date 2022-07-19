@@ -7,7 +7,6 @@ use Eccube\Form\Type\Admin\CsvImportType;
 use Plugin\MultiLingual\Service\Csv\CategoryCsvImporter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -54,13 +53,14 @@ class CsvImportController extends AbstractCsvImportController
     {
         $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
 
+        $headers = $csvImporter->getCsvHeader();
+
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $formFile = $form['import_file']->getData();
                 if (!empty($formFile)) {
                     log_info('カテゴリCSV登録開始');
-                    $headers = $csvImporter->getCsvHeader();
 
                     $data = $this->getImportData($formFile);
                     if ($data === false) {
@@ -96,7 +96,7 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @throws \Doctrine\DBAL\ConnectionException
      */
-    protected function renderWithError($form, $headers, $rollback = true)
+    protected function renderWithError(FormInterface $form, array $headers, bool $rollback = true): array
     {
         if ($this->hasErrors()) {
             if ($rollback) {
