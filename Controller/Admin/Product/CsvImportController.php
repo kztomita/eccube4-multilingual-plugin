@@ -11,13 +11,30 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CsvImportController extends AbstractCsvImportController
 {
+    /**
+     * @var ProductCsvImporter
+     */
+    private $productCsvImporter;
+
+    /**
+     * @var CategoryCsvImporter
+     */
+    private $categoryCsvImporter;
+
     private $errors = [];
 
-    public function __construct()
+    public function __construct(
+        ProductCsvImporter $productCsvImporter,
+        CategoryCsvImporter $categoryCsvImporter
+    )
     {
+        $this->productCsvImporter = $productCsvImporter;
+        $this->categoryCsvImporter = $categoryCsvImporter;
     }
 
     /**
@@ -56,11 +73,11 @@ class CsvImportController extends AbstractCsvImportController
      * @throws \Doctrine\DBAL\ConnectionException
      * @throws \Doctrine\ORM\NoResultException
      */
-    public function csvProduct(Request $request, ProductCsvImporter $csvImporter)
+    public function csvProduct(Request $request)
     {
         $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
 
-        $headers = $csvImporter->getCsvHeader();
+        $headers = $this->productCsvImporter->getCsvHeader();
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -76,8 +93,8 @@ class CsvImportController extends AbstractCsvImportController
                         return $this->renderWithError($form, $headers, false);
                     }
 
-                    if (!$csvImporter->import($data)) {
-                        foreach ($csvImporter->getErrors() as $message) {
+                    if (!$this->productCsvImporter->import($data)) {
+                        foreach ($this->productCsvImporter->getErrors() as $message) {
                             $this->addErrors($message);
                             return $this->renderWithError($form, $headers, false);
                         }
@@ -105,7 +122,7 @@ class CsvImportController extends AbstractCsvImportController
     {
         $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
 
-        $headers = $csvImporter->getCsvHeader();
+        $headers = $this->categoryCsvImporter->getCsvHeader();
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -120,8 +137,8 @@ class CsvImportController extends AbstractCsvImportController
                         return $this->renderWithError($form, $headers, false);
                     }
 
-                    if (!$csvImporter->import($data)) {
-                        foreach ($csvImporter->getErrors() as $message) {
+                    if (!$this->categoryCsvImporter->import($data)) {
+                        foreach ($this->categoryCsvImporter->getErrors() as $message) {
                             $this->addErrors($message);
                             return $this->renderWithError($form, $headers, false);
                         }
@@ -135,6 +152,31 @@ class CsvImportController extends AbstractCsvImportController
         }
 
         return $this->renderWithError($form, $headers);
+    }
+
+    /**
+     * デフォルトのコントローラを差し替える。
+     * Route annotationはroute名も含めて、CsvImporterControllerと全く同じ。
+     *
+     * @Route("/%eccube_admin_route%/product/csv_template/{type}", requirements={"type" = "\w+"}, name="admin_product_csv_template")
+     *
+     * @param $type
+     *
+     * @return StreamedResponse
+     */
+    public function csvTemplate(Request $request, $type)
+    {
+        if ($type == 'product') {
+            $headers = $this->productCsvImporter->getCsvHeader();
+            $filename = 'product.csv';
+        } elseif ($type == 'category') {
+            $headers = $this->categoryCsvImporter->getCsvHeader();
+            $filename = 'category.csv';
+        } else {
+            throw new NotFoundHttpException();
+        }
+
+        return $this->sendTemplateResponse($request, array_keys($headers), $filename);
     }
 
     /**
