@@ -29,7 +29,7 @@ abstract class AbstractCsvImporter
     /**
      * @return bool
      */
-    public function hasError(): bool
+    public function hasErrors(): bool
     {
         return count($this->errors) ? true : false;
     }

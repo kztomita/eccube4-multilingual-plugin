@@ -13,6 +13,11 @@ use Eccube\Util\StringUtil;
 use Plugin\MultiLingual\Entity\LocaleCategory;
 use Plugin\MultiLingual\Repository\LocaleCategoryRepository;
 
+/**
+ * Eccube/Controller/Admin/Product/CsvImportController.php
+ * のインポート処理を抜き出し多言語対応の処理を追加したもの。
+ * 4.0.6-p1ベース
+ */
 class CategoryCsvImporter extends AbstractCsvImporter
 {
     /**
