@@ -5,3 +5,8 @@
 新着情報
 
 本体のcontrollerのsignatureが変わるとplugin側も直す必要がある。
+
+4.2ではRepositoryに与えるRegistryInterfaceは
+use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
+以下のように変わっている。
+Symfonyにバージョンが異なるため。
