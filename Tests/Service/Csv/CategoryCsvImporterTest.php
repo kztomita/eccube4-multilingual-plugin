@@ -10,6 +10,16 @@ use Plugin\MultiLingual\Service\Csv\CategoryCsvImporter;
 
 class CategoryCsvImporterTest extends EccubeTestCase
 {
+    private function createCsvFile(string $contents)
+    {
+        $tmp = tmpfile();
+        fwrite($tmp, $contents);
+        rewind($tmp);
+        $meta = stream_get_meta_data($tmp);
+        $file = new \SplFileObject($meta['uri']);
+        return $file;
+    }
+
     public function test()
     {
         $container = self::$kernel->getContainer();
@@ -21,7 +31,13 @@ class CategoryCsvImporterTest extends EccubeTestCase
 
         $initialCount = count($categoryRepository->findAll());
 
-        $file = new \SplFileObject(__DIR__ . '/category.csv');
+        $csv =<<<END_OF_TEXT
+カテゴリID,カテゴリ名,カテゴリ名(en),カテゴリ名(cn),親カテゴリID,カテゴリ削除フラグ
+,新規追加カテゴリ,New Category,,,
+1,ジェラート2,Gelato2,,,
+END_OF_TEXT;
+
+        $file = $this->createCsvFile($csv);
         $data = new CsvImportService($file, $this->eccubeConfig['eccube_csv_import_delimiter'], $this->eccubeConfig['eccube_csv_import_enclosure']);
         $data->setHeaderRowNumber(0);
 
