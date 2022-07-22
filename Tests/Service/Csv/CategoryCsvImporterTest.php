@@ -42,9 +42,9 @@ class CategoryCsvImporterTest extends EccubeTestCase
 
         // 新規作成のテスト
         $csv =<<<END_OF_TEXT
-カテゴリID,カテゴリ名,カテゴリ名(en),カテゴリ名(cn),親カテゴリID,カテゴリ削除フラグ
-,新規追加カテゴリ,New Category,,,
-1,ジェラート2,Gelato2,,,
+カテゴリID,カテゴリ名,カテゴリ名(en),親カテゴリID,カテゴリ削除フラグ
+,新規追加カテゴリ,New Category,,
+1,ジェラート2,Gelato2,,
 END_OF_TEXT;
 
         $importer = $this->container->get(CategoryCsvImporter::class);
@@ -76,8 +76,8 @@ END_OF_TEXT;
 
         // 削除のテスト
         $csv =<<<END_OF_TEXT
-カテゴリID,カテゴリ名,カテゴリ名(en),カテゴリ名(cn),親カテゴリID,カテゴリ削除フラグ
-$createdId,新規追加カテゴリ,New Category,,,1
+カテゴリID,カテゴリ名,カテゴリ名(en),親カテゴリID,カテゴリ削除フラグ
+$createdId,新規追加カテゴリ,New Category,,1
 END_OF_TEXT;
 
         $data = $this->createCsvImporterService($csv);
@@ -114,8 +114,8 @@ END_OF_TEXT;
         $initialCount = count($categoryRepository->findAll());
 
         $csv =<<<END_OF_TEXT
-カテゴリID,カテゴリ名,カテゴリ名(en),カテゴリ名(cn),親カテゴリID,カテゴリ削除フラグ
-1,ジェラート2,Gelato2,,,
+カテゴリID,カテゴリ名,カテゴリ名(en),親カテゴリID,カテゴリ削除フラグ
+1,ジェラート2,Gelato2,,
 END_OF_TEXT;
 
         $importer = $this->container->get(CategoryCsvImporter::class);
