@@ -117,6 +117,10 @@ class CategoryCsvImporter extends AbstractCsvImporter
             $this->entityManager->getConnection()->commit();
 
             $this->cacheUtil->clearDoctrineCache();
+
+            // Category::getLocales()でlocaleの情報を読み込ませるために
+            // EntityManagerが保持しているオブジェクトを一旦clear
+            $this->entityManager->clear();
         } catch(\Exception $e) {
             $this->addError($e->getMessage());
             $this->entityManager->rollback();
