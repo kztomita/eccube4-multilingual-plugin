@@ -4,16 +4,16 @@ namespace Plugin\MultiLingual\Repository;
 
 use Eccube\Repository\AbstractRepository;
 use Plugin\MultiLingual\Entity\LocaleDelivery;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class LocaleDeliveryRepository extends AbstractRepository
 {
     /**
      * LocaleDeliveryRepository constructor.
      *
-     * @param ManagerRegistry $registry
+     * @param RegistryInterface $registry
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, LocaleDelivery::class);
     }
