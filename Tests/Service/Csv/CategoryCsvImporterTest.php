@@ -20,35 +20,40 @@ class CategoryCsvImporterTest extends EccubeTestCase
         return $file;
     }
 
-    public function test()
+    private function createCsvImporterService(string $contents)
     {
-        $container = self::$kernel->getContainer();
+        $importerService = new CsvImportService(
+            $this->createCsvFile($contents),
+            $this->eccubeConfig['eccube_csv_import_delimiter'],
+            $this->eccubeConfig['eccube_csv_import_enclosure']
+        );
+        $importerService->setHeaderRowNumber(0);
+        return $importerService;
+    }
 
-        $em = $container->get('doctrine.orm.entity_manager');
+    public function testCreateRemove()
+    {
+        $em = $this->entityManager;
 
         $categoryRepository = $em->getRepository(Category::class);
         $localeCategoryRepository = $em->getRepository(LocaleCategory::class);
 
         $initialCount = count($categoryRepository->findAll());
 
+        // 新規作成のテスト
         $csv =<<<END_OF_TEXT
 カテゴリID,カテゴリ名,カテゴリ名(en),カテゴリ名(cn),親カテゴリID,カテゴリ削除フラグ
 ,新規追加カテゴリ,New Category,,,
 1,ジェラート2,Gelato2,,,
 END_OF_TEXT;
 
-        $file = $this->createCsvFile($csv);
-        $data = new CsvImportService($file, $this->eccubeConfig['eccube_csv_import_delimiter'], $this->eccubeConfig['eccube_csv_import_enclosure']);
-        $data->setHeaderRowNumber(0);
-
-        $importer = $container->get(CategoryCsvImporter::class);
-        $result = $importer->import($data);
+        $importer = $this->container->get(CategoryCsvImporter::class);
+        $result = $importer->import($this->createCsvImporterService($csv));
         if (!$result) {
             print_r($importer->getErrors());
         }
         $this->assertTrue($result);
 
-        // 新規作成カテゴリのテスト
         $this->assertEquals(
             $initialCount + 1,
             count($categoryRepository->findAll())
@@ -60,6 +65,8 @@ END_OF_TEXT;
         $this->assertInstanceOf(Category::class, $category);
         $this->assertEquals('新規追加カテゴリ', $category->getName());
 
+        $createdId = $category->getId();
+
         $localeCategory = $localeCategoryRepository->findOneBy([
             'parent_id' => $category->getId(),
             'locale' => 'en',
@@ -67,7 +74,62 @@ END_OF_TEXT;
         $this->assertInstanceOf(LocaleCategory::class, $localeCategory);
         $this->assertEquals('New Category', $localeCategory->getName());
 
-        // 更新カテゴリのテスト
+        // 削除のテスト
+        $csv =<<<END_OF_TEXT
+カテゴリID,カテゴリ名,カテゴリ名(en),カテゴリ名(cn),親カテゴリID,カテゴリ削除フラグ
+$createdId,新規追加カテゴリ,New Category,,,1
+END_OF_TEXT;
+
+        $data = $this->createCsvImporterService($csv);
+
+        $importer = $this->container->get(CategoryCsvImporter::class);
+        $result = $importer->import($data);
+        if (!$result) {
+            print_r($importer->getErrors());
+        }
+        $this->assertTrue($result);
+
+        $this->assertEquals(
+            $initialCount,
+            count($categoryRepository->findAll())
+        );
+
+        $category = $categoryRepository->find($createdId);
+        $this->assertNull($category);
+
+        $localeCategory = $localeCategoryRepository->findOneBy([
+            'parent_id' => $createdId,
+            'locale' => 'en',
+        ]);
+        $this->assertNull($localeCategory);
+    }
+
+    public function testUpdate()
+    {
+        $em = $this->entityManager;
+
+        $categoryRepository = $em->getRepository(Category::class);
+        $localeCategoryRepository = $em->getRepository(LocaleCategory::class);
+
+        $initialCount = count($categoryRepository->findAll());
+
+        $csv =<<<END_OF_TEXT
+カテゴリID,カテゴリ名,カテゴリ名(en),カテゴリ名(cn),親カテゴリID,カテゴリ削除フラグ
+1,ジェラート2,Gelato2,,,
+END_OF_TEXT;
+
+        $importer = $this->container->get(CategoryCsvImporter::class);
+        $result = $importer->import($this->createCsvImporterService($csv));
+        if (!$result) {
+            print_r($importer->getErrors());
+        }
+        $this->assertTrue($result);
+
+        $this->assertEquals(
+            $initialCount,
+            count($categoryRepository->findAll())
+        );
+
         $category = $categoryRepository->find(1);
         $this->assertInstanceOf(Category::class, $category);
         $this->assertEquals('ジェラート2', $category->getName());
