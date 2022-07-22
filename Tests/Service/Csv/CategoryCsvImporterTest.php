@@ -80,10 +80,8 @@ END_OF_TEXT;
 $createdId,新規追加カテゴリ,New Category,,1
 END_OF_TEXT;
 
-        $data = $this->createCsvImporterService($csv);
-
         $importer = $this->container->get(CategoryCsvImporter::class);
-        $result = $importer->import($data);
+        $result = $importer->import($this->createCsvImporterService($csv));
         if (!$result) {
             print_r($importer->getErrors());
         }
