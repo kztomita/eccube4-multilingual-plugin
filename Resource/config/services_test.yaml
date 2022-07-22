@@ -1,0 +1,4 @@
+services:
+    Plugin\MultiLingual\Service\Csv\CategoryCsvImporter:
+        autowire: true
+        public: true
