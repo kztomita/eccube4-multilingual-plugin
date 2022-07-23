@@ -14,6 +14,8 @@ class CategoryCsvImporterTest extends EccubeTestCase
 
     private $localeCategoryRepository;
 
+    private $helper;
+
     public function setUp()
     {
         parent::setUp();
@@ -21,27 +23,7 @@ class CategoryCsvImporterTest extends EccubeTestCase
         $em = $this->entityManager;
         $this->categoryRepository = $em->getRepository(Category::class);
         $this->localeCategoryRepository = $em->getRepository(LocaleCategory::class);
-    }
-
-    private function createCsvFile(string $contents)
-    {
-        $tmp = tmpfile();
-        fwrite($tmp, $contents);
-        rewind($tmp);
-        $meta = stream_get_meta_data($tmp);
-        $file = new \SplFileObject($meta['uri']);
-        return $file;
-    }
-
-    private function createCsvImporterService(string $contents)
-    {
-        $importerService = new CsvImportService(
-            $this->createCsvFile($contents),
-            $this->eccubeConfig['eccube_csv_import_delimiter'],
-            $this->eccubeConfig['eccube_csv_import_enclosure']
-        );
-        $importerService->setHeaderRowNumber(0);
-        return $importerService;
+        $this->helper = new Helper($this->container);
     }
 
     public function testCreate()
@@ -54,7 +36,7 @@ class CategoryCsvImporterTest extends EccubeTestCase
 END_OF_TEXT;
 
         $importer = $this->container->get(CategoryCsvImporter::class);
-        $result = $importer->import($this->createCsvImporterService($csv));
+        $result = $importer->import($this->helper->createCsvImporterService($csv));
         if (!$result) {
             print_r($importer->getErrors());
         }
@@ -129,7 +111,7 @@ $createdId,新規追加カテゴリ,New Category,,1
 END_OF_TEXT;
 
         $importer = $this->container->get(CategoryCsvImporter::class);
-        $result = $importer->import($this->createCsvImporterService($csv));
+        $result = $importer->import($this->helper->createCsvImporterService($csv));
         if (!$result) {
             print_r($importer->getErrors());
         }
@@ -165,7 +147,7 @@ $createdId,野菜,Vegetable,,
 END_OF_TEXT;
 
         $importer = $this->container->get(CategoryCsvImporter::class);
-        $result = $importer->import($this->createCsvImporterService($csv));
+        $result = $importer->import($this->helper->createCsvImporterService($csv));
         if (!$result) {
             print_r($importer->getErrors());
         }

@@ -14,6 +14,8 @@ class ProductCsvImporterTest extends EccubeTestCase
 
     private $localeProductRepository;
 
+    private $helper;
+
     public function setUp()
     {
         parent::setUp();
@@ -21,27 +23,7 @@ class ProductCsvImporterTest extends EccubeTestCase
         $em = $this->entityManager;
         $this->productRepository = $em->getRepository(Product::class);
         $this->localeProductRepository = $em->getRepository(LocaleProduct::class);
-    }
-
-    private function createCsvFile(string $contents)
-    {
-        $tmp = tmpfile();
-        fwrite($tmp, $contents);
-        rewind($tmp);
-        $meta = stream_get_meta_data($tmp);
-        $file = new \SplFileObject($meta['uri']);
-        return $file;
-    }
-
-    private function createCsvImporterService(string $contents)
-    {
-        $importerService = new CsvImportService(
-            $this->createCsvFile($contents),
-            $this->eccubeConfig['eccube_csv_import_delimiter'],
-            $this->eccubeConfig['eccube_csv_import_enclosure']
-        );
-        $importerService->setHeaderRowNumber(0);
-        return $importerService;
+        $this->helper = new Helper($this->container);
     }
 
     public function testCreate()
@@ -55,7 +37,7 @@ class ProductCsvImporterTest extends EccubeTestCase
 END_OF_TEXT;
 
         $importer = $this->container->get(ProductCsvImporter::class);
-        $result = $importer->import($this->createCsvImporterService($csv));
+        $result = $importer->import($this->helper->createCsvImporterService($csv));
         if (!$result) {
             print_r($importer->getErrors());
         }
@@ -137,7 +119,7 @@ $createdId,1,テスト,test,メモです。,テスト用の商品,テスト用�
 END_OF_TEXT;
 
         $importer = $this->container->get(ProductCsvImporter::class);
-        $result = $importer->import($this->createCsvImporterService($csv));
+        $result = $importer->import($this->helper->createCsvImporterService($csv));
         if (!$result) {
             print_r($importer->getErrors());
         }
@@ -174,7 +156,7 @@ $createdId,1,人参,Carrot,メモです。,テスト用の商品,テスト用の
 END_OF_TEXT;
 
         $importer = $this->container->get(ProductCsvImporter::class);
-        $result = $importer->import($this->createCsvImporterService($csv));
+        $result = $importer->import($this->helper->createCsvImporterService($csv));
         if (!$result) {
             print_r($importer->getErrors());
         }
