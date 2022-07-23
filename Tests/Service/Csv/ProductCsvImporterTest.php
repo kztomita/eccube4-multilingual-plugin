@@ -30,10 +30,12 @@ class ProductCsvImporterTest extends EccubeTestCase
     {
         $initialCount = count($this->productRepository->findAll());
 
-        // 新規作成のテスト
+        $Category = $this->helper->createCategory('テストカテゴリ');
+        $categoryId = $Category->getId();
+
         $csv =<<<END_OF_TEXT
 商品ID,公開ステータス(ID),商品名,商品名(en),ショップ用メモ欄,商品説明(一覧),商品説明(一覧)(en),商品説明(詳細),商品説明(詳細)(en),検索ワード,フリーエリア,フリーエリア(en),商品削除フラグ,商品画像,商品カテゴリ(ID),タグ(ID),販売種別(ID),規格分類1(ID),規格分類2(ID),発送日目安(ID),商品コード,在庫数,在庫数無制限フラグ,販売制限数,通常価格,販売価格,送料,税率
-,1,テスト,test,メモです。,テスト用の商品,テスト用の商品(en),テスト用の商品になります,テスト用の商品になります(en),検索ワード,フリーエリア,フリーエリア(en),0,,2,,1,,,,CD-TEST01,,1,,3000,3000,100,10
+,1,テスト,test,メモです。,テスト用の商品,テスト用の商品(en),テスト用の商品になります,テスト用の商品になります(en),検索ワード,フリーエリア,フリーエリア(en),0,,$categoryId,,1,,,,CD-TEST01,,1,,3000,2900,100,10
 END_OF_TEXT;
 
         $importer = $this->container->get(ProductCsvImporter::class);
@@ -63,6 +65,19 @@ END_OF_TEXT;
         $this->assertEquals('フリーエリア', $Product->getFreeArea());
         //$this->assertEquals('CD-TEST01', $Product->getCode());
 
+        $categories = $Product->getProductCategories();
+        $this->assertEquals(1, count($categories));
+        $this->assertEquals($categoryId, $categories[0]->getCategory()->getId());
+
+        $classes = $Product->getProductClasses();
+        $this->assertEquals(1, count($classes));
+        $class = $classes[0];
+        $this->assertEquals(3000, $class->getPrice01());
+        $this->assertEquals(2900, $class->getPrice02());
+
+        // TODO タグ等のテストも必要
+
+
         $createdId = $Product->getId();
 
         $LocaleProduct = $this->localeProductRepository->findOneBy([
@@ -74,7 +89,6 @@ END_OF_TEXT;
         $this->assertEquals('テスト用の商品(en)', $LocaleProduct->getDescriptionList());
         $this->assertEquals('テスト用の商品になります(en)', $LocaleProduct->getDescriptionDetail());
         $this->assertEquals('フリーエリア(en)', $LocaleProduct->getFreeArea());
-
     }
 
     public function testRemove()
@@ -89,10 +103,9 @@ END_OF_TEXT;
 
         $initialCount = count($this->productRepository->findAll());
 
-        // 削除のテスト
         $csv =<<<END_OF_TEXT
 商品ID,公開ステータス(ID),商品名,商品名(en),ショップ用メモ欄,商品説明(一覧),商品説明(一覧)(en),商品説明(詳細),商品説明(詳細)(en),検索ワード,フリーエリア,フリーエリア(en),商品削除フラグ,商品画像,商品カテゴリ(ID),タグ(ID),販売種別(ID),規格分類1(ID),規格分類2(ID),発送日目安(ID),商品コード,在庫数,在庫数無制限フラグ,販売制限数,通常価格,販売価格,送料,税率
-$createdId,1,テスト,test,メモです。,テスト用の商品,テスト用の商品(en),テスト用の商品になります,テスト用の商品になります(en),検索ワード,フリーエリア,フリーエリア(en),1,,2,,1,,,,CD-TEST01,,1,,3000,3000,100,10
+$createdId,1,テスト,test,メモです。,テスト用の商品,テスト用の商品(en),テスト用の商品になります,テスト用の商品になります(en),検索ワード,フリーエリア,フリーエリア(en),1,,2,,1,,,,CD-TEST01,,1,,3000,2900,100,10
 END_OF_TEXT;
 
         $importer = $this->container->get(ProductCsvImporter::class);
@@ -150,6 +163,8 @@ END_OF_TEXT;
         $Product = $this->productRepository->find($createdId);
         $this->assertInstanceOf(Product::class, $Product);
         $this->assertEquals('人参', $Product->getName());
+
+        // TODO カテゴリ追加、削除等のテストも必要
 
         $LocaleProduct = $this->localeProductRepository->findOneBy([
             'parent_id' => $Product->getId(),
