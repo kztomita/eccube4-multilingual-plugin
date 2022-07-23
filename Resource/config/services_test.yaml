@@ -2,3 +2,7 @@ services:
     Plugin\MultiLingual\Service\Csv\CategoryCsvImporter:
         autowire: true
         public: true
+
+    Plugin\MultiLingual\Service\Csv\ProductCsvImporter:
+        autowire: true
+        public: true
