@@ -60,6 +60,8 @@ END_OF_TEXT;
         }
         $this->assertTrue($result);
 
+        $this->entityManager->clear();
+
         // レコード数が増えていること
         $this->assertEquals(
             $initialCount + 1,
@@ -133,6 +135,8 @@ END_OF_TEXT;
         }
         $this->assertTrue($result);
 
+        $this->entityManager->clear();
+
         // レコード数が減っていること
         $this->assertEquals(
             $initialCount - 1,
@@ -166,6 +170,8 @@ END_OF_TEXT;
             print_r($importer->getErrors());
         }
         $this->assertTrue($result);
+
+        $this->entityManager->clear();
 
         // レコード数が変わっていないこと
         $this->assertEquals(
