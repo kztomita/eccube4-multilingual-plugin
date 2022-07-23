@@ -77,32 +77,9 @@ END_OF_TEXT;
 
     }
 
-    private function createTestRecord(string $name)
-    {
-        $Product = new Product();
-        $Product->setName($name);
-        $this->entityManager->persist($Product);
-        $this->entityManager->flush();
-
-        $locales = $this->eccubeConfig['multi_lingual_locales'];
-        foreach ($locales as $locale) {
-            $LocaleProduct = new LocaleProduct();
-            $LocaleProduct->setParentId($Product->getId());
-            $LocaleProduct->setProduct($Product);
-            $LocaleProduct->setName($name . ' - ' . $locale);
-            $LocaleProduct->setLocale($locale);
-            $this->entityManager->persist($LocaleProduct);
-        }
-
-        $this->entityManager->flush();
-        $this->entityManager->clear();
-
-        return $Product;
-    }
-
     public function testRemove()
     {
-        $Product = $this->createTestRecord('テスト');
+        $Product = $this->helper->createProduct('テスト');
         $createdId = $Product->getId();
 
         $this->assertInstanceOf(
@@ -145,7 +122,7 @@ END_OF_TEXT;
 
     public function testUpdate()
     {
-        $Product = $this->createTestRecord('テスト');
+        $Product = $this->helper->createProduct('テスト');
         $createdId = $Product->getId();
 
         $initialCount = count($this->productRepository->findAll());

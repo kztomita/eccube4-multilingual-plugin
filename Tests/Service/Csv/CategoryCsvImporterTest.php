@@ -64,38 +64,9 @@ END_OF_TEXT;
         $this->assertEquals('New Category', $LocaleCategory->getName());
     }
 
-    private function createTestRecord(string $name, ?Category $Parent = null)
-    {
-        $Category = new Category();
-        $Category->setName($name);
-        $Category->setParent($Parent);
-        if ($Parent) {
-            $Category->setHierarchy($Parent->getHierarchy() + 1);
-        } else {
-            $Category->setHierarchy(1);
-        }
-        $this->entityManager->persist($Category);
-        $this->categoryRepository->save($Category);
-
-        $locales = $this->eccubeConfig['multi_lingual_locales'];
-        foreach ($locales as $locale) {
-            $LocaleCategory = new LocaleCategory();
-            $LocaleCategory->setParentId($Category->getId());
-            $LocaleCategory->setCategory($Category);
-            $LocaleCategory->setName($name . ' - ' . $locale);
-            $LocaleCategory->setLocale($locale);
-            $this->entityManager->persist($LocaleCategory);
-        }
-
-        $this->entityManager->flush();
-        $this->entityManager->clear();
-
-        return $Category;
-    }
-
     public function testRemove()
     {
-        $Category = $this->createTestRecord('テスト');
+        $Category = $this->helper->createCategory('テスト');
         $createdId = $Category->getId();
 
         $this->assertInstanceOf(
@@ -136,7 +107,7 @@ END_OF_TEXT;
 
     public function testUpdate()
     {
-        $Category = $this->createTestRecord('テスト');
+        $Category = $this->helper->createCategory('テスト');
         $createdId = $Category->getId();
 
         $initialCount = count($this->categoryRepository->findAll());
