@@ -3,7 +3,10 @@
 namespace Plugin\MultiLingual\EventListener;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Csv;
+use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Product;
+use Eccube\Entity\ProductClass;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Plugin\MultiLingual\Entity\LocaleProduct;
@@ -47,6 +50,7 @@ class ProductListener implements EventSubscriberInterface
         // ProductTrait参照。
         return [
             EccubeEvents::ADMIN_PRODUCT_EDIT_COMPLETE => 'onAdminProductEditComplete',
+            EccubeEvents::ADMIN_PRODUCT_CSV_EXPORT => 'onAdminProductCsvExport',
         ];
     }
 
@@ -88,5 +92,59 @@ class ProductListener implements EventSubscriberInterface
             $this->entityManager->persist($LocaleProduct);
             $this->entityManager->flush();
         }
+    }
+
+    public function onAdminProductCsvExport(EventArgs $event): void
+    {
+        /** @var ProductClass $ProductClass */
+        $ProductClass = $event->getArgument('ProductClass');
+
+        /** @var Csv $Csv */
+        $Csv = $event->getArgument('Csv');
+
+        /** @var ExportCsvRow $ExportCsvRow */
+        $ExportCsvRow = $event->getArgument('ExportCsvRow');
+
+        if (!$ExportCsvRow->isDataNull() ||
+            $Csv->getEntityName() != addslashes(LocaleProduct::class)) {
+            return;
+        }
+
+        // Localeのカテゴリ名を出力する
+
+        // $Csvのfield_nameから対象localeを取得
+        $Csv->getFieldName();
+        if (!preg_match('/^(.+)_([^_]+)$/', $Csv->getFieldName(), $matches)) {
+            return;
+        }
+        $field = $matches[1];
+        $locale = $matches[2];
+
+        /** @var LocaleProduct $LocaleProduct */
+        $LocaleProduct = $this->localeProductRepository->findOneBy([
+            'locale' => $locale,
+            'parent_id' => $ProductClass->getProduct()->getId(),
+        ]);
+        if (!$LocaleProduct) {
+            return;
+        }
+
+        switch ($field) {
+            case 'name':
+                $value = $LocaleProduct->getName();
+                break;
+            case 'description_list':
+                $value = $LocaleProduct->getDescriptionList();
+                break;
+            case 'description_detail':
+                $value = $LocaleProduct->getDescriptionDetail();
+                break;
+            case 'free_area':
+                $value = $LocaleProduct->getFreeArea();
+                break;
+            default:
+                return;
+        }
+        $ExportCsvRow->setData($value);
     }
 }

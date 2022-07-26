@@ -705,6 +705,35 @@ class PluginManager extends AbstractPluginManager
         foreach ($locales as $locale) {
             // field名にはlocale名を埋め込んでおき、イベントハンドラからlocaleを参照できるようにする
             $records[] = [
+                'type' => CsvType::CSV_TYPE_PRODUCT,
+                'entity' => addslashes(LocaleProduct::class),
+                'field' => 'name_' . $locale,
+                'reference_field_name' => null,
+                'disp_name' => "商品名({$locale})",
+            ];
+            $records[] = [
+                'type' => CsvType::CSV_TYPE_PRODUCT,
+                'entity' => addslashes(LocaleProduct::class),
+                'field' => 'description_list_' . $locale,
+                'reference_field_name' => null,
+                'disp_name' => "商品説明(一覧)({$locale})",
+            ];
+            $records[] = [
+                'type' => CsvType::CSV_TYPE_PRODUCT,
+                'entity' => addslashes(LocaleProduct::class),
+                'field' => 'description_detail_' . $locale,
+                'reference_field_name' => null,
+                'disp_name' => "商品説明(詳細)({$locale})",
+            ];
+            $records[] = [
+                'type' => CsvType::CSV_TYPE_PRODUCT,
+                'entity' => addslashes(LocaleProduct::class),
+                'field' => 'free_area_' . $locale,
+                'reference_field_name' => null,
+                'disp_name' => "フリーエリア({$locale})",
+            ];
+
+            $records[] = [
                 'type' => CsvType::CSV_TYPE_CATEGORY,
                 'entity' => addslashes(LocaleCategory::class),
                 'field' => 'name_' . $locale,
