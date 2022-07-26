@@ -15,10 +15,12 @@ use Eccube\Entity\BlockPosition;
 use Eccube\Entity\Category;
 use Eccube\Entity\ClassCategory;
 use Eccube\Entity\ClassName;
+use Eccube\Entity\Csv;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\DeliveryTime;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\AbstractMasterEntity;
+use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Page;
 use Eccube\Entity\PageLayout;
 use Eccube\Entity\Payment;
@@ -54,6 +56,7 @@ class PluginManager extends AbstractPluginManager
         $this->createLocaleDeliveryTime($container);
         $this->createLocalePayment($container);
         $this->createMasterLocaleRecord($container);
+        $this->createCsvRecord($container);
     }
 
     /**
@@ -74,6 +77,8 @@ class PluginManager extends AbstractPluginManager
         // 再度enableした時に翻訳データが残っているようにLocaleレコードは削除しない。
         // enable時は足りないレコードのみ新規作成する。
         //$this->cleanupLocaleRecords($container);
+
+        $this->cleanupCsvRecord($container);
 
         // シンボリックリンク削除
         $fs = new Filesystem;
@@ -687,6 +692,84 @@ class PluginManager extends AbstractPluginManager
 
     /**
      * @param ContainerInterface $container
+     * @return array
+     */
+    private function getCsvRecords(ContainerInterface  $container): array
+    {
+        $records = [];
+
+        /** @var EccubeConfig $eccubeConfig */
+        $eccubeConfig = $container->get(EccubeConfig::class);
+        $locales = $eccubeConfig['multi_lingual_locales'];
+
+        foreach ($locales as $locale) {
+            // field名にはlocale名を埋め込んでおき、イベントハンドラからlocaleを参照できるようにする
+            $records[] = [
+                'type' => CsvType::CSV_TYPE_CATEGORY,
+                'entity' => addslashes(LocaleCategory::class),
+                'field' => 'name_' . $locale,
+                'reference_field_name' => null,
+                'disp_name' => "カテゴリ名({$locale})",
+            ];
+        }
+
+        return $records;
+    }
+
+    /**
+     * dtb_csvにexportするカラム情報を追加
+     *
+     * @param ContainerInterface $container
+     * @return void
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    private function createCsvRecord(ContainerInterface  $container)
+    {
+        $em = $this->getEntityManager($container);
+
+        $csvRepository = $em->getRepository(Csv::class);
+        $csvTypeRepository = $em->getRepository(CsvType::class);
+
+        $records = $this->getCsvRecords($container);
+
+        $nextSortNo = [];
+
+        foreach ($records as $record) {
+            $CsvColumn = $csvRepository->findOneBy([
+                'CsvType' => $record['type'],
+                'entity_name' => $record['entity'],
+                'field_name' => $record['field'],
+            ]);
+            if (!$CsvColumn) {
+                if (!isset($nextSortNo[$record['type']])) {
+                    $last = $csvRepository->findOneBy(
+                        ['CsvType' => $record['type']],
+                        ['sort_no' => 'DESC']
+                    );
+                    $nextSortNo[$record['type']] = $last ? $last->getSortNo() + 1 : 1;
+                }
+
+                /** @var ?CsvType $CsvType */
+                $CsvType = $csvTypeRepository->find($record['type']);
+
+                $CsvColumn = new Csv();
+                $CsvColumn
+                    ->setCsvType($CsvType)
+                    ->setEntityName($record['entity'])
+                    ->setFieldName($record['field'])
+                    ->setReferenceFieldName($record['reference_field_name'])
+                    ->setDispName($record['disp_name'])
+                    ->setSortNo($nextSortNo[$record['type']]++)
+                    ->setEnabled(true);
+                $em->persist($CsvColumn);
+                $em->flush();
+            }
+        }
+    }
+
+    /**
+     * @param ContainerInterface $container
      * @return void
      * @throws NoResultException
      * @throws NonUniqueResultException
@@ -791,5 +874,34 @@ class PluginManager extends AbstractPluginManager
             $this->truncateTable($container, $tableName);
 
         }
+    }
+
+    /**
+     * dtb_csvに追加したレコードのcleanup
+     *
+     * @param ContainerInterface $container
+     * @return void
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    private function cleanupCsvRecord(ContainerInterface  $container)
+    {
+        $em = $this->getEntityManager($container);
+
+        $csvRepository = $em->getRepository(Csv::class);
+
+        $records = $this->getCsvRecords($container);
+
+        foreach ($records as $record) {
+            $CsvColumn = $csvRepository->findOneBy([
+                'CsvType' => $record['type'],
+                'entity_name' => $record['entity'],
+                'field_name' => $record['field'],
+            ]);
+            if ($CsvColumn) {
+                $em->remove($CsvColumn);
+            }
+        }
+        $em->flush();
     }
 }

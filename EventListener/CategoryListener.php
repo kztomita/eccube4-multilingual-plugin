@@ -4,6 +4,8 @@ namespace Plugin\MultiLingual\EventListener;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Category;
+use Eccube\Entity\Csv;
+use Eccube\Entity\ExportCsvRow;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Plugin\MultiLingual\Entity\LocaleCategory;
@@ -50,6 +52,7 @@ class CategoryListener implements EventSubscriberInterface
 
         return [
             EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_COMPLETE => 'onAdminProductCategoryIndexComplete',
+            EccubeEvents::ADMIN_PRODUCT_CATEGORY_CSV_EXPORT => 'onAdminProductCategoryCsvExport',
         ];
     }
 
@@ -106,5 +109,42 @@ class CategoryListener implements EventSubscriberInterface
             $this->entityManager->persist($LocaleCategory);
             $this->entityManager->flush();
         }
+    }
+
+    public function onAdminProductCategoryCsvExport(EventArgs $event): void
+    {
+        /** @var Category $Category */
+        $Category = $event->getArgument('Category');
+
+        /** @var Csv $Csv */
+        $Csv = $event->getArgument('Csv');
+
+        /** @var ExportCsvRow $ExportCsvRow */
+        $ExportCsvRow = $event->getArgument('ExportCsvRow');
+
+        if (!$ExportCsvRow->isDataNull() ||
+            $Csv->getEntityName() != addslashes(LocaleCategory::class)) {
+            return;
+        }
+
+        // Localeのカテゴリ名を出力する
+
+        // $Csvのfield_nameから対象localeを取得
+        $Csv->getFieldName();
+        if (!preg_match('/^name_(.+)$/', $Csv->getFieldName(), $matches)) {
+            return;
+        }
+        $locale = $matches[1];
+
+        /** @var LocaleCategory $LocaleCategory */
+        $LocaleCategory = $this->localeCategoryRepository->findOneBy([
+            'locale' => $locale,
+            'parent_id' => $Category->getId(),
+        ]);
+        if (!$LocaleCategory) {
+            return;
+        }
+
+        $ExportCsvRow->setData($LocaleCategory->getName());
     }
 }
