@@ -1,6 +1,6 @@
 {
     "name": "eccube4-multilingual",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "description": "越境対応プラグイン",
     "type": "eccube-plugin",
     "require": {
