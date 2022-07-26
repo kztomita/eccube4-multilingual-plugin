@@ -21,6 +21,7 @@ use Eccube\Entity\DeliveryTime;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\AbstractMasterEntity;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Entity\Order;
 use Eccube\Entity\Page;
 use Eccube\Entity\PageLayout;
 use Eccube\Entity\Payment;
@@ -703,7 +704,8 @@ class PluginManager extends AbstractPluginManager
         $locales = $eccubeConfig['multi_lingual_locales'];
 
         foreach ($locales as $locale) {
-            // field名にはlocale名を埋め込んでおき、イベントハンドラからlocaleを参照できるようにする
+            // field名にはlocale名を埋め込んでおき、CSV出力時のイベントハンドラから
+            // localeを参照できるようにする
             $records[] = [
                 'type' => CsvType::CSV_TYPE_PRODUCT,
                 'entity' => addslashes(LocaleProduct::class),
@@ -741,6 +743,14 @@ class PluginManager extends AbstractPluginManager
                 'disp_name' => "カテゴリ名({$locale})",
             ];
         }
+
+        $records[] = [
+            'type' => CsvType::CSV_TYPE_ORDER,
+            'entity' => addslashes(Order::class),
+            'field' => 'locale_payment_method',
+            'reference_field_name' => null,
+            'disp_name' => "支払方法(Locale名称)",
+        ];
 
         return $records;
     }
