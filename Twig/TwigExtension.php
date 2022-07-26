@@ -5,6 +5,7 @@ namespace Plugin\MultiLingual\Twig;
 use Eccube\Entity\AbstractEntity;
 use Eccube\Entity\Category;
 use Plugin\MultiLingual\Common\LocaleHelper;
+use Plugin\MultiLingual\Common\ParseUrlHelper;
 use Plugin\MultiLingual\Entity\LocaleCategory;
 use Plugin\MultiLingual\Entity\LocaleClassCategory;
 use Twig\Extension\AbstractExtension;
@@ -40,6 +41,7 @@ class TwigExtension extends AbstractExtension
             new TwigFunction('locale_url', [$this, 'getLocaleUrl']),
             new TwigFunction('locale_path', [$this, 'getLocalePath']),
             new TwigFunction('locale_field', [$this, 'getLocaleField']),
+            new TwigFunction('insert_locale_into_url', [$this, 'insertLocaleIntoUrl']),
             new TwigFunction('trans_class_categories', [$this, 'translateClassCategoriesJson']),
         ];
     }
@@ -92,6 +94,34 @@ class TwigExtension extends AbstractExtension
         }
 
         return $this->generator->generate($name, $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
+    }
+
+    /**
+     * URLにlocale文字列を挿入する。
+     *
+     * @param string $url
+     * @param string|null $locale
+     * @return string
+     */
+    public function insertLocaleIntoUrl(string $url, ?string $locale = null): string
+    {
+        if ($locale === null) {
+            $locale = LocaleHelper::getCurrentRequestLocale();
+        }
+
+        $component = parse_url($url);
+        if ($component === false) {
+            return $url;
+        }
+        if (isset($component['path'])) {
+            if (substr($component['path'], 0, 1) == '/') {
+                $component['path'] = '/' . $locale . $component['path'];
+            } else {
+                $component['path'] = $locale . '/' . $component['path'];
+            }
+        }
+
+        return ParseUrlHelper::buildURL($component);
     }
 
     /**
