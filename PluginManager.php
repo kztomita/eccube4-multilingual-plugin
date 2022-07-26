@@ -27,6 +27,7 @@ use Eccube\Entity\PageLayout;
 use Eccube\Entity\Payment;
 use Eccube\Entity\Product;
 use Eccube\Entity\Master\DeviceType;
+use Eccube\Entity\Shipping;
 use Eccube\Entity\Tag;
 use Eccube\Plugin\AbstractPluginManager;
 use Plugin\MultiLingual\Entity\LocaleCategory;
@@ -692,6 +693,8 @@ class PluginManager extends AbstractPluginManager
     }
 
     /**
+     * CSV出力に追加するカラム情報を返す。
+     *
      * @param ContainerInterface $container
      * @return array
      */
@@ -750,6 +753,21 @@ class PluginManager extends AbstractPluginManager
             'field' => 'locale_payment_method',
             'reference_field_name' => null,
             'disp_name' => "支払方法(Locale名称)",
+        ];
+
+        $records[] = [
+            'type' => CsvType::CSV_TYPE_SHIPPING,
+            'entity' => addslashes(Shipping::class),
+            'field' => 'locale_delivery_name',
+            'reference_field_name' => null,
+            'disp_name' => "配送業者(Locale名称)",
+        ];
+        $records[] = [
+            'type' => CsvType::CSV_TYPE_SHIPPING,
+            'entity' => addslashes(Shipping::class),
+            'field' => 'locale_delivery_time',
+            'reference_field_name' => null,
+            'disp_name' => "お届け時間(Locale名称)",
         ];
 
         return $records;
