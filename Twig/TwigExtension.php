@@ -41,6 +41,7 @@ class TwigExtension extends AbstractExtension
             new TwigFunction('locale_url', [$this, 'getLocaleUrl']),
             new TwigFunction('locale_path', [$this, 'getLocalePath']),
             new TwigFunction('locale_field', [$this, 'getLocaleField']),
+            new TwigFunction('locale_text', [$this, 'getLocaleText']),
             new TwigFunction('insert_locale_into_url', [$this, 'insertLocaleIntoUrl']),
             new TwigFunction('trans_class_categories', [$this, 'translateClassCategoriesJson']),
         ];
@@ -97,6 +98,29 @@ class TwigExtension extends AbstractExtension
     }
 
     /**
+     * $Entityの指定LocaleのLocaleオブジェクトを取得し、指定フィールドの値を返す。
+     * $localeを指定しなかった場合は、現在のリクエストのLocaleを使用する。
+     * 該当するLocaleオブジェクトがない場合は、$Entityの同名フィールドの値を返す。
+     *
+     * @param ?AbstractEntity $Entity
+     * @param string $field
+     * @param string|null $locale
+     * @return mixed
+     */
+    public function getLocaleField(?AbstractEntity $Entity, string $field, ?string $locale = null)
+    {
+        if ($Entity === null) {
+            return null;
+        }
+
+        if (!LocaleHelper::hasLocaleFeature($Entity)) {
+            throw new \InvalidArgumentException('$Entity has no getLocales() method.');
+        }
+
+        return LocaleHelper::getLocaleField($Entity, $field, $locale);
+    }
+
+    /**
      * URLにlocale文字列を挿入する。
      *
      * @param string $url
@@ -122,29 +146,6 @@ class TwigExtension extends AbstractExtension
         }
 
         return ParseUrlHelper::buildURL($component);
-    }
-
-    /**
-     * $Entityの指定LocaleのLocaleオブジェクトを取得し、指定フィールドの値を返す。
-     * $localeを指定しなかった場合は、現在のリクエストのLocaleを使用する。
-     * 該当するLocaleオブジェクトがない場合は、$Entityの同名フィールドの値を返す。
-     *
-     * @param ?AbstractEntity $Entity
-     * @param string $field
-     * @param string|null $locale
-     * @return mixed
-     */
-    public function getLocaleField(?AbstractEntity $Entity, string $field, ?string $locale = null)
-    {
-        if ($Entity === null) {
-            return null;
-        }
-
-        if (!LocaleHelper::hasLocaleFeature($Entity)) {
-            throw new \InvalidArgumentException('$Entity has no getLocales() method.');
-        }
-
-        return LocaleHelper::getLocaleField($Entity, $field, $locale);
     }
 
     /**
