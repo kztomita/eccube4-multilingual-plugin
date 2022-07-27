@@ -8,6 +8,122 @@ parameters:
             en: 'Sample Shop'
 #            cn: 'Sample Shop'
 
+    multi_lingual_pages:
+        homepage_locale:
+            en:
+                title: 'Top Page'
+        product_list_locale:
+            en:
+                title: 'Product List'
+        product_detail_locale:
+            en:
+                title: 'Product Detail'
+        mypage_locale:
+            en:
+                title: 'MyPage'
+        mypage_change_locale:
+            en:
+                title: 'MyPage/Account'
+        mypage_change_complete_locale:
+            en:
+                title: 'MyPage/Account'
+        mypage_delivery_locale:
+            en:
+                title: 'MyPage/Shipping Addresses'
+        mypage_delivery_new_locale:
+            en:
+                title: 'MyPage/Shipping Addresses'
+        mypage_favorite_locale:
+            en:
+                title: 'MyPage/Favorites'
+        mypage_history_locale:
+            en:
+                title: 'MyPage/Order History'
+        mypage_login_locale:
+            en:
+                title: 'MyPage/login'
+        mypage_withdraw_locale:
+            en:
+                title: 'MyPage/Withdrawal'
+        mypage_withdraw_complete_locale:
+            en:
+                title: 'MyPage/Withdrawal'
+        help_about_locale:
+            en:
+                title: 'About this site'
+        cart_locale:
+            en:
+                title: 'Cart'
+        contact_locale:
+            en:
+                title: 'Contact'
+        contact_complete_locale:
+            en:
+                title: 'Contact'
+        entry_locale:
+            en:
+                title: 'Signup'
+        help_agreement_locale:
+            en:
+                title: 'Agreement'
+        entry_complete_locale:
+            en:
+                title: 'Signup'
+        help_tradelaw_locale:
+            en:
+                title: 'Tradelaw'
+        entry_activate_locale:
+            en:
+                title: 'Signup'
+        shopping_locale:
+            en:
+                title: 'Shopping'
+        shopping_shipping_locale:
+            en:
+                title: 'Shopping/Shipping'
+        shopping_shipping_multiple_locale:
+            en:
+                title: 'Shopping/Shipping'
+        shopping_complete_locale:
+            en:
+                title: 'Shopping/Done'
+        help_privacy_locale:
+            en:
+                title: 'Privacy Policy'
+        shopping_login_locale:
+            en:
+                title: 'Shopping/login'
+        shopping_nonmember_locale:
+            en:
+                title: 'Shopping/guest'
+        shopping_shipping_edit_locale:
+            en:
+                title: 'Shopping/Shipping'
+        shopping_shipping_multiple_edit_locale:
+            en:
+                title: 'Shopping/Shipping'
+        shopping_error_locale:
+            en:
+                title: 'Error'
+        help_guide_locale:
+            en:
+                title: 'Guide'
+        forgot_locale:
+            en:
+                title: 'Reset Password'
+        forgot_complete_locale:
+            en:
+                title: 'Reset Password'
+        forgot_reset_locale:
+            en:
+                title: 'Reset Password'
+        shopping_redirect_to_locale:
+            en:
+                title: ''
+        shopping_confirm_locale:
+            en:
+                title: 'Shopping'
+
     multi_lingual_mail_templates:
         'Mail/order.twig':
             en:
