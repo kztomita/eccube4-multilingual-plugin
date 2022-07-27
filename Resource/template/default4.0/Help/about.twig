@@ -19,12 +19,12 @@ file that was distributed with this source code.
     <div class="ec-off1Grid">
         <div class="ec-off1Grid__cell">
             <div class="ec-borderedDefs">
-                {% if BaseInfo.shop_name|default is not empty %}
+                {% if locale_text('shop_name')|default is not empty %}
                     <dl id="help_about_box__shop_name">
                         <dt>
                             <label class="ec-label">{{ 'common.shop_name'|trans }}</label>
                         </dt>
-                        <dd>{{ BaseInfo.shop_name }}</dd>
+                        <dd>{{ locale_text('shop_name') }}</dd>
                     </dl>
                 {% endif %}
                 {% if BaseInfo.company_name|default is not empty %}

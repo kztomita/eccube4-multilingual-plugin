@@ -5,6 +5,7 @@ namespace Plugin\MultiLingual\Twig;
 use Eccube\Entity\AbstractEntity;
 use Eccube\Entity\Category;
 use Plugin\MultiLingual\Common\LocaleHelper;
+use Plugin\MultiLingual\Common\LocaleText;
 use Plugin\MultiLingual\Common\ParseUrlHelper;
 use Plugin\MultiLingual\Entity\LocaleCategory;
 use Plugin\MultiLingual\Entity\LocaleClassCategory;
@@ -26,13 +27,20 @@ class TwigExtension extends AbstractExtension
      */
     private $em;
 
+    /**
+     * @var LocaleText
+     */
+    private $localeText;
+
     public function __construct(
         UrlGeneratorInterface $generator,
-        EntityManagerInterface  $entityManager
+        EntityManagerInterface  $entityManager,
+        LocaleText $localeText
     )
     {
         $this->generator = $generator;
         $this->em = $entityManager;
+        $this->localeText = $localeText;
     }
 
     public function getFunctions()
@@ -118,6 +126,18 @@ class TwigExtension extends AbstractExtension
         }
 
         return LocaleHelper::getLocaleField($Entity, $field, $locale);
+    }
+
+    /**
+     * services.yamlに定義されているlocaleごとのテキストを取得する。
+     *
+     * @param string $key
+     * @param string|null $locale
+     * @return string
+     */
+    public function getLocaleText(string $key, ?string $locale = null): string
+    {
+        return $this->localeText->getText($key, $locale);
     }
 
     /**

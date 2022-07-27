@@ -2,6 +2,12 @@
 parameters:
     multi_lingual_locales: ['en', 'cn']
 
+    multi_lingual_text:
+        # いずれDBに入れて管理画面から編集できるように
+        shop_name:
+            en: 'Sample Shop'
+#            cn: 'Sample Shop'
+
     multi_lingual_mail_templates:
         'Mail/order.twig':
             en:
