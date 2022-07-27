@@ -3,9 +3,11 @@
 use Eccube\Entity\Master\CustomerOrderStatus;
 use Eccube\Entity\Master\ProductListMax;
 use Eccube\Entity\Master\ProductListOrderBy;
+use Eccube\Entity\Master\Sex;
 use Plugin\MultiLingual\Entity\Master\LocaleCustomerOrderStatus;
 use Plugin\MultiLingual\Entity\Master\LocaleProductListMax;
 use Plugin\MultiLingual\Entity\Master\LocaleProductListOrderBy;
+use Plugin\MultiLingual\Entity\Master\LocaleSex;
 
 return [
     [
@@ -56,6 +58,18 @@ return [
             ],
             '新着順' => [
                 'en' => 'New arrival order',
+            ],
+        ],
+    ],
+    [
+        'entity' => Sex::class,
+        'locale_entity' => LocaleSex::class,
+        'translates' => [
+            '男性' => [
+                'en' => 'Male',
+            ],
+            '女性' => [
+                'en' => 'Female',
             ],
         ],
     ],
