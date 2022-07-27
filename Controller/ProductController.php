@@ -14,12 +14,12 @@ class ProductController extends AbstractController
     use LocaleTrait;
 
     /**
-     * @var \Eccube\Controller\ProductController
+     * @var CustomizedProductController
      */
     private $controller;
 
     public function __construct(
-        \Eccube\Controller\ProductController $c
+        CustomizedProductController $c
     )
     {
         $this->controller = $c;
