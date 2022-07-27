@@ -3,15 +3,12 @@
 namespace Plugin\MultiLingual\Twig;
 
 use Eccube\Entity\AbstractEntity;
-use Eccube\Entity\Category;
 use Plugin\MultiLingual\Common\LocaleHelper;
 use Plugin\MultiLingual\Common\LocaleText;
-use Plugin\MultiLingual\Common\ParseUrlHelper;
-use Plugin\MultiLingual\Entity\LocaleCategory;
+use Plugin\MultiLingual\Entity\AbstractLocaleEntity;
 use Plugin\MultiLingual\Entity\LocaleClassCategory;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -50,6 +47,7 @@ class TwigExtension extends AbstractExtension
             new TwigFunction('locale_path', [$this, 'getLocalePath']),
             new TwigFunction('locale_field', [$this, 'getLocaleField']),
             new TwigFunction('locale_text', [$this, 'getLocaleText']),
+            new TwigFunction('find_locale_entity', [$this, 'findLocaleEntity']),
             new TwigFunction('trans_class_categories', [$this, 'translateClassCategoriesJson']),
         ];
     }
@@ -137,6 +135,26 @@ class TwigExtension extends AbstractExtension
     public function getLocaleText(string $key, ?string $locale = null): string
     {
         return $this->localeText->getText($key, $locale);
+    }
+
+    /**
+     * Locale用Entityを探して返す。
+     *
+     * @param string $entityName  Locale Entityのクラス名
+     * @param int $parentId       親EntityのID
+     * @param string|null $locale
+     * @return AbstractLocaleEntity|null
+     */
+    public function findLocaleEntity(string $entityName, int $parentId, ?string $locale = null): ?AbstractLocaleEntity
+    {
+        $locale = $locale ?? LocaleHelper::getCurrentRequestLocale();
+
+        /** @var ?AbstractLocaleEntity $entity */
+        $entity = $this->em->getRepository($entityName)->findOneBy([
+            'parent_id' => $parentId,
+            'locale' => $locale,
+        ]);
+        return $entity;
     }
 
     /**

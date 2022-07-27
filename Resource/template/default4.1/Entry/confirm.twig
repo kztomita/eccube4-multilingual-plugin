@@ -115,7 +115,12 @@ file that was distributed with this source code.
                                 {{ form_label(form.sex, 'common.gender'|trans, {'label_attr': {'class': 'ec-label'}}) }}
                             </dt>
                             <dd>
+{#
                                 {{ form.sex.vars.data }}
+#}
+	                        {% if form.sex.vars.value %}
+				    {{ find_locale_entity('\\Plugin\\MultiLingual\\Entity\\Master\\LocaleSex', form.sex.vars.value).name }}
+	                        {% endif %}
                                 {{ form_widget(form.sex, { type: 'hidden'}) }}
                             </dd>
                         </dl>
