@@ -50,7 +50,6 @@ class TwigExtension extends AbstractExtension
             new TwigFunction('locale_path', [$this, 'getLocalePath']),
             new TwigFunction('locale_field', [$this, 'getLocaleField']),
             new TwigFunction('locale_text', [$this, 'getLocaleText']),
-            new TwigFunction('insert_locale_into_url', [$this, 'insertLocaleIntoUrl']),
             new TwigFunction('trans_class_categories', [$this, 'translateClassCategoriesJson']),
         ];
     }
@@ -138,34 +137,6 @@ class TwigExtension extends AbstractExtension
     public function getLocaleText(string $key, ?string $locale = null): string
     {
         return $this->localeText->getText($key, $locale);
-    }
-
-    /**
-     * URLにlocale文字列を挿入する。
-     *
-     * @param string $url
-     * @param string|null $locale
-     * @return string
-     */
-    public function insertLocaleIntoUrl(string $url, ?string $locale = null): string
-    {
-        if ($locale === null) {
-            $locale = LocaleHelper::getCurrentRequestLocale();
-        }
-
-        $component = parse_url($url);
-        if ($component === false) {
-            return $url;
-        }
-        if (isset($component['path'])) {
-            if (substr($component['path'], 0, 1) == '/') {
-                $component['path'] = '/' . $locale . $component['path'];
-            } else {
-                $component['path'] = $locale . '/' . $component['path'];
-            }
-        }
-
-        return ParseUrlHelper::buildURL($component);
     }
 
     /**

@@ -59,4 +59,32 @@ class LocaleHelper
             return $locales[0]->$method();
         }
     }
+
+    /**
+     * URLにlocale文字列を挿入する。
+     *
+     * @param string $url
+     * @param string|null $locale
+     * @return string
+     */
+    public static function insertLocaleIntoUrl(string $url, ?string $locale = null): string
+    {
+        if ($locale === null) {
+            $locale = self::getCurrentRequestLocale();
+        }
+
+        $component = parse_url($url);
+        if ($component === false) {
+            return $url;
+        }
+        if (isset($component['path'])) {
+            if (substr($component['path'], 0, 1) == '/') {
+                $component['path'] = '/' . $locale . $component['path'];
+            } else {
+                $component['path'] = $locale . '/' . $component['path'];
+            }
+        }
+
+        return ParseUrlHelper::buildURL($component);
+    }
 }

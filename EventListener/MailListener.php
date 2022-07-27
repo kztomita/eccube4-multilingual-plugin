@@ -176,8 +176,7 @@ class MailListener implements EventSubscriberInterface
         $Customer = $event->getArgument('Customer');
 
         $activateUrl = $event->getArgument('activateUrl');
-
-        // TODO $activateUrl書き換え
+        $activateUrl = LocaleHelper::insertLocaleIntoUrl($activateUrl);
 
         $body = $this->twig->render($localeTemplate['template'], [
             'BaseInfo' => $this->BaseInfo,
@@ -284,6 +283,7 @@ class MailListener implements EventSubscriberInterface
         $Customer = $event->getArgument('Customer');
 
         $reset_url = $event->getArgument('resetUrl');
+        $reset_url = LocaleHelper::insertLocaleIntoUrl($reset_url);
 
         $body = $this->twig->render($localeTemplate['template'], [
             'BaseInfo' => $this->BaseInfo,
@@ -291,8 +291,6 @@ class MailListener implements EventSubscriberInterface
             'expire' => $this->eccubeConfig['eccube_customer_reset_expire'],
             'reset_url' => $reset_url,
         ]);
-
-        // TODO reset urlの書き換え
 
         $this->updateMessage($message, $localeTemplate['subject'], $body);
     }
