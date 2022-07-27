@@ -83,7 +83,7 @@ Phone: {{ Shipping.phone_number }}
 
 Delivery Method: {{ Shipping.locale_delivery_name }}
 Delivery Date: {{ Shipping.shipping_delivery_date is empty ? 'Unspecified' : Shipping.shipping_delivery_date|date_day }}
-Delivery Time: {{ Shipping.localeDeliveryTime|default('Unspecifie') }}
+Delivery Time: {{ Shipping.localeDeliveryTime|default('Unspecified') }}
 
 {%  for OrderItem in Shipping.productOrderItems %}
 SKU: {{ OrderItem.product_code }}
