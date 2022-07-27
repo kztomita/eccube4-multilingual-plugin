@@ -11,6 +11,7 @@ use Eccube\Event\EventArgs;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\MailTemplateRepository;
 use Plugin\MultiLingual\Common\LocaleHelper;
+use Plugin\MultiLingual\Common\LocaleText;
 use Swift_MimePart;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -36,17 +37,24 @@ class MailListener implements EventSubscriberInterface
      */
     protected $twig;
 
+    /**
+     * @var LocaleText
+     */
+    protected $localeText;
+
     public function __construct(
         MailTemplateRepository $mailTemplateRepository,
         BaseInfoRepository $baseInfoRepository,
         \Twig_Environment $twig,
-        EccubeConfig $eccubeConfig
+        EccubeConfig $eccubeConfig,
+        LocaleText $localeText
     )
     {
         $this->mailTemplateRepository = $mailTemplateRepository;
         $this->BaseInfo = $baseInfoRepository->get();
         $this->eccubeConfig = $eccubeConfig;
         $this->twig = $twig;
+        $this->localeText = $localeText;
     }
 
     public static function getSubscribedEvents(): array
@@ -152,10 +160,9 @@ class MailListener implements EventSubscriberInterface
 
     private function updateMessage(\Swift_Message $message, string $subject, string $body): void
     {
-        // TODO from名の変更
         $message
-            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$subject)
-            ->setFrom([$this->BaseInfo->getEmail03() => $this->BaseInfo->getShopName()])
+            ->setSubject('['.$this->localeText->getText('shop_name').'] '.$subject)
+            ->setFrom([$this->BaseInfo->getEmail03() => $this->localeText->getText('shop_name')])
             ->setBody($body, 'text/plain');
 
         // HTMLメールは対応しないのでaddPart()されたものがあれば削除
