@@ -48,7 +48,7 @@ class PluginManager extends AbstractPluginManager
     {
         $this->createTemplateSymbolicLink();
         $this->createPageRecord($container);
-        $this->copyBlockTemplate($container);
+        $this->copyTemplate($container);
         $this->createLocaleCategory($container);
         $this->createLocaleProduct($container);
         $this->createLocaleClassName($container);
@@ -303,20 +303,33 @@ class PluginManager extends AbstractPluginManager
      * @param ContainerInterface $container
      * @return void
      */
-    private function copyBlockTemplate(ContainerInterface $container)
+    private function copyTemplate(ContainerInterface $container)
     {
         $fs = new Filesystem;
 
         $templateDir = $container->getParameter('eccube_theme_front_dir');
 
-        $finder = new Finder;
-        $finder->files()
-            ->in(__DIR__ . '/Resource/template/default/Block/')
-            ->name('*.twig');
-        foreach ($finder as $file) {
-            $dst = $templateDir . '/Block/' . $file->getFilename();
-            if (!$fs->exists($dst)) {
-                $fs->copy($file->getRealPath(), $dst);
+        $dirs = [
+            [
+                'src' => __DIR__ . '/Resource/template/default/Block/',
+                'dst' => $templateDir . '/Block/',
+            ],
+            [
+                'src' => __DIR__ . '/Resource/template/default/Form/',
+                'dst' => $templateDir . '/Form/',
+            ],
+        ];
+
+        foreach ($dirs as $dir) {
+            $finder = new Finder;
+            $finder->files()
+                ->in($dir['src'])
+                ->name('*.twig');
+            foreach ($finder as $file) {
+                $dst = $dir['dst'] . $file->getFilename();
+                if (!$fs->exists($dst)) {
+                    $fs->copy($file->getRealPath(), $dst);
+                }
             }
         }
     }
