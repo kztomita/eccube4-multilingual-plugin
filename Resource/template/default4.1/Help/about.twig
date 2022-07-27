@@ -19,67 +19,67 @@ file that was distributed with this source code.
     <div class="ec-off1Grid">
         <div class="ec-off1Grid__cell">
             <div class="ec-borderedDefs">
-                {% if locale_text('shop_name')|default is not empty %}
+                {% if locale_text('baseinfo_shop_name')|default is not empty %}
                     <dl id="help_about_box__shop_name">
                         <dt>
                             <label class="ec-label">{{ 'common.shop_name'|trans }}</label>
                         </dt>
-                        <dd>{{ locale_text('shop_name') }}</dd>
+                        <dd>{{ locale_text('baseinfo_shop_name') }}</dd>
                     </dl>
                 {% endif %}
-                {% if BaseInfo.company_name|default is not empty %}
+                {% if locale_text('baseinfo_company_name')|default is not empty %}
                     <dl id="help_about_box__company_name">
                         <dt>
                             <label class="ec-label">{{ 'common.company_name'|trans }}</label>
                         </dt>
-                        <dd>{{ BaseInfo.company_name }}</dd>
+                        <dd>{{ locale_text('baseinfo_company_name') }}</dd>
                     </dl>
                 {% endif %}
 
-                {% if BaseInfo.postal_code|default is not empty %}
+                {% if locale_text('baseinfo_postal_code')|default is not empty %}
                     <dl id="help_about_box__address">
                         <dt>
                             <label class="ec-label">{{ 'common.address'|trans }}</label>
                         </dt>
-                        <dd>{{ 'common.postal_symbol'|trans }}{{ BaseInfo.postal_code }}<br />
-                            {{ BaseInfo.pref }}{{ BaseInfo.addr01 }}{{ BaseInfo.addr02 }}
+                        <dd>{{ 'common.postal_symbol'|trans }}{{ locale_text('baseinfo_postal_code') }}<br />
+                            {{ locale_text('baseinfo_pref') }}{{ locale_text('baseinfo_addr01') }}{{ locale_text('baseifo_addr02') }}
                         </dd>
                     </dl>
                 {% endif %}
 
-                {% if BaseInfo.phone_number|default is not empty %}
+                {% if locale_text('baseinfo_phone_number')|default is not empty %}
                     <dl id="help_about_box__phone_number">
                         <dt>
                             <label class="ec-label">{{ 'common.phone_number'|trans }}</label>
                         </dt>
-                        <dd>{{ BaseInfo.phone_number }}</dd>
+                        <dd>{{ locale_text('baseinfo_phone_number') }}</dd>
                     </dl>
                 {% endif %}
 
-                {% if BaseInfo.business_hour|default is not empty %}
+                {% if locale_text('baseinfo_business_hour')|default is not empty %}
                     <dl id="help_about_box__business_hour">
                         <dt>
                             <label class="ec-label">{{ 'front.about.business_hour'|trans }}</label>
                         </dt>
-                        <dd>{{ BaseInfo.business_hour }}</dd>
+                        <dd>{{ locale_text('baseinfo_business_hour') }}</dd>
                     </dl>
                 {% endif %}
 
-                {% if BaseInfo.good_traded|default is not empty %}
+                {% if locale_text('baseinfo_good_traded')|default is not empty %}
                     <dl id="help_about_box__good_traded">
                         <dt>
                             <label class="ec-label">{{ 'front.about.good_traded:'|trans }}</label>
                         </dt>
-                        <dd>{{ BaseInfo.good_traded|nl2br }}</dd>
+                        <dd>{{ locale_text('baseinfo_good_traded')|nl2br }}</dd>
                     </dl>
                 {% endif %}
 
-                {% if BaseInfo.message|default is not empty %}
+                {% if locale_text('baseinfo_message')|default is not empty %}
                     <dl id="help_about_box__message">
                         <dt>
                             <label class="ec-label">{{ 'front.about.message'|trans }}</label>
                         </dt>
-                        <dd>{{ BaseInfo.message|nl2br }}</dd>
+                        <dd>{{ locale_text('baseinfo_message')|nl2br }}</dd>
                     </dl>
                 {% endif %}
             </div>

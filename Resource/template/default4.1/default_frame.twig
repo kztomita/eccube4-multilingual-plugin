@@ -14,7 +14,7 @@ file that was distributed with this source code.
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="eccube-csrf-token" content="{{ csrf_token(constant('Eccube\\Common\\Constant::TOKEN_NAME')) }}">
-    <title>{{ locale_text('shop_name') }}{% if subtitle is defined and subtitle is not empty %} / {{ subtitle }}{% elseif title is defined and title is not empty %} / {{ title }}{% endif %}</title>
+    <title>{{ locale_text('baseinfo_shop_name') }}{% if subtitle is defined and subtitle is not empty %} / {{ subtitle }}{% elseif title is defined and title is not empty %} / {{ title }}{% endif %}</title>
     {% if Page.meta_tags is not empty %}
         {{ include(template_from_string(Page.meta_tags)) }}
         {% if Page.description is not empty %}

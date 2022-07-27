@@ -161,8 +161,8 @@ class MailListener implements EventSubscriberInterface
     private function updateMessage(\Swift_Message $message, string $subject, string $body): void
     {
         $message
-            ->setSubject('['.$this->localeText->getText('shop_name').'] '.$subject)
-            ->setFrom([$this->BaseInfo->getEmail03() => $this->localeText->getText('shop_name')])
+            ->setSubject('['.$this->localeText->getText('baseinfo_shop_name').'] '.$subject)
+            ->setFrom([$this->BaseInfo->getEmail03() => $this->localeText->getText('baseinfo_shop_name')])
             ->setBody($body, 'text/plain');
 
         // HTMLメールは対応しないのでaddPart()されたものがあれば削除

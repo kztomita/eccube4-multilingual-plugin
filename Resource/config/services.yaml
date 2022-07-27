@@ -4,9 +4,27 @@ parameters:
 
     multi_lingual_text:
         # いずれDBに入れて管理画面から編集できるように
-        shop_name:
+        baseinfo_shop_name:
             en: 'Sample Shop'
 #            cn: 'Sample Shop'
+        baseinfo_company_name:
+            en: ''
+        baseinfo_postal_code:
+            en: ''
+        baseinfo_pref:
+            en: ''
+        baseinfo_addr01:
+            en: ''
+        baseinfo_addr02:
+            en: ''
+        baseinfo_phone_number:
+            en: ''
+        baseinfo_business_hour:
+            en: ''
+        baseinfo_good_traded:
+            en: ''
+        baseinfo_message:
+            en: ''
 
     multi_lingual_pages:
         homepage_locale:
