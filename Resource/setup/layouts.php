@@ -235,6 +235,13 @@ return [
                 'edit_type' => Page::EDIT_TYPE_DEFAULT,
             ],
             [
+                'name'  => 'MYページ/お届け先編 - Locale',
+                'url'   => 'mypage_delivery_edit_locale',
+                'file_name' => 'Mypage/delivery_edit',
+                'edit_type' => Page::EDIT_TYPE_DEFAULT,
+                'master_page' => 'mypage_delivery_new_locale',
+            ],
+            [
                 'name'  => '商品購入/ご注文確認 - Locale',
                 'url'   => 'shopping_confirm_locale',
                 'file_name' => 'Shopping/confirm',

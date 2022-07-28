@@ -199,6 +199,8 @@ class PluginManager extends AbstractPluginManager
 
         $sort = 100;
 
+        $masterPages = [];
+
         // Layout,Page,PageLayoutを追加
         $layouts = $this->loadSetupFile('layouts.php');
         foreach ($layouts as $l) {
@@ -211,8 +213,8 @@ class PluginManager extends AbstractPluginManager
 
             foreach ($l['pages'] as $pg) {
                 $Page = new Page;
-                // TODO MasterPage,
-                $Page->setName($pg['name'])
+                $Page
+                    ->setName($pg['name'])
                     ->setUrl($pg['url'])
                     ->setFileName('MultiLingual/Resource/template/default/' . $pg['file_name'])
                     ->setEditType($pg['edit_type']);
@@ -220,14 +222,37 @@ class PluginManager extends AbstractPluginManager
                 $em->flush();
 
                 $PageLayout = new PageLayout;
-                $PageLayout->setPageId($Page->getId())
+                $PageLayout
+                    ->setPageId($Page->getId())
                     ->setLayoutId($Layout->getId())
                     ->setPage($Page)
                     ->setLayout($Layout);
                 $PageLayout->setSortNo($sort++);
                 $em->persist($PageLayout);
                 $em->flush();
+
+                if (isset($pg['master_page']) && $pg['master_page'] !== '') {
+                    $masterPages[$Page->getId()] = $pg['master_page'];
+                }
             }
+        }
+
+        // master_page_idの設定
+        $pageRepository = $em->getRepository(Page::class);
+        foreach ($masterPages as $pageId => $url) {
+            $Page = $pageRepository->find($pageId);
+            if (!$Page) {
+                throw new \LogicException("Page(ID:$pageId) not found.");
+            }
+            $MasterPage = $pageRepository->findOneBy([
+                'url' => $url,
+            ]);
+            if (!$MasterPage) {
+                throw new \LogicException("$url master page not found.");
+            }
+            $Page->setMasterPage($MasterPage);
+            $em->persist($Page);
+            $em->flush();
         }
 
         // Blockの追加
