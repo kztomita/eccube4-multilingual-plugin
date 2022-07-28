@@ -1,6 +1,7 @@
-Locale毎に必要な翻訳
+Locale毎に必要な翻訳データ
 
-messages.ja.yaml
-validators.ja.yaml
-Resource/setup/master_locales.php
-メールテンプレート
+- messages.xx.yaml
+- validators.xx.yaml
+- Resource/setup/master_locales.php
+- メールテンプレート
+- services.yaml内のmulti_lingual_text, multi_lingual_pagesの項目
