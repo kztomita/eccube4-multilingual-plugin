@@ -1,9 +1,0 @@
-このプラグインは、
-
-各Localeのページの追加
-各Localeでの商品情報、カテゴリの情報登録、表示を可能にする。
-
-src/Eccube/Doctrine/ORM/Mapping/Driver/AnnotationDriver.php
-のバグ修正が必要。
-未修正だとマスタデータ管理からデータの更新ができない。
-(テーブルを選択できない)
