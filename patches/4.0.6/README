@@ -1,5 +1,10 @@
 4.0.6ベースのパッチ
 
+security.yaml
+	locale 'en'の設定を追加した例
+	編集後、app/config/eccube/packages/security.yaml
+	へコピーする
+
 AnnotationDriver.php
 	src/Eccube/Doctrine/ORM/Mapping/Driver/AnnotationDriver.php
 	へコピーする
@@ -11,3 +16,4 @@ ClassCategoryController.php
 ClassNameController.php
 	src/Eccube/Controller/Admin/Product/ClassNameController.php
 	へコピーする
+
