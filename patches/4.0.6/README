@@ -1,0 +1,13 @@
+4.0.6ベースのパッチ
+
+AnnotationDriver.php
+	src/Eccube/Doctrine/ORM/Mapping/Driver/AnnotationDriver.php
+	へコピーする
+
+ClassCategoryController.php
+	src/Eccube/Controller/Admin/Product/ClassCategoryController.php
+	へコピーする
+
+ClassNameController.php
+	src/Eccube/Controller/Admin/Product/ClassNameController.php
+	へコピーする
