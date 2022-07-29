@@ -1,8 +1,8 @@
-物販の場合は配送料の対応
 
-新着情報
+新着情報の多言語対応
 
-本体のcontrollerのsignatureが変わるとplugin側も直す必要がある。
+[4.1とか4.2への対応]
+4.1ではControllerのメソッドに与えるPaginatorがPaginatorInterfaceに変更になっている。
 
 4.2ではRepositoryに与えるRegistryInterfaceは
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
