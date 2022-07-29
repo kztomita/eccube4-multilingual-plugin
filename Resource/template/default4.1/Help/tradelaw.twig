@@ -11,85 +11,11 @@ file that was distributed with this source code.
 {% extends '@MultiLingual/default/default_frame.twig' %}
 
 {% block main %}
-    <div class="ec-role">
-        <div class="ec-pageHeader">
-            <h1> {{ 'front.tradelaw.title'|trans }}</h1>
-        </div>
-        <div class="ec-off1Grid">
-            <div class="ec-off1Grid__cell">
-                <div class="ec-borderedDefs">
-                    <dl>
-                        <dt>
-                            <label class="ec-label">販売業者</label>
-                        </dt>
-                        <dd></dd>
-                    </dl>
-                    <dl>
-                        <dt>
-                            <label class="ec-label">代表責任者</label>
-                        </dt>
-                        <dd>
-                        </dd>
-                    </dl>
-                    <dl>
-                        <dt>
-                            <label class="ec-label">所在地</label>
-                        </dt>
-                        <dd>
-
-                        </dd>
-                    </dl>
-
-                    <dl>
-                        <dt>
-                            <label class="ec-label">電話番号</label>
-                        </dt>
-                        <dd></dd>
-                    </dl>
-
-                    <dl>
-                        <dt>
-                            <label class="ec-label">メールアドレス</label>
-                        </dt>
-                        <dd><a href="mailto:"></a></dd>
-                    </dl>
-
-                    <dl>
-                        <dt>
-                            <label class="ec-label">URL</label>
-                        </dt>
-                        <dd><a href=""></a></dd>
-                    </dl>
-
-                    <dl>
-                        <dt>
-                            <label class="ec-label">商品代金以外の必要料金</label>
-                        </dt>
-                        <dd></dd>
-                    </dl>
-
-                    <dl>
-                        <dt>
-                            <label class="ec-label">引き渡し時期</label>
-                        </dt>
-                        <dd></dd>
-                    </dl>
-
-                    <dl>
-                        <dt>
-                            <label class="ec-label">お支払方法</label>
-                        </dt>
-                        <dd></dd>
-                    </dl>
-
-                    <dl>
-                        <dt>
-                            <label class="ec-label">返品・交換について</label>
-                        </dt>
-                        <dd></dd>
-                    </dl>
-                </div>
-            </div>
-        </div>
-    </div>
+{% set locale = current_locale() %}
+{% if locale == 'en' %}
+{% include '@MultiLingual/default/Help/tradelaw_en.twig' %}
+{% else %}
+{# default #}
+{% include '@MultiLingual/default/Help/tradelaw_en.twig' %}
+{% endif %}
 {% endblock %}
