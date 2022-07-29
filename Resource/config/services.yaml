@@ -178,3 +178,9 @@ parameters:
             en:
                 subject: 'Notice of Product Shipment'
                 template: 'Mail/en/shipping_notify.twig'
+
+services:
+    Plugin\MultiLingual\Repository\ProductRepositoryDecorator:
+        autowire: true
+        decorates: Eccube\Repository\ProductRepository
+        arguments: ['@Plugin\MultiLingual\Repository\ProductRepositoryDecorator.inner']
