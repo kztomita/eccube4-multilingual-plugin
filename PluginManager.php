@@ -883,6 +883,19 @@ class PluginManager extends AbstractPluginManager
 
         // Page,PageLayoutを削除
         $layouts = $this->loadSetupFile('layouts.php');
+        // 外部キー制約に引っかからないようにmaster_page_idをクリアする
+        foreach ($layouts as $l) {
+            foreach ($l['pages'] as $pg) {
+                /** @var ?Page $Page */
+                $Page = $pageRepository->findOneBy(['url' => $pg['url']]);
+                if ($Page && $Page->getMasterPage()) {
+                    $Page->setMasterPage(null);
+                    $em->remove($Page);
+                    $em->flush();
+                }
+            }
+        }
+        // レコードの削除
         foreach ($layouts as $l) {
             foreach ($l['pages'] as $pg) {
                 $Page = $pageRepository->findOneBy(['url' => $pg['url']]);
