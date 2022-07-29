@@ -5,6 +5,7 @@ namespace Plugin\MultiLingual\Twig;
 use Eccube\Entity\AbstractEntity;
 use Plugin\MultiLingual\Common\LocaleHelper;
 use Plugin\MultiLingual\Common\LocaleText;
+use Plugin\MultiLingual\Common\LocaleUrlMapper;
 use Plugin\MultiLingual\Entity\AbstractLocaleEntity;
 use Plugin\MultiLingual\Entity\LocaleClassCategory;
 use Twig\Extension\AbstractExtension;
@@ -29,15 +30,22 @@ class TwigExtension extends AbstractExtension
      */
     private $localeText;
 
+    /**
+     * @var LocaleUrlMapper
+     */
+    private $localeUrlMapper;
+
     public function __construct(
         UrlGeneratorInterface $generator,
         EntityManagerInterface  $entityManager,
-        LocaleText $localeText
+        LocaleText $localeText,
+        LocaleUrlMapper $mapper
     )
     {
         $this->generator = $generator;
         $this->em = $entityManager;
         $this->localeText = $localeText;
+        $this->localeUrlMapper = $mapper;
     }
 
     public function getFunctions()
@@ -49,6 +57,7 @@ class TwigExtension extends AbstractExtension
             new TwigFunction('locale_field', [$this, 'getLocaleField']),
             new TwigFunction('locale_text', [$this, 'getLocaleText']),
             new TwigFunction('find_locale_entity', [$this, 'findLocaleEntity']),
+            new TwigFunction('map_locale_url', [$this, 'mapLocaleUrl']),
             new TwigFunction('trans_class_categories', [$this, 'translateClassCategoriesJson']),
         ];
     }
@@ -166,6 +175,11 @@ class TwigExtension extends AbstractExtension
             'locale' => $locale,
         ]);
         return $entity;
+    }
+
+    public function mapLocaleUrl(string $url, ?string $locale): string
+    {
+        return $this->localeUrlMapper->map($url, $locale);
     }
 
     /**

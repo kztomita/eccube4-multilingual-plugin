@@ -1,0 +1,8 @@
+{% set locales = eccube_config.multi_lingual_locales %}
+<select onchange="if (this.value) {location.href=this.value;}">
+    <option>-</option>
+    <option value="{{ map_locale_url(app.request.uri, null) }}"">ja</option>
+    {% for locale in locales %}
+      <option value="{{ map_locale_url(app.request.uri, locale) }}">{{ locale }}</option>
+    {% endfor %}
+</select>
