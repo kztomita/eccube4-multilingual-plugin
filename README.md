@@ -50,7 +50,7 @@ v4.1系では動作しません。
 
 (1) 本リポジトリをcloneしてMultiLingualという名称でEC-CUBEのapp/Plugin/に設置
 
-    git clone xxxxx.git MultiLingual
+    git clone https://github.com/kztomita/eccube4-multilingual-plugin.git MultiLingual
     mv MultiLingual <EC-CUBEの設置先>/app/Plugin/
 
 
