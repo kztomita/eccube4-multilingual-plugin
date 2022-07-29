@@ -1,6 +1,7 @@
 
 parameters:
-    multi_lingual_locales: ['en', 'cn']
+    multi_lingual_locales: ['en']
+#    multi_lingual_locales: ['en', 'cn']
 
     multi_lingual_text:
         # いずれDBに入れて管理画面から編集できるように
