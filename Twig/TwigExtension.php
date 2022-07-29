@@ -43,6 +43,7 @@ class TwigExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
+            new TwigFunction('current_locale', [$this, 'getCurrentLocale']),
             new TwigFunction('locale_url', [$this, 'getLocaleUrl']),
             new TwigFunction('locale_path', [$this, 'getLocalePath']),
             new TwigFunction('locale_field', [$this, 'getLocaleField']),
@@ -50,6 +51,16 @@ class TwigExtension extends AbstractExtension
             new TwigFunction('find_locale_entity', [$this, 'findLocaleEntity']),
             new TwigFunction('trans_class_categories', [$this, 'translateClassCategoriesJson']),
         ];
+    }
+
+    /**
+     * 現在のリクエストのlocaleを返す。
+     *
+     * @return string
+     */
+    public function getCurrentLocale(): string
+    {
+        return LocaleHelper::getCurrentRequestLocale();
     }
 
     /**
