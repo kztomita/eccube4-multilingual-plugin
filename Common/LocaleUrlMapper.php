@@ -60,7 +60,6 @@ class LocaleUrlMapper
     {
         $locales = $this->eccubeConfig['multi_lingual_locales'];
         foreach ($locales as $locale) {
-            error_log($locale);
             if (strpos($path, '/' . $locale . '/') === 0) {
                 $path = substr($path, strlen('/' . $locale));
                 break;
