@@ -184,4 +184,5 @@ services:
     Plugin\MultiLingual\Repository\ProductRepositoryDecorator:
         autowire: true
         decorates: Eccube\Repository\ProductRepository
-        arguments: ['@Plugin\MultiLingual\Repository\ProductRepositoryDecorator.inner']
+        arguments:
+            $inner: '@Plugin\MultiLingual\Repository\ProductRepositoryDecorator.inner'
