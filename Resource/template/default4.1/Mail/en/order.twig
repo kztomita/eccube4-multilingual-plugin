@@ -61,7 +61,7 @@ Name (Phonetic): {{ Order.kana02 }} {{ Order.kana01 }}
 Company Name: {{ Order.company_name }}
 {% endif %}
 Postal Code: {{ Order.postal_code }}
-Address: {{ Order.Pref.name }}{{ Order.addr01 }}{{ Order.addr02 }}
+Address: {{ locale_field(Order.Pref, 'name') }}{{ Order.addr01 }}{{ Order.addr02 }}
 Phone: {{ Order.phone_number }}
 mail_address: {{ Order.email }}
 

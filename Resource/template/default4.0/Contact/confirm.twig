@@ -54,7 +54,7 @@ file that was distributed with this source code.
                                 <span><span>{{ 'common.postal_symbol'|trans }}</span></span>{{ form.postal_code.vars.data }}
                                 {{ form_widget(form.postal_code, { type : 'hidden' }) }}
                                 {# 都道府県・住所 #}
-                                {{ form.address.pref.vars.data }} {{ form.address.addr01.vars.data }} {{ form.address.addr02.vars.data }}
+                                {{ find_locale_entity('\\Plugin\\MultiLingual\\Entity\\Master\\LocalePref', form.address.pref.vars.value).name }} {{ form.address.addr01.vars.data }} {{ form.address.addr02.vars.data }}
                                 {{ form_widget(form.address.pref, { type : 'hidden' }) }}
                                 {{ form_widget(form.address.addr01, { type : 'hidden' }) }}
                                 {{ form_widget(form.address.addr02, { type : 'hidden' }) }}
