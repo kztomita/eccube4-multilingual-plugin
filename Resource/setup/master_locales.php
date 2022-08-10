@@ -1,10 +1,12 @@
 <?php
 
 use Eccube\Entity\Master\CustomerOrderStatus;
+use Eccube\Entity\Master\Pref;
 use Eccube\Entity\Master\ProductListMax;
 use Eccube\Entity\Master\ProductListOrderBy;
 use Eccube\Entity\Master\Sex;
 use Plugin\MultiLingual\Entity\Master\LocaleCustomerOrderStatus;
+use Plugin\MultiLingual\Entity\Master\LocalePref;
 use Plugin\MultiLingual\Entity\Master\LocaleProductListMax;
 use Plugin\MultiLingual\Entity\Master\LocaleProductListOrderBy;
 use Plugin\MultiLingual\Entity\Master\LocaleSex;
@@ -70,6 +72,153 @@ return [
             ],
             '女性' => [
                 'en' => 'Female',
+            ],
+        ],
+    ],
+    [
+        'entity' => Pref::class,
+        'locale_entity' => LocalePref::class,
+        'translates' => [
+            '北海道' => [
+                'en' => 'hokkaido',
+            ],
+            '青森県' => [
+                'en' => 'aomori',
+            ],
+            '岩手県' => [
+                'en' => 'iwate',
+            ],
+            '宮城県' => [
+                'en' => 'miyagi',
+            ],
+            '秋田県' => [
+                'en' => 'akita',
+            ],
+            '山形県' => [
+                'en' => 'yamagata',
+            ],
+            '福島県' => [
+                'en' => 'fukushima',
+            ],
+            '茨城県' => [
+                'en' => 'ibaraki',
+            ],
+            '栃木県' => [
+                'en' => 'tochigi',
+            ],
+            '群馬県' => [
+                'en' => 'gunma',
+            ],
+            '埼玉県' => [
+                'en' => 'saitama',
+            ],
+            '千葉県' => [
+                'en' => 'chiba',
+            ],
+            '東京都' => [
+                'en' => 'tokyo',
+            ],
+            '神奈川県' => [
+                'en' => 'kanagawa',
+            ],
+            '新潟県' => [
+                'en' => 'niigata',
+            ],
+            '富山県' => [
+                'en' => 'toyama',
+            ],
+            '石川県' => [
+                'en' => 'ishikawa',
+            ],
+            '福井県' => [
+                'en' => 'fukui',
+            ],
+            '山梨県' => [
+                'en' => 'yamanashi',
+            ],
+            '長野県' => [
+                'en' => 'nagano',
+            ],
+            '岐阜県' => [
+                'en' => 'gifu',
+            ],
+            '静岡県' => [
+                'en' => 'shizuoka',
+            ],
+            '愛知県' => [
+                'en' => 'aichi',
+            ],
+            '三重県' => [
+                'en' => 'mie',
+            ],
+            '滋賀県' => [
+                'en' => 'shiga',
+            ],
+            '京都府' => [
+                'en' => 'kyoto',
+            ],
+            '大阪府' => [
+                'en' => 'osaka',
+            ],
+            '兵庫県' => [
+                'en' => 'hyogo',
+            ],
+            '奈良県' => [
+                'en' => 'nara',
+            ],
+            '和歌山県' => [
+                'en' => 'wakayama',
+            ],
+            '鳥取県' => [
+                'en' => 'tottori',
+            ],
+            '島根県' => [
+                'en' => 'shimane',
+            ],
+            '岡山県' => [
+                'en' => 'okayama',
+            ],
+            '広島県' => [
+                'en' => 'hiroshima',
+            ],
+            '山口県' => [
+                'en' => 'yamaguchi',
+            ],
+            '徳島県' => [
+                'en' => 'tokushima',
+            ],
+            '香川県' => [
+                'en' => 'kagawa',
+            ],
+            '愛媛県' => [
+                'en' => 'ehime',
+            ],
+            '高知県' => [
+                'en' => 'kochi',
+            ],
+            '福岡県' => [
+                'en' => 'fukuoka',
+            ],
+            '佐賀県' => [
+                'en' => 'saga',
+            ],
+            '長崎県' => [
+                'en' => 'nagasaki',
+            ],
+            '熊本県' => [
+                'en' => 'kumamoto',
+            ],
+            '大分県' => [
+                'en' => 'oita',
+            ],
+            '宮崎県' => [
+                'en' => 'miyazaki',
+            ],
+            '鹿児島県' => [
+                'en' => 'kagoshima',
+            ],
+            '沖縄県' => [
+                'en' => 'okinawa',
             ],
         ],
     ],
