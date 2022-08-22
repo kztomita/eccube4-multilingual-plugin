@@ -1,11 +1,13 @@
 <?php
 
 use Eccube\Entity\Master\CustomerOrderStatus;
+use Eccube\Entity\Master\Job;
 use Eccube\Entity\Master\Pref;
 use Eccube\Entity\Master\ProductListMax;
 use Eccube\Entity\Master\ProductListOrderBy;
 use Eccube\Entity\Master\Sex;
 use Plugin\MultiLingual\Entity\Master\LocaleCustomerOrderStatus;
+use Plugin\MultiLingual\Entity\Master\LocaleJob;
 use Plugin\MultiLingual\Entity\Master\LocalePref;
 use Plugin\MultiLingual\Entity\Master\LocaleProductListMax;
 use Plugin\MultiLingual\Entity\Master\LocaleProductListOrderBy;
@@ -72,6 +74,66 @@ return [
             ],
             '女性' => [
                 'en' => 'Female',
+            ],
+        ],
+    ],
+    [
+        'entity' => Job::class,
+        'locale_entity' => LocaleJob::class,
+        'translates' => [
+            '公務員' => [
+                'en' => 'Public officer',
+            ],
+            'コンサルタント' => [
+                'en' => 'Consultant',
+            ],
+            'コンピューター関連技術職' => [
+                'en' => 'Engineer(IT)',
+            ],
+            'コンピューター関連以外の技術職' => [
+                'en' => 'Engineer(Non IT)',
+            ],
+            '金融関係' => [
+                'en' => 'Financial services',
+            ],
+            '医師' => [
+                'en' => 'Medical doctor',
+            ],
+            '弁護士' => [
+                'en' => 'Lawyer',
+            ],
+            '総務・人事・事務' => [
+                'en' => 'General manager',
+            ],
+            '営業・販売' => [
+                'en' => 'Sales',
+            ],
+            '研究・開発' => [
+                'en' => 'Research & Development',
+            ],
+            '広報・宣伝' => [
+                'en' => 'Publicity',
+            ],
+            '企画・マーケティング' => [
+                'en' => 'Marketing',
+            ],
+            'デザイン関係' => [
+                'en' => 'Designer',
+            ],
+            '会社経営・役員' => [
+                'en' => 'Business executive',
+            ],
+            '出版・マスコミ関係' => [
+                'en' => 'Mass media',
+            ],
+            '学生・フリーター' => [
+                'en' => 'Student',
+            ],
+            '主婦' => [
+                'en' => 'Housewife',
+            ],
+            'その他' => [
+                'en' => 'Others',
             ],
         ],
     ],
