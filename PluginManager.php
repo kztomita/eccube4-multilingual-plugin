@@ -77,7 +77,7 @@ class PluginManager extends AbstractPluginManager
         // ページ管理から該当ページの表示を消す
         $this->removePageRecord($container);
 
-        // app/templateにコピーしたテンプレートは残しておく
+        $this->cleanupTemplate($container);
 
         // 再度enableした時に翻訳データが残っているようにLocaleレコードは削除しない。
         // enable時は足りないレコードのみ新規作成する。
@@ -993,6 +993,29 @@ class PluginManager extends AbstractPluginManager
 
             $em->remove($Block);
             $em->flush();
+        }
+    }
+
+    /**
+     * コピーしたテンプレートの削除。
+     *
+     * @param ContainerInterface $container
+     * @return void
+     */
+    private function cleanupTemplate(ContainerInterface $container)
+    {
+        $fs = new Filesystem;
+
+        $templateDir = $container->getParameter('eccube_theme_front_dir');
+
+        // オリジナルを上書きしているテンプレートのみ削除する。
+        $files = [
+            $templateDir . '/Block/header.twig',
+            $templateDir . '/Block/news.twig',
+        ];
+
+        foreach ($files as $file) {
+            $fs->rename($file, $file . '.bak', true);
         }
     }
 
