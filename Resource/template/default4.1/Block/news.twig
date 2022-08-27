@@ -9,7 +9,7 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 {% set NewsList = repository('Eccube\\Entity\\News').getList() %}
-{% set NewsList = NewsList|filter(n => n.locale == app.request.locale) %}
+{% set NewsList = NewsList|filter(n => n.locale is same as('') or n.locale == app.request.locale) %}
 
 {% block javascript %}
     <script>

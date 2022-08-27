@@ -2,6 +2,7 @@
 
 namespace Plugin\MultiLingual;
 
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\NonUniqueResultException;
@@ -21,6 +22,7 @@ use Eccube\Entity\DeliveryTime;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\AbstractMasterEntity;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Entity\News;
 use Eccube\Entity\Order;
 use Eccube\Entity\Page;
 use Eccube\Entity\PageLayout;
@@ -59,6 +61,7 @@ class PluginManager extends AbstractPluginManager
         $this->createLocalePayment($container);
         $this->createMasterLocaleRecord($container);
         $this->createCsvRecord($container);
+        $this->setNewsLocale($container);
     }
 
     /**
@@ -110,6 +113,22 @@ class PluginManager extends AbstractPluginManager
         return include(__DIR__ . '/Resource/setup/' . $file);
     }
 
+    private function executeStatement(
+        Connection $connection,
+        string $query,
+        array $params = [],
+        array $types = []
+    ): int
+    {
+        if (strpos(Constant::VERSION, '4.0.') === 0) {
+            // EC-CUBE4.0(Symfony3)
+            return $connection->executeUpdate($query, $params, $types);
+        } else {
+            // EC-CUBE4.1(Symfony4)
+            return $connection->executeStatement($query, $params, $types);
+        }
+    }
+
     /**
      * 指定テーブルをtruncate。
      *
@@ -124,13 +143,7 @@ class PluginManager extends AbstractPluginManager
 
         $connection = $em->getConnection();
         $platform = $connection->getDatabasePlatform();
-        if (strpos(Constant::VERSION, '4.0.') === 0) {
-            // EC-CUBE4.0(Symfony3)
-            $connection->executeUpdate($platform->getTruncateTableSQL($table));
-        } else {
-            // EC-CUBE4.1(Symfony4)
-            $connection->executeStatement($platform->getTruncateTableSQL($table));
-        }
+        $this->executeStatement($connection, $platform->getTruncateTableSQL($table));
     }
 
 
@@ -861,6 +874,27 @@ class PluginManager extends AbstractPluginManager
                 $em->flush();
             }
         }
+    }
+
+    /**
+     * dtb_newsのlocaleカラムの初期設定
+     *
+     * @param ContainerInterface $container
+     * @return void
+     */
+    private function setNewsLocale(ContainerInterface $container)
+    {
+        $em = $this->getEntityManager($container);
+
+        // Pluginのenableがまだなので、Traitで拡張するget/setLocale()はまだ使えない。
+        // SQLを直接実行して設定する。
+
+        $connection = $em->getConnection();
+        $this->executeStatement(
+            $connection,
+            "UPDATE dtb_news SET locale = ? WHERE locale = ''",
+            [env('ECCUBE_LOCALE', 'ja')]
+        );
     }
 
     /**

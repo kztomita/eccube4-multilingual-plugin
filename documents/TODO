@@ -1,6 +1,4 @@
 
-新着情報の多言語対応
-
 [4.1とか4.2への対応]
 4.1ではControllerのメソッドに与えるPaginatorがPaginatorInterfaceに変更になっている。
 
