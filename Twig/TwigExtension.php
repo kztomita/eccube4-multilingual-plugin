@@ -161,12 +161,17 @@ class TwigExtension extends AbstractExtension
      * Locale用Entityを探して返す。
      *
      * @param string $entityName  Locale Entityのクラス名
-     * @param int $parentId       親EntityのID
+     * @param int|null|string $parentId      親EntityのID
      * @param string|null $locale
      * @return AbstractLocaleEntity|null
      */
-    public function findLocaleEntity(string $entityName, int $parentId, ?string $locale = null): ?AbstractLocaleEntity
+    public function findLocaleEntity(string $entityName, $parentId, ?string $locale = null): ?AbstractLocaleEntity
     {
+        // 項目未選択時
+        if ($parentId === null || $parentId === '') {
+            return null;
+        }
+
         $locale = $locale ?? LocaleHelper::getCurrentRequestLocale();
 
         /** @var ?AbstractLocaleEntity $entity */
