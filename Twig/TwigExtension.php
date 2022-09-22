@@ -94,6 +94,9 @@ class TwigExtension extends AbstractExtension
         if (isset($eccubeConfig['multi_lingual_locale'][$locale])) {
             return $eccubeConfig['multi_lingual_locale'][$locale]['name'];
         }
+        if ($locale == 'ja') {
+            return '日本語';
+        }
         return $locale;
     }
 
