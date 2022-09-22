@@ -77,7 +77,7 @@ file that was distributed with this source code.
                                                 {% if form2.has_locale.vars.value %}
                                                     {% for locale in eccube_config.multi_lingual_locales %}
                                                         {% set field = 'name_' ~ locale %}
-                                                        {{ locale }}
+                                                        {{ locale_name(locale) }}
                                                         {{ form_widget(data[field]) }}
                                                         {{ form_errors(data[field]) }}
                                                 {% endfor %}

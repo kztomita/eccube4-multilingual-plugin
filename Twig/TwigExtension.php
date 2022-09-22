@@ -2,6 +2,7 @@
 
 namespace Plugin\MultiLingual\Twig;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\AbstractEntity;
 use Plugin\MultiLingual\Common\LocaleHelper;
 use Plugin\MultiLingual\Common\LocaleText;
@@ -35,23 +36,31 @@ class TwigExtension extends AbstractExtension
      */
     private $localeUrlMapper;
 
+    /**
+     * @var EccubeConfig
+     */
+    private $eccubeConfig;
+
     public function __construct(
         UrlGeneratorInterface $generator,
         EntityManagerInterface  $entityManager,
         LocaleText $localeText,
-        LocaleUrlMapper $mapper
+        LocaleUrlMapper $mapper,
+        EccubeConfig $eccubeConfig
     )
     {
         $this->generator = $generator;
         $this->em = $entityManager;
         $this->localeText = $localeText;
         $this->localeUrlMapper = $mapper;
+        $this->eccubeConfig = $eccubeConfig;
     }
 
     public function getFunctions()
     {
         return [
             new TwigFunction('current_locale', [$this, 'getCurrentLocale']),
+            new TwigFunction('locale_name', [$this, 'getLocaleName']),
             new TwigFunction('locale_url', [$this, 'getLocaleUrl']),
             new TwigFunction('locale_path', [$this, 'getLocalePath']),
             new TwigFunction('locale_field', [$this, 'getLocaleField']),
@@ -70,6 +79,22 @@ class TwigExtension extends AbstractExtension
     public function getCurrentLocale(): string
     {
         return LocaleHelper::getCurrentRequestLocale();
+    }
+
+    /**
+     * services.yamlに定義されているlocale名を返す。
+     *
+     * @param string $locale
+     * @return string
+     */
+    public function getLocaleName(string $locale): string
+    {
+        $eccubeConfig = $this->eccubeConfig;
+
+        if (isset($eccubeConfig['multi_lingual_locale'][$locale])) {
+            return $eccubeConfig['multi_lingual_locale'][$locale]['name'];
+        }
+        return $locale;
     }
 
     /**

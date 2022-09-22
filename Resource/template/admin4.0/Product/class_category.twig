@@ -168,7 +168,7 @@ file that was distributed with this source code.
                                             {# @@@ Added #}
                                             {% for locale in eccube_config.multi_lingual_locales %}
                                                 {% set field = 'name_' ~ locale %}
-                                                {{ locale }}
+                                                {{ locale_name(locale) }}
                                                 {{ form_widget(form[field]) }}
                                                 {{ form_errors(form[field]) }}
                                             {% endfor %}
@@ -229,7 +229,7 @@ file that was distributed with this source code.
                                                 {# @@@ Added #}
                                                 {% for locale in eccube_config.multi_lingual_locales %}
                                                     {% set field = 'name_' ~ locale %}
-                                                    {{ locale }}
+                                                    {{ locale_name(locale) }}
                                                     {{ form_widget(forms[ClassCategory.id][field], {'attr': {'data-origin-value': forms[ClassCategory.id][field].vars.value}}) }}
                                                     {{ form_errors(forms[ClassCategory.id][field]) }}
                                                 {% endfor %}

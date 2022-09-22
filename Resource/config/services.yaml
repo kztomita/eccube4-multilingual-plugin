@@ -3,6 +3,11 @@ parameters:
     multi_lingual_locales: ['en']
 #    multi_lingual_locales: ['en', 'cn']
 
+    # localeごとの設定
+    multi_lingual_locale:
+        en:
+            name: '英語'
+
     multi_lingual_text:
         # いずれDBに入れて管理画面から編集できるように
         baseinfo_shop_name:

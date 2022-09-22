@@ -254,7 +254,7 @@ file that was distributed with this source code.
                             {% for locale in eccube_config.multi_lingual_locales %}
                                 {% set field = 'name_' ~ locale %}
                                 <div class="row">
-                                    <div class="col-3"><span>{{ 'admin.setting.shop.delivery.delivery_name'|trans }}({{ locale }})</span></div>
+                                    <div class="col-3"><span>{{ 'admin.setting.shop.delivery.delivery_name'|trans }}({{ locale_name(locale) }})</span></div>
                                     <div class="col mb-2">
                                         {{ form_widget(form[field]) }}
                                         {{ form_errors(form[field]) }}
@@ -271,7 +271,7 @@ file that was distributed with this source code.
                             {% for locale in eccube_config.multi_lingual_locales %}
                                 {% set field = 'service_name_' ~ locale %}
                                 <div class="row">
-                                    <div class="col-3"><span>{{ 'admin.setting.shop.delivery.delivery_sevice_name'|trans }}({{ locale }})</span></div>
+                                    <div class="col-3"><span>{{ 'admin.setting.shop.delivery.delivery_sevice_name'|trans }}({{ locale_name(locale) }})</span></div>
                                     <div class="col mb-2">
                                         {{ form_widget(form[field]) }}
                                         {{ form_errors(form[field]) }}
@@ -346,7 +346,7 @@ file that was distributed with this source code.
                                         </div>
                                         {% for locale in eccube_config.multi_lingual_locales %}
                                             {% set field = 'add-delivery-time-value-' ~ locale %}
-                                            <div>{{ locale }}</div>
+                                            <div>{{ locale_name(locale) }}</div>
                                             <div class="form-row">
                                                 <div class="col-auto d-flex align-items-center">
                                                     <input id="{{ field }}" class="form-control" type="text">

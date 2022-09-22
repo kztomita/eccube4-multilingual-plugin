@@ -69,7 +69,7 @@ file that was distributed with this source code.
             {% for locale in eccube_config.multi_lingual_locales %}
                 {% set field = 'delivery_time_' ~ locale %}
                 <div class="w-100">
-                    <div>{{ locale }}</div>
+                    <div>{{ locale_name(locale) }}</div>
                     <div class="form-row w-100">
                         <div class="col-auto d-flex align-items-center">
                             {{ form_widget(form[field], {'attr': {'data-origin-value': form[field].vars.value }}) }}

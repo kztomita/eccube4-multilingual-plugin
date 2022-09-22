@@ -190,7 +190,7 @@ src/Eccube/Resource/template/admin/Product/category.twig
                                                     {# @@@ Added #}
                                                     {% for locale in eccube_config.multi_lingual_locales %}
                                                         {% set field = 'name_' ~ locale %}
-                                                        {{ locale }}
+                                                        {{ locale_name(locale) }}
                                                         {{ form_widget(form[field]) }}
                                                         {{ form_errors(form[field]) }}
                                                     {% endfor %}
@@ -275,7 +275,7 @@ src/Eccube/Resource/template/admin/Product/category.twig
                                                         {# @@@ Added #}
                                                         {% for locale in eccube_config.multi_lingual_locales %}
                                                             {% set field = 'name_' ~ locale %}
-                                                            {{ locale }}
+                                                            {{ locale_name(locale) }}
                                                             {{ form_widget(forms[Category.id][field], {'attr': {'data-origin-value': forms[Category.id][field].vars.value}}) }}
                                                             {{ form_errors(forms[Category.id][field]) }}
                                                         {% endfor %}
