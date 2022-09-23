@@ -144,7 +144,7 @@ file that was distributed with this source code.
                         <div class="ec-RegisterRole__actions">
                             <div class="ec-off4Grid">
                                 <div class="ec-off4Grid__cell">
-                                    <button type="submit" class="ec-blockBtn--action">{{ 'common.registration/'|trans }}</button>
+                                    <button type="submit" class="ec-blockBtn--action">{{ 'common.registration'|trans }}</button>
                                     {% if is_granted('ROLE_USER') %}
                                     <a href="{{ locale_url('shopping_shipping_locale', { 'id': shippingId }) }}" class="ec-blockBtn--cancel">{{ 'common.back'|trans }}</a>
                                     {% else %}
