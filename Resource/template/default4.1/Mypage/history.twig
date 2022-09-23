@@ -102,8 +102,13 @@ file that was distributed with this source code.
                         {% endfor %}
                         <p>{{ isShowReducedTaxMess ? 'common.reduced_tax_rate_messeage'|trans }}</p>
                         <div class="ec-orderDelivery__address">
-                            <p>{{ Shipping.name01 }}&nbsp;{{ Shipping.name02 }}&nbsp;
-                                ({{ Shipping.kana01 }}&nbsp;{{ Shipping.kana02 }})</p>
+                            {% if locale_config().name_order == 'first_last' %}
+                                <p>{{ Shipping.name02 }}&nbsp;{{ Shipping.name01 }}&nbsp;
+                                    ({{ Shipping.kana02 }}&nbsp;{{ Shipping.kana01 }})</p>
+                            {% else %}
+                                <p>{{ Shipping.name01 }}&nbsp;{{ Shipping.name02 }}&nbsp;
+                                    ({{ Shipping.kana01 }}&nbsp;{{ Shipping.kana02 }})</p>
+                            {% endif %}
                             <p>{{ 'common.postal_symbol'|trans }}{{ Shipping.postal_code }} {{ locale_field(Shipping.Pref, 'name') }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}</p>
                             <p>{{ Shipping.phone_number }}</p>
                         </div>

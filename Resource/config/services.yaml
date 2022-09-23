@@ -8,6 +8,9 @@ parameters:
         en:
             name: '英語'
 
+            # 姓名の表示順 'last_first' or 'first_last'
+            name_order: 'first_last'
+
     multi_lingual_text:
         # いずれDBに入れて管理画面から編集できるように
         baseinfo_shop_name:

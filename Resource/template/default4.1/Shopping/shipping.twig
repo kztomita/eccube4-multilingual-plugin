@@ -52,7 +52,11 @@ file that was distributed with this source code.
                                 <input type="radio" id="address{{ choice.value }}" name="{{ form.addresses.vars.full_name }}" value="{{ choice.value }}" {{ checked }} />
                             </div>
                             <div class="ec-addressList__address">
-                                <div>{{ Address.name01 }}&nbsp;{{ Address.name02 }}</div>
+                                {% if locale_config().name_order == 'first_last' %}
+                                    <div>{{ Address.name02 }}&nbsp;{{ Address.name01 }}</div>
+                                {% else %}
+                                    <div>{{ Address.name01 }}&nbsp;{{ Address.name02 }}</div>
+                                {% endif %}
                                 <div>〒{{ Address.postal_code }} {{ Address.Pref }}{{ Address.addr01 }}{{ Address.addr02 }}</div>
                                 <div>{{ Address.phone_number }}</div>
                             </div>

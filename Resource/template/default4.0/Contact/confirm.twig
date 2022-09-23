@@ -28,10 +28,17 @@ file that was distributed with this source code.
                                 {{ form_label(form.name, 'common.name'|trans, { 'label_attr': { 'class': 'ec-label '}}) }}
                             </dt>
                             <dd>
-                                {{ form.name.name01.vars.data }}
-                                {{ form.name.name02.vars.data }}
-                                {{ form_widget(form.name.name01, { type : 'hidden' }) }}
-                                {{ form_widget(form.name.name02, { type : 'hidden' }) }}
+                                {% if locale_config().name_order == 'first_last' %}
+                                    {{ form.name.name02.vars.data }}
+                                    {{ form.name.name01.vars.data }}
+                                    {{ form_widget(form.name.name02, { type : 'hidden' }) }}
+                                    {{ form_widget(form.name.name01, { type : 'hidden' }) }}
+                                {% else %}
+                                    {{ form.name.name01.vars.data }}
+                                    {{ form.name.name02.vars.data }}
+                                    {{ form_widget(form.name.name01, { type : 'hidden' }) }}
+                                    {{ form_widget(form.name.name02, { type : 'hidden' }) }}
+                                {% endif %}
                             </dd>
                         </dl>
                         <dl>
@@ -39,10 +46,17 @@ file that was distributed with this source code.
                                 {{ form_label(form.kana, 'common.kana'|trans, { 'label_attr': { 'class': 'ec-label' }}) }}
                             </dt>
                             <dd>
-                                {{ form.kana.kana01.vars.data }}
-                                {{ form.kana.kana02.vars.data }}
-                                {{ form_widget(form.kana.kana01, { type : 'hidden' }) }}
-                                {{ form_widget(form.kana.kana02, { type : 'hidden' }) }}
+                                {% if locale_config().name_order == 'first_last' %}
+                                    {{ form.kana.kana02.vars.data }}
+                                    {{ form.kana.kana01.vars.data }}
+                                    {{ form_widget(form.kana.kana02, { type : 'hidden' }) }}
+                                    {{ form_widget(form.kana.kana01, { type : 'hidden' }) }}
+                                {% else %}
+                                    {{ form.kana.kana01.vars.data }}
+                                    {{ form.kana.kana02.vars.data }}
+                                    {{ form_widget(form.kana.kana01, { type : 'hidden' }) }}
+                                    {{ form_widget(form.kana.kana02, { type : 'hidden' }) }}
+                                {% endif %}
                             </dd>
                         </dl>
                         <dl>

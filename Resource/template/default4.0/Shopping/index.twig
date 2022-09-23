@@ -162,8 +162,13 @@ file that was distributed with this source code.
                         </div>
                     {% endif %}
                     <div class="ec-orderAccount__account non-customer-display">
-                        <p class="ec-halfInput">{{ ''|trans }}<span class="customer-edit customer-name01">{{ Order.name01 }}</span> <span class="customer-edit customer-name02">{{ Order.name02 }}</span>{{ 'common.name.suffix'|trans }}</p>
-                        <p class="ec-halfInput"><span class="customer-edit customer-kana01">{{ Order.kana01 }}</span> <span class="customer-edit customer-kana02">{{ Order.kana02 }}</span></p>
+                        {% if locale_config().name_order == 'first_last' %}
+                            <p class="ec-halfInput">{{ ''|trans }}<span class="customer-edit customer-name01">{{ Order.name02 }}</span> <span class="customer-edit customer-name02">{{ Order.name01 }}</span>{{ 'common.name.suffix'|trans }}</p>
+                            <p class="ec-halfInput"><span class="customer-edit customer-kana01">{{ Order.kana02 }}</span> <span class="customer-edit customer-kana02">{{ Order.kana01 }}</span></p>
+                        {% else %}
+                            <p class="ec-halfInput">{{ ''|trans }}<span class="customer-edit customer-name01">{{ Order.name01 }}</span> <span class="customer-edit customer-name02">{{ Order.name02 }}</span>{{ 'common.name.suffix'|trans }}</p>
+                            <p class="ec-halfInput"><span class="customer-edit customer-kana01">{{ Order.kana01 }}</span> <span class="customer-edit customer-kana02">{{ Order.kana02 }}</span></p>
+                        {% endif %}
                         <p class="ec-input"><span class="customer-edit customer-company_name">{{ Order.companyName }}</span></p>
                         <p class="ec-zipInput">{{ 'common.postal_symbol'|trans }}<span class="customer-edit customer-postal_code">{{ Order.postal_code }}</span></p>
                         <p class="ec-input"><span class="customer-edit customer-pref">{{ locale_field(Order.pref, 'name') }}</span><span class="customer-edit customer-addr01">{{ Order.addr01 }}</span><span class="customer-edit customer-addr02">{{ Order.addr02 }}</span></p>
@@ -316,7 +321,11 @@ file that was distributed with this source code.
                             <p>{{ isShowReducedTaxMess ? 'common.reduced_tax_rate_messeage'|trans }}</p>
                         </div>
                         <div class="ec-orderDelivery__address">
-                            <p>{{ ''|trans }}{{ shipping.name01 }} {{ shipping.name02 }} ({{ shipping.kana01 }} {{ shipping.kana02 }}){{ 'common.name.suffix'|trans }}</p>
+                            {% if locale_config().name_order == 'first_last' %}
+                                <p>{{ ''|trans }}{{ shipping.name02 }} {{ shipping.name01 }} ({{ shipping.kana02 }} {{ shipping.kana01 }}){{ 'common.name.suffix'|trans }}</p>
+                            {% else %}
+                                <p>{{ ''|trans }}{{ shipping.name01 }} {{ shipping.name02 }} ({{ shipping.kana01 }} {{ shipping.kana02 }}){{ 'common.name.suffix'|trans }}</p>
+                            {% endif %}
                             <p>{{ 'common.postal_symbol'|trans }}{{ shipping.postal_code }} {{ locale_field(shipping.pref, 'name') }}{{ shipping.addr01 }}{{ shipping.addr02 }}</p>
                             <p>{{ shipping.phone_number }}</p>
                         </div>

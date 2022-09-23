@@ -31,7 +31,11 @@ file that was distributed with this source code.
 </div>
 
 <div class="ec-welcomeMsg">
-    <p>{{ 'front.mypage.welcome'|trans({ '%last_name%': app.user.name01, '%first_name%': app.user.name02 }) }}</p>
+    {% if locale_config().name_order == 'first_last' %}
+        <p>{{ 'front.mypage.welcome'|trans({ '%first_name%': app.user.name01, '%last_name%': app.user.name02 }) }}</p>
+    {% else %}
+        <p>{{ 'front.mypage.welcome'|trans({ '%last_name%': app.user.name01, '%first_name%': app.user.name02 }) }}</p>
+    {% endif %}
     {% if BaseInfo.option_point %}
         <p>{{ 'front.mypage.welcome__point'|trans({ '%point%': app.user.point|number_format}) }}</p>
     {% endif %}

@@ -4,6 +4,7 @@ namespace Plugin\MultiLingual\Twig;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\AbstractEntity;
+use phpDocumentor\Reflection\Types\Mixed_;
 use Plugin\MultiLingual\Common\LocaleHelper;
 use Plugin\MultiLingual\Common\LocaleText;
 use Plugin\MultiLingual\Common\LocaleUrlMapper;
@@ -60,6 +61,7 @@ class TwigExtension extends AbstractExtension
     {
         return [
             new TwigFunction('current_locale', [$this, 'getCurrentLocale']),
+            new TwigFunction('locale_config', [$this, 'getLocaleConfig']),
             new TwigFunction('locale_name', [$this, 'getLocaleName']),
             new TwigFunction('locale_url', [$this, 'getLocaleUrl']),
             new TwigFunction('locale_path', [$this, 'getLocalePath']),
@@ -82,7 +84,28 @@ class TwigExtension extends AbstractExtension
     }
 
     /**
+     * services.yamlから指定のlocaleのmulti_lingual_locale設定を取得する。
+     *
+     * @params ?string $locale
+     * @return mixed
+     */
+    public function getLocaleConfig(?string $locale = null)
+    {
+        if ($locale === null) {
+            $locale = LocaleHelper::getCurrentRequestLocale();
+        }
+
+        $eccubeConfig = $this->eccubeConfig;
+
+        if (!isset($eccubeConfig['multi_lingual_locale'][$locale])) {
+            return null;
+        }
+        return $eccubeConfig['multi_lingual_locale'][$locale];
+    }
+
+    /**
      * services.yamlに定義されているlocale名を返す。
+     * locale_config(locale).name のショートカット。
      *
      * @param string $locale
      * @return string

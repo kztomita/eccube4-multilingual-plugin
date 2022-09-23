@@ -43,10 +43,17 @@ file that was distributed with this source code.
                                     </dt>
                                     <dd>
                                         <div class="ec-halfInput{{ has_errors(form.name.name01, form.name.name02) ? ' error'}}">
-                                            {{ form_widget(form.name.name01, { 'attr': { 'placeholder': 'common.last_name'|trans }}) }}
-                                            {{ form_widget(form.name.name02, { 'attr': { 'placeholder': 'common.first_name'|trans }}) }}
-                                            {{ form_errors(form.name.name01) }}
-                                            {{ form_errors(form.name.name02) }}
+                                            {% if locale_config().name_order == 'first_last' %}
+                                                {{ form_widget(form.name.name02, { 'attr': { 'placeholder': 'common.first_name'|trans }}) }}
+                                                {{ form_widget(form.name.name01, { 'attr': { 'placeholder': 'common.last_name'|trans }}) }}
+                                                {{ form_errors(form.name.name02) }}
+                                                {{ form_errors(form.name.name01) }}
+                                            {% else %}
+                                                {{ form_widget(form.name.name01, { 'attr': { 'placeholder': 'common.last_name'|trans }}) }}
+                                                {{ form_widget(form.name.name02, { 'attr': { 'placeholder': 'common.first_name'|trans }}) }}
+                                                {{ form_errors(form.name.name01) }}
+                                                {{ form_errors(form.name.name02) }}
+                                            {% endif %}
                                         </div>
                                     </dd>
                                 </dl>
@@ -56,10 +63,17 @@ file that was distributed with this source code.
                                     </dt>
                                     <dd>
                                         <div class="ec-halfInput{{ has_errors(form.kana.kana01, form.kana.kana02) ? ' error'}}">
-                                            {{ form_widget(form.kana.kana01, { 'attr': { 'placeholder': 'common.last_name_kana'|trans }}) }}
-                                            {{ form_widget(form.kana.kana02, { 'attr': { 'placeholder': 'common.first_name_kana'|trans }}) }}
-                                            {{ form_errors(form.kana.kana01) }}
-                                            {{ form_errors(form.kana.kana02) }}
+                                            {% if locale_config().name_order == 'first_last' %}
+                                                {{ form_widget(form.kana.kana02, { 'attr': { 'placeholder': 'common.first_name_kana'|trans }}) }}
+                                                {{ form_widget(form.kana.kana01, { 'attr': { 'placeholder': 'common.last_name_kana'|trans }}) }}
+                                                {{ form_errors(form.kana.kana02) }}
+                                                {{ form_errors(form.kana.kana01) }}
+                                            {% else %}
+                                                {{ form_widget(form.kana.kana01, { 'attr': { 'placeholder': 'common.last_name_kana'|trans }}) }}
+                                                {{ form_widget(form.kana.kana02, { 'attr': { 'placeholder': 'common.first_name_kana'|trans }}) }}
+                                                {{ form_errors(form.kana.kana01) }}
+                                                {{ form_errors(form.kana.kana02) }}
+                                            {% endif %}
                                         </div>
                                     </dd>
                                 </dl>

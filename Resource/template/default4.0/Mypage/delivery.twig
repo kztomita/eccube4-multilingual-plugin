@@ -51,7 +51,11 @@ file that was distributed with this source code.
                                         </div>
                                     </a>
                                     <div class="ec-addressList__address">
-                                        <div>{{ CustomerAddress.name01 }}&nbsp;{{ CustomerAddress.name02 }}</div>
+                                        {% if locale_config().name_order == 'first_last' %}
+                                            <div>{{ CustomerAddress.name02 }}&nbsp;{{ CustomerAddress.name01 }}</div>
+                                        {% else %}
+                                            <div>{{ CustomerAddress.name01 }}&nbsp;{{ CustomerAddress.name02 }}</div>
+                                        {% endif %}
                                         <div>{{ 'common.postal_symbol'|trans }}{{ CustomerAddress.postal_code }} {{ locale_field(CustomerAddress.Pref, 'name') }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}</div>
                                         <div>{{ CustomerAddress.phone_number }}</div>
                                     </div>

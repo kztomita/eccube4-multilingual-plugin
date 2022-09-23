@@ -69,8 +69,13 @@ file that was distributed with this source code.
                     <h2>{{ 'front.shopping.customer_info'|trans }}</h2>
                 </div>
                 <div class="ec-orderAccount__account">
-                    <p class="ec-halfInput">{{ ''|trans }}{{ Order.name01 }} {{ Order.name02 }}{{ 'common.name.suffix'|trans }}</p>
-                    <p class="ec-halfInput">{{ Order.kana01 }} {{ Order.kana02 }}</p>
+                    {% if locale_config().name_order == 'first_last' %}
+                        <p class="ec-halfInput">{{ ''|trans }}{{ Order.name02 }} {{ Order.name01 }}{{ 'common.name.suffix'|trans }}</p>
+                        <p class="ec-halfInput">{{ Order.kana02 }} {{ Order.kana01 }}</p>
+                    {% else %}
+                        <p class="ec-halfInput">{{ ''|trans }}{{ Order.name01 }} {{ Order.name02 }}{{ 'common.name.suffix'|trans }}</p>
+                        <p class="ec-halfInput">{{ Order.kana01 }} {{ Order.kana02 }}</p>
+                    {% endif %}
                     <p class="ec-input">{{ Order.companyName }}</p>
                     <p class="ec-zipInput">{{ 'common.postal_symbol'|trans }}{{ Order.postal_code }}</p>
                     <p class="ec-input">{{ locale_field(Order.pref, 'name') }}{{ Order.addr01 }}{{ Order.addr02 }}</p>
@@ -108,7 +113,11 @@ file that was distributed with this source code.
                         <p>{{ isShowReducedTaxMess ? 'common.reduced_tax_rate_messeage'|trans }}</p>
                     </div>
                     <div class="ec-orderDelivery__address">
-                        <p>{{ ''|trans }}{{ shipping.name01 }} {{ shipping.name02 }} ({{ shipping.kana01 }} {{ shipping.kana02 }}){{ 'common.name.suffix'|trans }}</p>
+                        {% if locale_config().name_order == 'first_last' %}
+                            <p>{{ ''|trans }}{{ shipping.name02 }} {{ shipping.name01 }} ({{ shipping.kana02 }} {{ shipping.kana01 }}){{ 'common.name.suffix'|trans }}</p>
+                        {% else %}
+                            <p>{{ ''|trans }}{{ shipping.name01 }} {{ shipping.name02 }} ({{ shipping.kana01 }} {{ shipping.kana02 }}){{ 'common.name.suffix'|trans }}</p>
+                        {% endif %}
                         <p>{{ 'common.postal_symbol'|trans }}{{ shipping.postal_code }} {{ locale_field(shipping.pref, 'name') }}{{ shipping.addr01 }}{{ shipping.addr02 }}</p>
                         <p>{{ shipping.phone_number }}</p>
                     </div>
