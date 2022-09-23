@@ -75,7 +75,6 @@ class NewsController extends AbstractController
 
         return [
             'pagination' => $pagination,
-            'defaultLocale' => env('ECCUBE_LOCALE', 'ja'),
             'targetLocale' => $locale,
         ];
     }
@@ -183,7 +182,6 @@ class NewsController extends AbstractController
         return [
             'form' => $form->createView(),
             'News' => $News,
-            'defaultLocale' => env('ECCUBE_LOCALE', 'ja'),
             'targetLocale' => $locale,
         ];
     }

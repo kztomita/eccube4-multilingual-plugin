@@ -12,6 +12,8 @@ file that was distributed with this source code.
 
 {% set menus = ['content', 'news'] %}
 
+{% set defaultLocale = eccube_config.locale %}
+
 
 {% block title %}{{ 'admin.content.news_management'|trans }}({{ locale_name(targetLocale) }}){% endblock %}
 {% block sub_title %}{{ 'admin.content.contents_management'|trans }}{% endblock %}
@@ -31,7 +33,7 @@ file that was distributed with this source code.
                 <div class="col-2 mb-3 p-0">
                     {% set locales = eccube_config.multi_lingual_locales %}
                     <select class="form-control" onchange="if (this.value) {location.href=this.value;}">
-                        <option value="{{ url('admin_content_news') }}"" {% if targetLocale == defaultLocale %}selected="selected"{% endif %}>ja</option>
+                        <option value="{{ url('admin_content_news') }}"" {% if targetLocale == defaultLocale %}selected="selected"{% endif %}>{{ locale_name(defaultLocale) }}</option>
                         {% for locale in locales %}
                             <option value="{{  url('admin_content_news_locale', {'locale': locale}) }}" {% if targetLocale == locale %}selected="selected"{% endif %}>{{ locale_name(locale) }}</option>
                         {% endfor %}
