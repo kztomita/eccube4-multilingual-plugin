@@ -3,6 +3,10 @@ parameters:
     multi_lingual_locales: ['en']
 #    multi_lingual_locales: ['en', 'cn']
 
+    # .envのECCUBE_LOCALEでlocaleを指定すると管理画面も変更となる。
+    # frontのみlocaleを変えたい場合はここで指定する。
+#    front_locale: 'en'
+
     # localeごとの設定
     multi_lingual_locale:
         en:
