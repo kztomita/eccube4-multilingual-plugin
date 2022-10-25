@@ -56,7 +56,9 @@ Payment Total: {{ Order.payment_total|price }}
 　Customer Info
 ************************************************
 Name: {{ Order.name02 }} {{ Order.name01 }}
+{% if locale_config().input_kana %}
 Name (Phonetic): {{ Order.kana02 }} {{ Order.kana01 }}
+{% endif %}
 {% if Order.company_name %}
 Company Name: {{ Order.company_name }}
 {% endif %}
@@ -73,7 +75,9 @@ mail_address: {{ Order.email }}
 Delivery to{% if Order.multiple %}{{ loop.index }}{% endif %}
 
 Name: {{ Shipping.name02 }} {{ Shipping.name01 }}
+{% if locale_config().input_kana %}
 Name (Phonetic): {{ Shipping.kana02 }} {{ Shipping.kana01 }}
+{% endif %}
 {% if Shipping.company_name %}
 Company Name: {{ Shipping.company_name }}
 {% endif %}

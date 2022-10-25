@@ -41,6 +41,7 @@ file that was distributed with this source code.
                                 {% endif %}
                             </dd>
                         </dl>
+                        {% if locale_config().input_kana %}
                         <dl>
                             <dt>
                                 {{ form_label(form.kana, 'common.kana'|trans, { 'label_attr': { 'class': 'ec-label' }}) }}
@@ -59,6 +60,7 @@ file that was distributed with this source code.
                                 {% endif %}
                             </dd>
                         </dl>
+                        {% endif %}
                         <dl>
                             <dt>
                                 {{ form_label(form.address, 'common.address'|trans, { 'label_attr': { 'class': 'ec-label' }}) }}

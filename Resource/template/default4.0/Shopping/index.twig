@@ -164,10 +164,14 @@ file that was distributed with this source code.
                     <div class="ec-orderAccount__account non-customer-display">
                         {% if locale_config().name_order == 'first_last' %}
                             <p class="ec-halfInput">{{ ''|trans }}<span class="customer-edit customer-name01">{{ Order.name02 }}</span> <span class="customer-edit customer-name02">{{ Order.name01 }}</span>{{ 'common.name.suffix'|trans }}</p>
+                            {% if locale_config().input_kana %}
                             <p class="ec-halfInput"><span class="customer-edit customer-kana01">{{ Order.kana02 }}</span> <span class="customer-edit customer-kana02">{{ Order.kana01 }}</span></p>
+                            {% endif %}
                         {% else %}
                             <p class="ec-halfInput">{{ ''|trans }}<span class="customer-edit customer-name01">{{ Order.name01 }}</span> <span class="customer-edit customer-name02">{{ Order.name02 }}</span>{{ 'common.name.suffix'|trans }}</p>
+                            {% if locale_config().input_kana %}
                             <p class="ec-halfInput"><span class="customer-edit customer-kana01">{{ Order.kana01 }}</span> <span class="customer-edit customer-kana02">{{ Order.kana02 }}</span></p>
+                            {% endif %}
                         {% endif %}
                         <p class="ec-input"><span class="customer-edit customer-company_name">{{ Order.companyName }}</span></p>
                         <p class="ec-zipInput">{{ 'common.postal_symbol'|trans }}<span class="customer-edit customer-postal_code">{{ Order.postal_code }}</span></p>
@@ -189,6 +193,7 @@ file that was distributed with this source code.
                                     </div>
                                 </dd>
                             </dl>
+                            {% if locale_config().input_kana %}
                             <dl>
                                 <dt>
                                     <label class="ec-label required">{{ 'common.kana'|trans }}</label>
@@ -201,6 +206,7 @@ file that was distributed with this source code.
                                     </div>
                                 </dd>
                             </dl>
+                            {% endif %}
                             <dl>
                                 <dt>
                                     <label class="ec-label" for="nonmember_company_name">{{ 'common.company_name'|trans }}</label>
@@ -322,9 +328,9 @@ file that was distributed with this source code.
                         </div>
                         <div class="ec-orderDelivery__address">
                             {% if locale_config().name_order == 'first_last' %}
-                                <p>{{ ''|trans }}{{ shipping.name02 }} {{ shipping.name01 }} ({{ shipping.kana02 }} {{ shipping.kana01 }}){{ 'common.name.suffix'|trans }}</p>
+                                <p>{{ ''|trans }}{{ shipping.name02 }} {{ shipping.name01 }} {% if locale_config().input_kana %}({{ shipping.kana02 }} {{ shipping.kana01 }}){% endif %}{{ 'common.name.suffix'|trans }}</p>
                             {% else %}
-                                <p>{{ ''|trans }}{{ shipping.name01 }} {{ shipping.name02 }} ({{ shipping.kana01 }} {{ shipping.kana02 }}){{ 'common.name.suffix'|trans }}</p>
+                                <p>{{ ''|trans }}{{ shipping.name01 }} {{ shipping.name02 }} {% if locale_config().input_kana %}({{ shipping.kana01 }} {{ shipping.kana02 }}){% endif %}{{ 'common.name.suffix'|trans }}</p>
                             {% endif %}
                             <p>{{ 'common.postal_symbol'|trans }}{{ shipping.postal_code }} {{ locale_field(shipping.pref, 'name') }}{{ shipping.addr01 }}{{ shipping.addr02 }}</p>
                             <p>{{ shipping.phone_number }}</p>

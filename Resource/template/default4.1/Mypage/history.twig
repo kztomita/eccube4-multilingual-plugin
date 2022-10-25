@@ -104,10 +104,10 @@ file that was distributed with this source code.
                         <div class="ec-orderDelivery__address">
                             {% if locale_config().name_order == 'first_last' %}
                                 <p>{{ Shipping.name02 }}&nbsp;{{ Shipping.name01 }}&nbsp;
-                                    ({{ Shipping.kana02 }}&nbsp;{{ Shipping.kana01 }})</p>
+                                    {% if locale_config().input_kana %}({{ Shipping.kana02 }}&nbsp;{{ Shipping.kana01 }}){% endif %}</p>
                             {% else %}
                                 <p>{{ Shipping.name01 }}&nbsp;{{ Shipping.name02 }}&nbsp;
-                                    ({{ Shipping.kana01 }}&nbsp;{{ Shipping.kana02 }})</p>
+                                    {% if locale_config().input_kana %}({{ Shipping.kana01 }}&nbsp;{{ Shipping.kana02 }}){% endif %}</p>
                             {% endif %}
                             <p>{{ 'common.postal_symbol'|trans }}{{ Shipping.postal_code }} {{ locale_field(Shipping.Pref, 'name') }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}</p>
                             <p>{{ Shipping.phone_number }}</p>
